@@ -1,5 +1,3 @@
- "../."
-
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "../../ui/accordion"
 
 export default function Accord() {
