@@ -5,7 +5,7 @@ import Footer from "./components/shared/Footer/Footer";
 import Loader from "./components/shared/Loader/Loader";
 
 const Home = lazy(() => import("./pages/Home"));
-
+const Collection = lazy(() => import("./pages/Collection"));
 const App = () => {
   return (
 <>
@@ -14,6 +14,7 @@ const App = () => {
       <Suspense fallback={<Loader />}>
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/collections" element={<Collection />} />
         </Routes>
       <Footer />
       </Suspense>
