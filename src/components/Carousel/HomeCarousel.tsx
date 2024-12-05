@@ -8,10 +8,10 @@ const ProductCarousel = () => {
   const [progress, setProgress] = useState(0);
 
   const images = [
-    "https://images.unsplash.com/photo-1564584217132-2271feaeb3c5?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    "https://plus.unsplash.com/premium_photo-1714226830923-03396831c4f0?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MjF8fGNsb3RoZXN8ZW58MHx8MHx8fDA%3D",
-    "https://images.unsplash.com/photo-1529374255404-311a2a4f1fd9?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mzl8fGNsb3RoZXN8ZW58MHx8MHx8fDA%3D",
-    "https://images.unsplash.com/photo-1529720317453-c8da503f2051?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mzh8fGNsb3RoZXN8ZW58MHx8MHx8fDA%3D",
+"c1.webp",
+"c1.webp",
+"c1.webp",
+"c1.webp",
   ];
 
   const cardContent = [

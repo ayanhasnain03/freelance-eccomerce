@@ -4,21 +4,30 @@ import { FiSearch } from "react-icons/fi";
 import { Squash as Hamburger } from "hamburger-react";
 import { useSelector, useDispatch } from "react-redux";
 import { setIsMobile } from "../../../redux/reducers/misc";
+import { memo, useCallback } from "react";
 
 const Nav = () => {
   const dispatch = useDispatch();
   const { isMobile } = useSelector((state: any) => state.misc);
 
+const handleToggle = useCallback(() => {
+dispatch(setIsMobile(!isMobile))
+}, [dispatch, isMobile]);
+
   return (
     <div className="flex items-center justify-between px-4 py-3 bg-white shadow-md relative">
-      {/* Hamburger for Mobile View */}
+
       <div className="md:hidden">
-        <Hamburger toggled={isMobile} toggle={() => dispatch(setIsMobile(!isMobile))} />
+        <Hamburger toggled={isMobile} toggle={handleToggle} />
       </div>
 
       {/* Logo */}
       <div className="flex-shrink-0">
-        <img src="/SHOP.CO.svg" alt="SHOP.CO Logo" className="w-32 md:w-40" />
+        <img
+          src="/SHOP.CO.svg"
+          alt="SHOP.CO Logo"
+          className="w-32 md:w-40"
+        />
       </div>
 
       {/* Desktop Navigation Items */}
@@ -33,8 +42,18 @@ const Nav = () => {
 
       {/* User & Shopping Bag Icons */}
       <div className="flex items-center space-x-4">
-        <img src="/user.png" alt="User" className="w-6 h-6 cursor-pointer" />
-        <img src="/shopping-bag.png" alt="Shopping Bag" className="w-6 h-6 cursor-pointer" />
+        <img
+          src="/user.png"
+          alt="User"
+          className="w-6 h-6 cursor-pointer"
+          aria-label="User"
+        />
+        <img
+          src="/shopping-bag.png"
+          alt="Shopping Bag"
+          className="w-6 h-6 cursor-pointer"
+          aria-label="Shopping Bag"
+        />
       </div>
 
       {/* Mobile Menu */}
@@ -50,4 +69,5 @@ const Nav = () => {
   );
 };
 
-export default Nav;
+
+export default memo(Nav);
