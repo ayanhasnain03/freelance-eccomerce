@@ -2,8 +2,8 @@ import { useState, useEffect } from "react";
 import moment from "moment";
 
 export default function CountdownTimer() {
-  // Set the sale date in the simple format DD-MM-YYYY
-  const saleDate = "06-12-2024";
+
+  const saleDate = "07-12-2024";
 
   const [remainingTime, setRemainingTime] = useState("");
 

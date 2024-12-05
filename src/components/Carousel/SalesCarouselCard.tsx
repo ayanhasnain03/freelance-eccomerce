@@ -1,15 +1,23 @@
-import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "../ui/carousel";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "../ui/carousel";
 import { Card, CardContent } from "../ui/card";
 import { Link } from "react-router-dom";
 import { lazy, memo } from "react";
 const Star = lazy(() => import("../cards/Star"));
 const Fav = lazy(() => import("../cards/Fav"));
+
 const SalesCarouselCard = () => {
   const data = [
     {
       id: "1",
       name: "Casual Cotton T-Shirt",
-      description: "A comfortable and breathable cotton T-shirt, perfect for casual wear.",
+      description:
+        "A comfortable and breathable cotton T-shirt, perfect for casual wear.",
       price: 15,
       discount: 10,
       rating: 4.5,
@@ -20,7 +28,8 @@ const SalesCarouselCard = () => {
     {
       id: "2",
       name: "Casual Cotton T-Shirt",
-      description: "A comfortable and breathable cotton T-shirt, perfect for casual wear.",
+      description:
+        "A comfortable and breathable cotton T-shirt, perfect for casual wear.",
       price: 15,
       discount: 10,
       rating: 4.5,
@@ -31,7 +40,8 @@ const SalesCarouselCard = () => {
     {
       id: "3",
       name: "Casual Cotton T-Shirt",
-      description: "A comfortable and breathable cotton T-shirt, perfect for casual wear.",
+      description:
+        "A comfortable and breathable cotton T-shirt, perfect for casual wear.",
       price: 15,
       discount: 10,
       rating: 4.5,
@@ -42,7 +52,8 @@ const SalesCarouselCard = () => {
     {
       id: "4",
       name: "Casual Cotton T-Shirt",
-      description: "A comfortable and breathable cotton T-shirt, perfect for casual wear.",
+      description:
+        "A comfortable and breathable cotton T-shirt, perfect for casual wear.",
       price: 15,
       discount: 10,
       rating: 4.5,
@@ -53,7 +64,8 @@ const SalesCarouselCard = () => {
     {
       id: "5",
       name: "Casual Cotton T-Shirt",
-      description: "A comfortable and breathable cotton T-shirt, perfect for casual wear.",
+      description:
+        "A comfortable and breathable cotton T-shirt, perfect for casual wear.",
       price: 15,
       discount: 10,
       rating: 4.5,
@@ -64,7 +76,8 @@ const SalesCarouselCard = () => {
     {
       id: "6",
       name: "Casual Cotton T-Shirt",
-      description: "A comfortable and breathable cotton T-shirt, perfect for casual wear.",
+      description:
+        "A comfortable and breathable cotton T-shirt, perfect for casual wear.",
       price: 15,
       discount: 10,
       rating: 4.5,
@@ -72,7 +85,18 @@ const SalesCarouselCard = () => {
       link: "/product/casual-cotton-t-shirt",
       isFav: true,
     },
-
+    {
+      id: "7",
+      name: "Casual Cotton T-Shirt",
+      description:
+        "A comfortable and breathable cotton T-shirt, perfect for casual wear.",
+      price: 15,
+      discount: 10,
+      rating: 4.5,
+      image: "card.png",
+      link: "/product/casual-cotton-t-shirt",
+      isFav: true,
+    },
   ];
 
   return (
@@ -80,8 +104,10 @@ const SalesCarouselCard = () => {
       <Carousel opts={{ align: "start" }} className="w-full">
         <CarouselContent>
           {data.map((product) => {
-
-            const discountedPrice = (product.price * (1 - product.discount / 100)).toFixed(2);
+            const discountedPrice = (
+              product.price *
+              (1 - product.discount / 100)
+            ).toFixed(2);
             const originalPrice = product.price.toFixed(2);
 
             return (
@@ -91,8 +117,11 @@ const SalesCarouselCard = () => {
               >
                 <Card className="w-full bg-white shadow-md rounded-lg overflow-hidden">
                   <CardContent className="p-3 flex flex-col items-center">
-                    <Link to={product.link} className="w-full h-full">
-                      <div className="w-full h-[160px] relative">
+                    <div className="relative w-full h-full group">
+                      <Link
+                        to={product.link}
+                        className="block w-full h-[160px] relative"
+                      >
                         <div className="absolute -top-3 left-1 bg-rose-500 text-white px-2 py-1 text-xs rounded-r-xl z-10 shadow-md">
                           -{product.discount}%
                         </div>
@@ -106,22 +135,35 @@ const SalesCarouselCard = () => {
                         <div className="absolute top-2 right-2">
                           <Fav isFav={product.isFav} />
                         </div>
+                      </Link>
+
+
+                      <button
+                        className="absolute inset-x-4 bottom-4 bg-black text-white text-sm font-noto px-4 py-2 rounded-md opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 ease-out"
+                        onClick={() =>
+                          console.log(`Added ${product.name} to cart!`)
+                        }
+                      >
+                        Add to Cart
+                      </button>
+                    </div>
+
+                    <div className="p-2 text-center">
+                      <h3 className="font-semibold text-sm mb-1">
+                        {product.name}
+                      </h3>
+                      <div className="mt-1">
+                        <Star rating={product.rating} />
                       </div>
-                      <div className="p-2 text-center">
-                        <h3 className="font-semibold text-sm mb-1">{product.name}</h3>
-                        <div className="flex items-center justify-center mt-1">
-                          <p className="text-base font-medium text-green-600">
-                            ${discountedPrice}
-                          </p>
-                          <p className="ml-2 text-xs line-through text-gray-500">
-                            ${originalPrice}
-                          </p>
-                        </div>
-                        <div className="mt-1">
-                          <Star rating={product.rating} />
-                        </div>
+                      <div className="flex items-center mt-1">
+                        <p className="text-base font-medium text-green-600">
+                          ${discountedPrice}
+                        </p>
+                        <p className="ml-2 text-xs line-through text-gray-500">
+                          ${originalPrice}
+                        </p>
                       </div>
-                    </Link>
+                    </div>
                   </CardContent>
                 </Card>
               </CarouselItem>
@@ -138,4 +180,5 @@ const SalesCarouselCard = () => {
     </div>
   );
 };
+
 export default memo(SalesCarouselCard);

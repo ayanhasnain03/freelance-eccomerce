@@ -5,6 +5,7 @@ import { Squash as Hamburger } from "hamburger-react";
 import { useSelector, useDispatch } from "react-redux";
 import { setIsMobile } from "../../../redux/reducers/misc";
 import { memo, useCallback } from "react";
+import { Link } from "react-router-dom";
 
 const Nav = () => {
   const dispatch = useDispatch();
@@ -22,13 +23,15 @@ dispatch(setIsMobile(!isMobile))
       </div>
 
       {/* Logo */}
-      <div className="flex-shrink-0">
+   <Link to="/">
+   <div className="flex-shrink-0">
         <img
           src="/SHOP.CO.svg"
           alt="SHOP.CO Logo"
-          className="w-32 md:w-40"
+          className="w-32 md:w-40 h-[40px] cursor-pointer"
         />
       </div>
+    </Link>
 
       {/* Desktop Navigation Items */}
       <div className="hidden md:flex space-x-6">

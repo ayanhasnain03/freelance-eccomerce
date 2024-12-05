@@ -49,6 +49,7 @@ const ProductLayout = () => {
           discount={10}
           productId={product.id}
           isFav={false}
+          isCart={false}
         />
       ))}
     </div>
