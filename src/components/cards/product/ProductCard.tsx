@@ -47,11 +47,12 @@ const ProductCard: React.FC<ProductCardProps> = memo(
               {name}
             </h2>
 
- <div className="flex items-center space-x-2 mt-1">
-  <Star rating={rating} />
-  <p className="text-[12px] text-gray-600 font-medium">{rating.toFixed(1)} / 5</p>
-</div>
-
+            <div className="flex items-center space-x-2 mt-1">
+              <Star rating={rating} />
+              <p className="text-[12px] text-gray-600 font-medium">
+                {rating.toFixed(1)} / 5
+              </p>
+            </div>
 
             <div className="flex items-center mt-1">
               <p className="text-base font-medium text-green-600">
@@ -62,8 +63,6 @@ const ProductCard: React.FC<ProductCardProps> = memo(
                 ${(price / (1 - discount / 100)).toFixed(2)}
               </p>
             </div>
-
-
           </div>
         </Link>
 

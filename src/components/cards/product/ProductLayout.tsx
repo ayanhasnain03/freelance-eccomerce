@@ -34,11 +34,43 @@ const ProductLayout = () => {
       price: 55,
       image: "card.png",
       rating: 4.6,
-    }
+    },
+    {
+      id: "5",
+      name: "Floral Summer Dress",
+      description: "A vibrant summer dress with floral patterns for a breezy look.",
+      price: 55,
+      image: "card.png",
+      rating: 4.6,
+    },
+    {
+      id: "6",
+      name: "Floral Summer Dress",
+      description: "A vibrant summer dress with floral patterns for a breezy look.",
+      price: 55,
+      image: "card.png",
+      rating: 4.6,
+    },
+    {
+      id: "7",
+      name: "Floral Summer Dress",
+      description: "A vibrant summer dress with floral patterns for a breezy look.",
+      price: 55,
+      image: "card.png",
+      rating: 4.6,
+    },
+    {
+      id: "8",
+      name: "Floral Summer Dress",
+      description: "A vibrant summer dress with floral patterns for a breezy look.",
+      price: 55,
+      image: "card.png",
+      rating: 4.6,
+    },
   ];
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 px-6">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2 px-6">
       {data.map((product) => (
         <ProductCard
           key={product.id}

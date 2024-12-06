@@ -1,10 +1,15 @@
+import React from "react";
 
-const CollectionLayout = ({children}: React.PropsWithChildren) => {
-    return (
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 min-h-[70vh]">
-            {children}
-        </div>
-    )
+interface CollectionLayoutProps {
+  children: React.ReactNode;
 }
 
-export default CollectionLayout
+const CollectionLayout: React.FC<CollectionLayoutProps> = ({ children }) => {
+  return (
+    <section className="flex  justify-between">
+      {children}
+    </section>
+  );
+};
+
+export default CollectionLayout;

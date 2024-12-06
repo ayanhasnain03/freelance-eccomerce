@@ -1,16 +1,22 @@
-
 import { lazy } from "react";
 import SideBar from "../components/collections/SideBar";
+import ProductLayout from "../components/cards/product/ProductLayout";
 
-const CollectionLayout = lazy(() => import("../components/layouts/CollectionLayout"));
+const CollectionLayout = lazy(
+  () => import("../components/layouts/CollectionLayout")
+);
 const Collection = () => {
   return (
-  <CollectionLayout >
+    <div className=" ">
+      <CollectionLayout>
+        <SideBar />
 
-<SideBar />
+        <div className="flex-1 mt-10">
+          <ProductLayout />
+        </div>
+      </CollectionLayout>
+    </div>
+  );
+};
 
-  <h1>Collection</h1>
-  </CollectionLayout>  )
-}
-
-export default Collection
+export default Collection;
