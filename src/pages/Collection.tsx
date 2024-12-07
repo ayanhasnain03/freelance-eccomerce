@@ -11,7 +11,7 @@ const Collection = () => {
       <CollectionLayout>
         <SideBar />
 
-        <div className="flex-1 mt-10 mx-auto">
+        <div className="md:flex-1 mt-10 mx-auto">
           <ProductLayout />
         </div>
       </CollectionLayout>

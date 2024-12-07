@@ -1,13 +1,30 @@
 import React from "react";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
 
-const Fav = ({ isFav = false }: { isFav: boolean }) => {
+interface FavProps {
+  isFav: boolean;
+  addToFav: (id: string) => void;
+  removeFromFav: (id: string) => void;
+  productId: string;
+}
+
+const Fav: React.FC<FavProps> = ({ isFav, addToFav, removeFromFav, productId }) => {
   return (
     <>
       {isFav ? (
-        <FaHeart style={{ color: "red" }} />
+        <button
+          onClick={() => removeFromFav(productId)}
+          className="cursor-pointer"
+        >
+          <FaHeart style={{ color: "red" }} />
+        </button>
       ) : (
-        <FaRegHeart style={{ color: "red" }} />
+        <button
+          onClick={() => addToFav(productId)}
+          className="cursor-pointer"
+        >
+          <FaRegHeart style={{ color: "red" }} />
+        </button>
       )}
     </>
   );

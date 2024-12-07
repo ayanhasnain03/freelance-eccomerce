@@ -11,34 +11,39 @@ interface ProductCardProps {
   image: string;
   productId: string;
   isFav: boolean;
+  handleFav: (id: string) => void;
+  removeFromFav: (id: string) => void;
   isCart: boolean;
 }
 
 const ProductCard: React.FC<ProductCardProps> = memo(
-  ({ name, price, discount, rating, image, productId, isFav, isCart }) => {
+  ({ name, price, discount, rating, image, productId, isFav, isCart, handleFav, removeFromFav }) => {
+
+
+
     const handleAddToCart = useCallback(() => {
       console.log(`${name} added to the cart!`);
     }, [name]);
 
     return (
-      <article className="h-[350px] w-[250px] overflow-hidden bg-white">
+      <article className="h-[350px] w-[250px] overflow-hidden bg-white relative">
+           <button  className="z-20 absolute top-2 right-2 cursor-pointer">
+                <Fav isFav={isFav} addToFav={handleFav} removeFromFav={removeFromFav} productId={productId} />
+              </button>
         <Link to={`/product/${productId}`} className="block">
           <div className="relative">
-            <div className="absolute top-2 left-2 bg-rose-500 text-white px-2 py-1 text-sm rounded-r-xl z-10">
+            <div className="absolute top-2 left-2 bg-rose-500 text-white px-2 py-1 text-sm rounded-r-xl ">
               -{discount}%
             </div>
 
-            <div className="w-full h-[200px]">
+            <div className="w-full h-[200px] z-10">
               <img
                 src={image}
                 alt={name}
-                className="w-full h-full object-cover"
+                className="w-full h-full object-cover  hover:scale-105 transition duration-300 ease-in-out"
                 loading="lazy"
               />
 
-              <div className="absolute top-2 right-2">
-                <Fav isFav={isFav} />
-              </div>
             </div>
           </div>
 

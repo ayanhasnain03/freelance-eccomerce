@@ -57,7 +57,7 @@ const SideBarMobile = () => {
     <div>
       <button
         onClick={handleFilter}
-        className="md:hidden p-4 text-black px-6 py-3 rounded-md flex items-center"
+        className="md:hidden absolute p-4 text-black px-6 py-3 rounded-md flex items-center"
       >
         {handleFilterMob ? (
           <IoMdClose size={24} />
@@ -66,12 +66,6 @@ const SideBarMobile = () => {
         )}
       </button>
 
-      {handleFilterMob && (
-        <div
-          className="fixed inset-0 bg-black opacity-50 z-40"
-          onClick={handleFilter}
-        ></div>
-      )}
 
       {handleFilterMob && (
         <div
