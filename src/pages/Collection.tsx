@@ -7,11 +7,11 @@ const CollectionLayout = lazy(
 );
 const Collection = () => {
   return (
-    <div className=" ">
+    <div className="">
       <CollectionLayout>
         <SideBar />
 
-        <div className="flex-1 mt-10">
+        <div className="flex-1 mt-10 mx-auto">
           <ProductLayout />
         </div>
       </CollectionLayout>

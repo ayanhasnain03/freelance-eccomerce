@@ -57,7 +57,7 @@ const SideBarMobile = () => {
     <div>
       <button
         onClick={handleFilter}
-        className="md:hidden p-4 text-black px-6 py-3 rounded-md flex items-center space-x-2"
+        className="md:hidden p-4 text-black px-6 py-3 rounded-md flex items-center"
       >
         {handleFilterMob ? (
           <IoMdClose size={24} />
