@@ -2,6 +2,7 @@ import { useState, Suspense, lazy } from "react";
 import { LiaFilterSolid } from "react-icons/lia";
 import { IoMdClose } from "react-icons/io";
 
+
 const Category = lazy(() => import("./Category"));
 const DiscountSideBar = lazy(() => import("./DiscountSideBar"));
 const PriceFilter = lazy(() => import("./PriceFilter"));
@@ -9,7 +10,11 @@ const SizeFilter = lazy(() => import("./SizeFilter"));
 const BrandFilter = lazy(() => import("./BrandFilter"));
 const RatingFilter = lazy(() => import("./RatingFilter"));
 
+
+
+
 const SideBar = () => {
+
   return (
     <>
       {/* Desktop Sidebar */}
@@ -40,7 +45,6 @@ const SideBar = () => {
           </div>
         </Suspense>
       </div>
-
       <div className="md:hidden">
         <SideBarMobile />
       </div>
@@ -56,11 +60,13 @@ const SideBarMobile = () => {
   return (
     <div>
       <button
+        type="button"
+        aria-label="Filters"
         onClick={handleFilter}
         className="md:hidden absolute p-4 text-black px-6 py-3 rounded-md flex items-center"
       >
         {handleFilterMob ? (
-          <IoMdClose size={24} />
+          <IoMdClose size={24}  />
         ) : (
           <LiaFilterSolid size={24} />
         )}
@@ -77,7 +83,7 @@ const SideBarMobile = () => {
         >
           <div className="w-full h-full justify-center flex flex-col gap-3">
             <div className="absolute top-4 right-4 mb-4">
-              <button onClick={handleFilter} className="text-black">
+              <button onClick={handleFilter} className="text-black" type="button" aria-label="Close">
                 <IoMdClose size={30} />
               </button>
             </div>

@@ -12,19 +12,27 @@ const Fav: React.FC<FavProps> = ({ isFav, addToFav, removeFromFav, productId }) 
   return (
     <>
       {isFav ? (
-        <button
+        <span
           onClick={() => removeFromFav(productId)}
+          onKeyDown={(e) => e.key === "Enter" && removeFromFav(productId)}
           className="cursor-pointer"
+          role="button"
+          tabIndex={0}
+          aria-label="Remove from favorites"
         >
           <FaHeart style={{ color: "red" }} />
-        </button>
+        </span>
       ) : (
-        <button
+        <span
           onClick={() => addToFav(productId)}
+          onKeyDown={(e) => e.key === "Enter" && addToFav(productId)}
           className="cursor-pointer"
+          role="button"
+          tabIndex={0}
+          aria-label="Add to favorites"
         >
           <FaRegHeart style={{ color: "red" }} />
-        </button>
+        </span>
       )}
     </>
   );

@@ -1,106 +1,52 @@
-import React from "react";
+import React, { useMemo, useCallback } from "react";
 import ProductCard from "./ProductCard";
 
-const ProductLayout = () => {
-  const data = [
-    {
-      id: "1",
-      name: "Casual Cotton T-Shirt",
-      description:
-        "A comfortable and breathable cotton T-shirt, perfect for casual wear.",
-      price: 15,
-      image: "card.png",
-      rating: 4.5,
-    },
-    {
-      id: "2",
-      name: "Slim Fit Jeans",
-      description: "Stylish slim-fit jeans crafted from high-quality denim.",
-      price: 40,
-      image: "card.png",
-      rating: 4.2,
-    },
-    {
-      id: "3",
-      name: "Leather Jacket",
-      description:
-        "Premium leather jacket with a modern design for all seasons.",
-      price: 120,
-      image: "card.png",
-      rating: 4.8,
-    },
-    {
-      id: "4",
-      name: "Floral Summer Dress",
-      description:
-        "A vibrant summer dress with floral patterns for a breezy look.",
-      price: 55,
-      image: "card.png",
-      rating: 4.6,
-    },
-    {
-      id: "5",
-      name: "Floral Summer Dress",
-      description:
-        "A vibrant summer dress with floral patterns for a breezy look.",
-      price: 55,
-      image: "card.png",
-      rating: 4.6,
-    },
-    {
-      id: "6",
-      name: "Floral Summer Dress",
-      description:
-        "A vibrant summer dress with floral patterns for a breezy look.",
-      price: 55,
-      image: "card.png",
-      rating: 4.6,
-    },
-    {
-      id: "7",
-      name: "Floral Summer Dress",
-      description:
-        "A vibrant summer dress with floral patterns for a breezy look.",
-      price: 55,
-      image: "card.png",
-      rating: 4.6,
-    },
-    {
-      id: "8",
-      name: "Floral Summer Dress",
-      description:
-        "A vibrant summer dress with floral patterns for a breezy look.",
-      price: 55,
-      image: "card.png",
-      rating: 4.6,
-    },
-  ];
-  const handleFav = (id: string) => {
-    console.log(`added to fav ${id}`);
-  };
-  const removeFromFav = (id: string) => {
-    console.log(`removed from fav ${id}`);
-  };
+interface Product {
+  _id: string;
+  name: string;
+  price: number;
+  images: { url: string }[];
+  rating: number;
+}
 
-  return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2 ">
-      {data.map((product) => (
+interface ProductLayoutProps {
+  data: {
+    products: Product[];
+  };
+}
+
+const ProductLayout: React.FC<ProductLayoutProps> = ({ data }) => {
+  // Memoized functions to avoid recreation on re-renders
+  const handleFav = useCallback((id: string) => {
+    console.log(`Added to favorites: ${id}`);
+  }, []);
+
+  const removeFromFav = useCallback((id: string) => {
+    console.log(`Removed from favorites: ${id}`);
+  }, []);
+
+  // Memoize the mapped product cards
+  const productCards = useMemo(
+    () =>
+      data?.products.map((product) => (
         <ProductCard
-          key={product.id}
+          key={product._id}
           name={product.name}
           price={product.price}
-          image={product.image}
+          image={product.images[0].url}
           rating={product.rating}
-          discount={10}
-          productId={product.id}
+          discount={10} // Consider making this dynamic if needed
+          productId={product._id}
           isFav={true}
           handleFav={handleFav}
           removeFromFav={removeFromFav}
           isCart={false}
         />
-      ))}
-    </div>
+      )),
+    [data, handleFav, removeFromFav]
   );
+
+  return <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2">{productCards}</div>;
 };
 
 export default React.memo(ProductLayout);

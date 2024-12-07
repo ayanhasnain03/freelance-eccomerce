@@ -1,7 +1,10 @@
 import { useState, useCallback, useMemo } from "react";
 import { motion } from "framer-motion";
-import { MdKeyboardArrowDown } from "react-icons/md";
+import { MdKeyboardArrowDown, MdKeyboardArrowUp } from "react-icons/md";
+import { useDispatch } from "react-redux";
+import { setPrice } from "../../redux/reducers/productReducer";
 
+// Define price ranges with ids
 const priceRanges = [
   { id: 1, label: "₹200 - ₹499", min: 200, max: 499 },
   { id: 2, label: "₹500 - ₹999", min: 500, max: 999 },
@@ -14,9 +17,11 @@ const priceRanges = [
 ];
 
 const PriceFilter = () => {
+  const dispatch = useDispatch();
   const [isOpen, setIsOpen] = useState(false);
   const [selectedRanges, setSelectedRanges] = useState<number[]>([]);
 
+  // Memoize price ranges to avoid unnecessary recalculations
   const memoizedPriceRanges = useMemo(() => priceRanges, []);
 
   const toggleDropdown = useCallback(() => setIsOpen((prev) => !prev), []);
@@ -30,19 +35,27 @@ const PriceFilter = () => {
   }, []);
 
   const handleApplyFilter = useCallback(() => {
+    // Get the selected price range labels
     const selectedFilters = memoizedPriceRanges.filter((range) =>
       selectedRanges.includes(range.id)
     );
-    const message = selectedFilters.length
-      ? `Selected price ranges: ${selectedFilters
-          .map((range) => range.label)
-          .join(", ")}`
-      : "No price range selected";
-    alert(message);
-  }, [memoizedPriceRanges, selectedRanges]);
+
+    // Dispatch the selected ranges to the Redux store
+    dispatch(setPrice(selectedFilters));
+
+    // Optionally log the selected ranges for debugging
+    console.log(
+      "Selected price ranges:",
+      selectedFilters.map((range) => range.label).join(", ")
+    );
+  }, [memoizedPriceRanges, selectedRanges, dispatch]);
+
+  const handleClearAll = () => {
+    setSelectedRanges([]);
+  };
 
   return (
-    <div className="w-full max-w-sm p-4 bg-white">
+    <div className="w-full max-w-sm p-4 bg-white shadow-lg rounded-lg">
       <div
         className="flex justify-between items-center cursor-pointer"
         onClick={toggleDropdown}
@@ -52,12 +65,17 @@ const PriceFilter = () => {
         aria-expanded={isOpen}
       >
         <h3 className="text-lg font-semibold text-gray-800">Price Filter</h3>
-        <MdKeyboardArrowDown
-          className={`transition-transform duration-300 ${
-            isOpen ? "rotate-180" : "rotate-0"
-          }`}
-          size={24}
-        />
+        {isOpen ? (
+          <MdKeyboardArrowUp
+            className="transition-transform duration-300"
+            size={24}
+          />
+        ) : (
+          <MdKeyboardArrowDown
+            className="transition-transform duration-300"
+            size={24}
+          />
+        )}
       </div>
 
       <motion.div
@@ -75,23 +93,30 @@ const PriceFilter = () => {
                 checked={selectedRanges.includes(range.id)}
                 onChange={() => handleCheckboxChange(range.id)}
                 className="text-teal-600 focus:ring-2 focus:ring-teal-500"
+                aria-label={`Price range ${range.label}`}
               />
-              <label
-                htmlFor={`price-range-${range.id}`}
-                className="text-sm text-gray-700"
-              >
+              <label htmlFor={`price-range-${range.id}`} className="text-sm text-gray-700">
                 {range.label}
               </label>
             </div>
           ))}
         </div>
 
-        <button
-          onClick={handleApplyFilter}
-          className="mt-6 w-full bg-teal-500 text-white text-sm font-medium py-2 px-4 rounded-lg hover:bg-teal-600 transition duration-200"
-        >
-          Apply Filter
-        </button>
+        <div className="mt-6 flex flex-col gap-2">
+          <button
+            onClick={handleApplyFilter}
+            disabled={selectedRanges.length === 0}
+            className={`w-full ${selectedRanges.length === 0 ? "bg-gray-400" : "bg-teal-500"} text-white text-sm font-medium py-2 px-4 rounded-lg hover:bg-teal-600 transition duration-200`}
+          >
+            Apply Filter
+          </button>
+          <button
+            onClick={handleClearAll}
+            className="w-full text-teal-500 text-sm font-medium py-2 px-4 rounded-lg hover:bg-teal-100 transition duration-200"
+          >
+            Clear All
+          </button>
+        </div>
       </motion.div>
     </div>
   );
