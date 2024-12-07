@@ -52,6 +52,8 @@ const NewArrivals = () => {
             rating={item.rating}
             isFav={true}
             isCart={false}
+            handleFav={() => {}}
+            removeFromFav={() => {}}
           />
         ))}
       </div>

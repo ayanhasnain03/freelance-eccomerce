@@ -133,7 +133,7 @@ const SalesCarouselCard = () => {
                           loading="lazy"
                         />
                         <div className="absolute top-2 right-2">
-                          <Fav isFav={product.isFav} />
+                          <Fav isFav={product.isFav} addToFav={() => {console.log("Added to favorites")}} removeFromFav={() => {console.log("Removed from favorites")}} productId={product.id} />
                         </div>
                       </Link>
 

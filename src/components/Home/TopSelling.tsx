@@ -44,7 +44,7 @@ const TopSelling = () => {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-4 relative">
         {data.map((item) => (
-          <ProductCard key={item.id} productId={item.id} name={item.name} image={item.image}  discount={0} price={item.price} rating={item.rating} isFav={true} isCart={false}/>
+          <ProductCard key={item.id} productId={item.id} name={item.name} image={item.image}  discount={0} price={item.price} rating={item.rating} isFav={true} isCart={false} handleFav={() => {}} removeFromFav={() => {}}/>
         ))}
 <Link to="/products" className="text-base absolute bottom-2 left-1/2 transform -translate-x-1/2 text-center underline text-gray-800 hover:text-blue-500 transition-all duration-300 ">View All</Link>
       </div>

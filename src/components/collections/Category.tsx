@@ -6,7 +6,7 @@ import { useGetCategoriesQuery } from "../../redux/api/productApi";
 import { setCategories } from "../../redux/reducers/productReducer";
 
 const CategoryFilter = () => {
-  const { data, error, isLoading } = useGetCategoriesQuery("");
+  const { data } = useGetCategoriesQuery("");
   const categoryOptions = useMemo(() => data?.categories || [], [data]); // Memoize category options
 
   const dispatch = useDispatch();

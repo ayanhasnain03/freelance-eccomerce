@@ -27,7 +27,7 @@ const Collection = () => {
 
   // Error state
   if (error) {
-    return <div className="text-center text-red-500">Error loading products: {error.message}</div>;
+    return <div className="text-center text-red-500">Error loading products </div>;
   }
 
   // Render

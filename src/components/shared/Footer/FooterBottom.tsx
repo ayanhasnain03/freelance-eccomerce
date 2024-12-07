@@ -1,5 +1,5 @@
 // SocialLinksSection.js
-import React from 'react';
+
 import { FaFacebookF, FaInstagram, FaWhatsapp, FaEnvelope } from 'react-icons/fa';
 
 const SocialLinksSection = ({ socialLinks }: any) => (
