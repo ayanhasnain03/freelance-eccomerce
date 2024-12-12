@@ -1,143 +1,125 @@
-import { useState, useEffect } from "react";
-import { motion } from "framer-motion";
-import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { useState, useEffect, useCallback } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 
-const ProductCarousel = () => {
+const HomeCarousel = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [progress, setProgress] = useState(0);
-
-  const images = [
-"c1.webp",
-"c1.webp",
-"c1.webp",
-"c1.webp",
-  ];
-
-  const cardContent = [
+  const slides = [
     {
-      title: "Premium Quality",
-      description: "Our collection is handpicked for the best quality.",
-      link: "#shop-now",
+      image: "banner1.webp",
+      title: "Exclusive 50% Discount",
+      description: "Grab your favorite products at half the price.",
+      link: "/shop-now",
     },
     {
-      title: "Exclusive Designs",
-      description: "Get access to exclusive and limited edition designs.",
-      link: "#explore",
+      image: "banner2.webp",
+      title: "Free Shipping Worldwide",
+      description: "Shop from anywhere without extra charges.",
+      link: "/free-shipping",
     },
     {
-      title: "Affordable Prices",
-      description: "Best prices for top-notch products, only for you.",
-      link: "#deals",
+      image: "https://via.placeholder.com/1200x600.png?text=Premium+Deal+3",
+      title: "New Season Collection",
+      description: "Discover the latest styles and trends.",
+      link: "/new-collection",
     },
     {
-      title: "Fast Shipping",
-      description: "Enjoy quick and reliable shipping with every order.",
-      link: "#shipping",
+      image: "https://via.placeholder.com/1200x600.png?text=Premium+Deal+4",
+      title: "Flash Sale is Live",
+      description: "Hurry! Limited-time offers await you.",
+      link: "/flash-sale",
     },
   ];
 
-  const nextSlide = () => {
-    setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
-  };
-
-  const prevSlide = () => {
-    setCurrentIndex(
-      (prevIndex) => (prevIndex - 1 + images.length) % images.length
-    );
-  };
-
+  // Auto-slide logic
   useEffect(() => {
     const interval = setInterval(() => {
-      setProgress((prev) => (prev >= 100 ? 0 : prev + 2));
-      if (progress === 100) {
-        nextSlide();
-      }
-    }, 50);
-
+      setCurrentIndex((prevIndex) => (prevIndex + 1) % slides.length);
+    }, 5000);
     return () => clearInterval(interval);
-  }, [progress]);
+  }, [slides.length]);
+
+  const goToSlide = useCallback((index: number) => {
+    setCurrentIndex(index);
+  }, []);
 
   return (
-    <div className="w-full py-16 flex justify-center items-center h-[90vh]">
-      <div className="relative w-full max-w-full h-full flex items-center justify-center bg-gradient-to-r from-gray-800 via-slate-400 to-gray-600 rounded-lg shadow-2xl overflow-hidden">
-        <motion.div
-          className="absolute top-1/3 left-0 right-0 text-center z-10 transform -translate-y-1/2 px-4 sm:px-8"
-          initial={{ opacity: 0, y: -50 }}
+    <div
+      className="relative w-full h-[70vh] md:h-screen bg-gradient-to-br from-gray-900 to-black text-white overflow-hidden"
+      role="region"
+      aria-label="Home Carousel"
+    >
+      {/* Slides */}
+      <div className="absolute w-full h-full">
+        <AnimatePresence>
+          {slides.map(
+            (slide, index) =>
+              index === currentIndex && (
+                <motion.div
+                  key={index}
+                  className="absolute w-full h-full"
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.9 }}
+                  transition={{ duration: 0.8 }}
+                >
+                  <img
+                    src={slide.image}
+                    alt={slide.title}
+                    className="w-full h-full object-cover brightness-75"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/80" />
+                </motion.div>
+              )
+          )}
+        </AnimatePresence>
+      </div>
+
+      {/* Content */}
+      <div className="absolute inset-0 flex flex-col justify-center items-start px-6 md:px-24 z-10">
+        <motion.h1
+          className="text-2xl md:text-5xl font-integral  mb-4 text-shadow-lg"
+          initial={{ opacity: 0, y: 50 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, ease: "easeOut" }}
+          transition={{ delay: 0.2 }}
         >
-          <h2 className="text-4xl sm:text-5xl md:text-6xl font-candal text-white mb-4 drop-shadow-xl">
-            {cardContent[currentIndex].title}
-          </h2>
-          <p className="text-lg sm:text-xl md:text-2xl text-white mb-8 drop-shadow-lg font-noto">
-            {cardContent[currentIndex].description}
-          </p>
-          <Link
-            to={cardContent[currentIndex].link}
-            className="text-xl sm:text-2xl text-white underline hover:text-slate-200 transition-all duration-300"
-          >
-            Explore Now
-          </Link>
-        </motion.div>
-
-        <motion.div
-          className="relative w-full h-full flex items-center justify-center"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 1 }}
+          {slides[currentIndex].title}
+        </motion.h1>
+        <motion.p
+          className="text-sm md:text-lg mb-6 md:mb-8 font-satoshi text-gray-300"
+          initial={{ opacity: 0, y: 50 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.4 }}
         >
-          <motion.div
-            className="relative w-full h-full"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.8 }}
-          >
-            <motion.img
-              src={images[currentIndex]}
-              alt={`Image ${currentIndex + 1}`}
-              className="w-full h-full object-cover rounded-lg shadow-md brightness-[80%] contrast-125"
-              initial={{ scale: 1.1 }}
-              animate={{ scale: 1 }}
-              transition={{
-                duration: 0.5,
-                ease: "easeInOut",
-              }}
-            />
-          </motion.div>
+          {slides[currentIndex].description}
+        </motion.p>
+        <motion.a
+          href={slides[currentIndex].link}
+          className="px-6 py-3 md:px-8 md:py-4 bg-gradient-to-r from-pink-500 to-red-500 text-white rounded-full shadow-lg hover:scale-105 transform transition-transform text-sm md:text-lg"
+          initial={{ opacity: 0, y: 50 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.6 }}
+        >
+          Shop Now
+        </motion.a>
+      </div>
 
-
-          <motion.div
-            className="absolute bottom-6 left-1/2 transform -translate-x-1/2 w-4/5 h-2 bg-gradient-to-r from-slate-800 to-black rounded-full shadow-lg"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.5 }}
-          >
-            <motion.div
-              className="h-full bg-gradient-to-r from-white to-silver rounded-full"
-              style={{ width: `${progress}%` }}
-              transition={{ duration: 0.3 }}
-            />
-          </motion.div>
-
-          <div className="absolute top-1/2 left-0 right-0 flex justify-between px-4 z-10">
-            <motion.button
-              onClick={prevSlide}
-              className="p-4 bg-white rounded-full shadow-lg text-black hover:bg-slate-200 transition-all duration-300"
-            >
-              <FaChevronLeft className="text-2xl" />
-            </motion.button>
-            <motion.button
-              onClick={nextSlide}
-              className="p-4 bg-white rounded-full shadow-lg text-black hover:bg-slate-200 transition-all duration-300"
-            >
-              <FaChevronRight className="text-2xl" />
-            </motion.button>
-          </div>
-        </motion.div>
+      {/* Dots for navigation */}
+      <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex items-center justify-center space-x-3 z-20">
+        {slides.map((_, index) => (
+          <button
+            key={index}
+            onClick={() => goToSlide(index)}
+            className={`w-3 h-3 md:w-4 md:h-4 rounded-full ${
+              index === currentIndex ? "bg-white" : "bg-gray-500"
+            } cursor-pointer transition transform hover:scale-110`}
+            aria-label={`Go to slide ${index + 1}`}
+          />
+        ))}
       </div>
     </div>
   );
 };
 
-export default ProductCarousel;
+export default HomeCarousel;

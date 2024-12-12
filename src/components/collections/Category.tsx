@@ -7,17 +7,16 @@ import { setCategories } from "../../redux/reducers/productReducer";
 
 const CategoryFilter = () => {
   const { data } = useGetCategoriesQuery("");
-  const categoryOptions = useMemo(() => data?.categories || [], [data]); // Memoize category options
-
+  const categoryOptions = useMemo(() => data?.categories || [], [data]);
   const dispatch = useDispatch();
 
   const [isOpen, setIsOpen] = useState(false);
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
 
-  // Memoize toggleDropdown function
+
   const toggleDropdown = useCallback(() => setIsOpen((prevState) => !prevState), []);
 
-  // Memoize handleCheckboxChange function
+
   const handleCheckboxChange = useCallback((name: string) => {
     setSelectedCategories((prev) =>
       prev.includes(name)
@@ -27,10 +26,10 @@ const CategoryFilter = () => {
   }, []);
 
   const handleApplyFilter = useCallback(() => {
-    dispatch(setCategories(selectedCategories)); // Save category names to Redux state
+    dispatch(setCategories(selectedCategories));
   }, [dispatch, selectedCategories]);
 
-  // Memoize selected category names to prevent re-calculation on every render
+
   const selectedCategoryNames = useMemo(
     () => categoryOptions.filter((category:any) => selectedCategories.includes(category.name)),
     [selectedCategories, categoryOptions]
@@ -64,8 +63,8 @@ const CategoryFilter = () => {
               <input
                 type="checkbox"
                 id={`category-${category._id}`}
-                checked={selectedCategories.includes(category.name)} // Check based on category name
-                onChange={() => handleCheckboxChange(category.name)} // Handle by category name
+                checked={selectedCategories.includes(category.name)}
+                onChange={() => handleCheckboxChange(category.name)}
                 className="text-teal-600 focus:ring-2 focus:ring-teal-500"
               />
               <label htmlFor={`category-${category._id}`} className="text-sm text-gray-700">
@@ -82,7 +81,7 @@ const CategoryFilter = () => {
           Apply Filter
         </button>
 
-        {/* Display selected category names */}
+
         {selectedCategoryNames.length > 0 && (
           <div className="mt-4">
             <h4 className="text-sm font-semibold text-gray-700">Selected Categories:</h4>

@@ -6,24 +6,27 @@ import { useSelector, useDispatch } from "react-redux";
 import { setIsMobile } from "../../../redux/reducers/misc";
 import { memo, useCallback } from "react";
 import { Link } from "react-router-dom";
-
-const Nav = () => {
+import { FaRegHeart } from "react-icons/fa";
+import { FiShoppingBag } from "react-icons/fi";
+const Nav = ({user}: any) => {
   const dispatch = useDispatch();
-  const { isMobile } = useSelector((state: any) => state.misc);
+  const isMobile = useSelector(
+    (state: { misc: { isMobile: boolean } }) => state.misc.isMobile
+  );
 
   const handleToggle = useCallback(() => {
     dispatch(setIsMobile(!isMobile));
   }, [dispatch, isMobile]);
+const {cartItems} = useSelector((state: any) => state.cart);
 
   return (
-    <div className="flex items-center justify-between px-4 py-3 bg-white shadow-md relative">
-      {/* Hamburger Menu Button */}
+    <nav className="flex items-center justify-between px-4 py-3 bg-white shadow-md relative">
       <button
         className="md:hidden"
-        aria-label={isMobile ? "Close menu" : "Open menu"} // Dynamic label based on the state
+        aria-label={isMobile ? "Close menu" : "Open menu"}
         type="button"
-        aria-expanded={isMobile ? "true" : "false"} // Indicates whether the menu is open or not
-        aria-controls="mobile-menu" // Ties the button to the mobile menu element
+        aria-expanded={isMobile ? "true" : "false"}
+        aria-controls="mobile-menu"
         onClick={handleToggle}
       >
         <Hamburger
@@ -37,7 +40,6 @@ const Nav = () => {
         />
       </button>
 
-      {/* Logo */}
       <Link to="/" aria-label="Go to homepage">
         <div className="flex-shrink-0">
           <img
@@ -48,12 +50,10 @@ const Nav = () => {
         </div>
       </Link>
 
-      {/* Desktop Navigation Items */}
-      <div className="hidden md:flex space-x-6">
+      <div className="hidden md:flex ">
         <NavItem />
       </div>
 
-      {/* Search Bar */}
       <div className="hidden md:flex flex-1 max-w-xs mx-4">
         <Input
           type="text"
@@ -64,28 +64,54 @@ const Nav = () => {
         />
       </div>
 
-      {/* User & Shopping Bag Icons */}
       <div className="flex items-center space-x-4">
+
+{
+  user && user?._id ? (
+      <Link to="/profile" aria-label="Go to profile">
+         <img
+          src="/user.png"
+          alt="User"
+          className="w-6 h-6 cursor-pointer"
+          aria-label="User profile"
+        />
+      </Link>
+  ): (
+    <Link to="/auth" aria-label="Login">
         <img
           src="/user.png"
           alt="User"
           className="w-6 h-6 cursor-pointer"
           aria-label="User profile"
         />
-        <img
-          src="/shopping-bag.png"
-          alt="Shopping Bag"
-          className="w-6 h-6 cursor-pointer"
-          aria-label="View shopping bag"
+    </Link>
+  )
+}
+
+
+
+
+
+      <div className="relative">
+        <Link to="/cart" aria-label="Go to cart">
+        <label className="absolute -top-2 -right-2 w-4 h-4 bg-rose-500 text-xs font-semibold  rounded-full text-white flex items-center justify-center">{cartItems.length}</label>
+          <FiShoppingBag
+          className="w-6 h-6 cursor-pointer text-[#3f3f3f] font-thin"
+          aria-label="Cart"
+        />
+        </Link>
+      </div>
+        <FaRegHeart
+          className="w-6 h-6 cursor-pointer text-[#3f3f3f] font-thin"
+          aria-label="Wishlist"
         />
       </div>
 
-      {/* Mobile Menu */}
       {isMobile && (
         <div
           id="mobile-menu"
           className="absolute top-16 left-0 right-0 bg-white shadow-md p-4 flex flex-col gap-6 overflow-hidden z-10"
-          role="region" // Denotes a region of the page
+          role="region"
           aria-label="Mobile menu"
         >
           <NavItem />
@@ -100,7 +126,7 @@ const Nav = () => {
           </div>
         </div>
       )}
-    </div>
+    </nav>
   );
 };
 

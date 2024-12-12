@@ -18,7 +18,7 @@ const SideBar = () => {
   return (
     <>
       {/* Desktop Sidebar */}
-      <div className="hidden md:flex flex-col bg-white shadow-md p-6 max-w-[250px] relative">
+      <div className="hidden md:flex flex-col bg-white shadow-md p-6 max-w-[300px] relative">
         <h1 className="text-2xl font-bold mb-4 ml-3">Filters</h1>
         <Suspense
           fallback={

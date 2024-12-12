@@ -9,6 +9,8 @@ export default {
         candal: ["Candal", "sans-serif"],
         dancing: ["Dancing Script", "cursive"],
         noto: ["Noto Sans", "sans-serif"],
+        satoshi: ["Satoshi", "sans-serif"],
+        integral: ["Integral CF"],
       },
       borderRadius: {
         lg: "var(--radius)",

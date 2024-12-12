@@ -1,11 +1,13 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  categories: [], // Selected category filters
-  brands: [], // Selected brand filters
-  price: [], // Price range filter as an array of { min, max }
-  sort: "", // Sorting criteria
-  page: 1, // Current page for pagination
+  categories: [],
+  brands: [],
+  price: [],
+ sizes: [],
+  sort: "",
+  page: 1,
+
 };
 
 const productSlice = createSlice({
@@ -19,8 +21,11 @@ const productSlice = createSlice({
       state.brands = action.payload;
     },
     setPrice: (state, action) => {
-      // Ensure price is set as an array of { min, max }
+
       state.price = action.payload;
+    },
+    setSizes:(state,action)=>{
+      state.sizes = action.payload
     },
     setSort: (state, action) => {
       state.sort = action.payload;
@@ -29,7 +34,6 @@ const productSlice = createSlice({
       state.page = action.payload;
     },
     resetFilters: (state) => {
-      // Resets all filters to their initial values
       state.categories = [];
       state.brands = [];
       state.price = [];
@@ -45,6 +49,7 @@ export const {
   setCategories,
   setBrands,
   setPrice,
+  setSizes,
   setSort,
   setPage,
   resetFilters,

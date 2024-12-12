@@ -4,9 +4,9 @@ import { MdKeyboardArrowDown, MdKeyboardArrowUp } from "react-icons/md";
 import { useDispatch } from "react-redux";
 import { setPrice } from "../../redux/reducers/productReducer";
 
-// Define price ranges with ids
+
 const priceRanges = [
-  { id: 1, label: "₹200 - ₹499", min: 200, max: 499 },
+  { id: 1, label: "₹299 - ₹499", min: 299, max: 499 },
   { id: 2, label: "₹500 - ₹999", min: 500, max: 999 },
   { id: 3, label: "₹1000 - ₹1999", min: 1000, max: 1999 },
   { id: 4, label: "₹2000 - ₹2999", min: 2000, max: 2999 },
@@ -21,7 +21,7 @@ const PriceFilter = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedRanges, setSelectedRanges] = useState<number[]>([]);
 
-  // Memoize price ranges to avoid unnecessary recalculations
+
   const memoizedPriceRanges = useMemo(() => priceRanges, []);
 
   const toggleDropdown = useCallback(() => setIsOpen((prev) => !prev), []);
@@ -34,24 +34,30 @@ const PriceFilter = () => {
     );
   }, []);
 
-  const handleApplyFilter = useCallback(() => {
-    // Get the selected price range labels
-    const selectedFilters = memoizedPriceRanges.filter((range) =>
-      selectedRanges.includes(range.id)
-    );
+const handleApplyFilter = useCallback(() => {
 
-    // Dispatch the selected ranges to the Redux store
-    dispatch(setPrice(selectedFilters));
+  const selectedFilters = memoizedPriceRanges.filter((range) =>
+    selectedRanges.includes(range.id)
+  );
 
-    // Optionally log the selected ranges for debugging
-    console.log(
-      "Selected price ranges:",
-      selectedFilters.map((range) => range.label).join(", ")
-    );
-  }, [memoizedPriceRanges, selectedRanges, dispatch]);
+  dispatch(setPrice(selectedFilters));
+
+
+  console.log("Selected price ranges:");
+  selectedFilters.forEach((range) => {
+    console.log(`ID: ${range.id}, Label: ${range.label}, Min: ₹${range.min}, Max: ₹${range.max}`);
+  });
+
+
+  console.log("Redux state after dispatch:");
+
+}, [memoizedPriceRanges, selectedRanges, dispatch]);
+
+
 
   const handleClearAll = () => {
     setSelectedRanges([]);
+    dispatch(setPrice([]));
   };
 
   return (

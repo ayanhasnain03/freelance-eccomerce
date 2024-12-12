@@ -3,7 +3,7 @@ import moment from "moment";
 
 export default function CountdownTimer() {
 
-  const saleDate = "07-12-2024";
+  const saleDate = "15-12-2024";
 
   const [remainingTime, setRemainingTime] = useState("");
 

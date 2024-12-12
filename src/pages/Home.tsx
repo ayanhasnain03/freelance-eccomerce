@@ -3,6 +3,7 @@ import TopSelling from "../components/Home/TopSelling";
 import BentoGrid from "../components/Home/BentoGrid";
 import CardLoader from "../components/shared/Loader/CardLoader";
 import Loader from "../components/shared/Loader/Loader";
+import { Link } from "react-router-dom";
 
 // Lazy-load components
 const MarqueeReviews = lazy(() => import("../components/Home/Marquee"));
@@ -32,8 +33,8 @@ const Home = () => {
             <ProductCarousel />
           </Suspense>
 
-          <div>
-            <h1 className="text-3xl font-bold text-center font-candal text-black">
+          <div className="mt-8">
+            <h1 className="text-3xl font-bold text-center font-integral text-black">
               New Arrivals
             </h1>
             <Suspense fallback={<CardLoader />}>
@@ -41,8 +42,8 @@ const Home = () => {
             </Suspense>
           </div>
 
-          <div>
-            <h1 className="text-3xl font-bold text-center font-candal text-black">
+          <div className="mt-8">
+            <h1 className="text-3xl font-bold text-center font-integral text-black mt-4">
               Top Selling
             </h1>
             <Suspense fallback={<CardLoader />}>
@@ -53,17 +54,17 @@ const Home = () => {
           <div className="flex items-center flex-col gap-4 mt-8 bg-white">
             <div className="py-6 text-center">
               <div className="border-b pb-1 border-red-600">
-                <h2 className="text-4xl font-candal text-red-600">
+                <h2 className="text-4xl font-noto text-red-600">
                   Exciting SALES
                 </h2>
                 <p className="mt-1">
-                  <span className="text-red-600 font-semibold text-lg font-noto">
+                  <span className="text-red-600 font-normal text-sm">
                     Up to 50% OFF on Bestsellers
                   </span>
                 </p>
               </div>
 
-              <div className="mt-4">
+              <div className="mt-6">
                 <Suspense fallback={<LoadingSpinner />}>
                   <CountdownTimer />
                 </Suspense>

@@ -17,6 +17,10 @@
     },{
         name:"Accessories",
         path:"/accessories"
+    },
+    {
+        name:"Orders",
+        path:"/orders"
     }
     ]
 

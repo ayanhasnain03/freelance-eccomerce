@@ -1,13 +1,15 @@
 import { useState, useCallback, useMemo } from "react";
 import { motion } from "framer-motion";
 import { MdKeyboardArrowDown } from "react-icons/md";
+import { useDispatch } from "react-redux";
+import { setSizes } from "../../redux/reducers/productReducer";
 
 const sizeOptions = ["S", "M", "L", "XL", "XXL"];
 
 const SizeFilter = () => {
   const [isSizeOpen, setIsSizeOpen] = useState(false);
   const [selectedSizes, setSelectedSizes] = useState<string[]>([]);
-
+const dispatch = useDispatch();
   const toggleSizeDropdown = useCallback(
     () => setIsSizeOpen((prev) => !prev),
     []
@@ -23,10 +25,7 @@ const SizeFilter = () => {
   }, []);
 
   const handleApplyFilter = useCallback(() => {
-    const message = selectedSizes.length
-      ? `Selected sizes: ${selectedSizes.join(", ")}`
-      : "No sizes selected";
-    alert(message);
+    dispatch(setSizes(selectedSizes));
   }, [selectedSizes]);
 
   const memoizedSizeOptions = useMemo(() => sizeOptions, []);

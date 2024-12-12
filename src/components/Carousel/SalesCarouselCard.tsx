@@ -149,7 +149,7 @@ const SalesCarouselCard = () => {
                     </div>
 
                     <div className="p-2 text-center">
-                      <h3 className="font-semibold text-sm mb-1">
+                      <h3 className="font-satoshi fomt-bold text-sm  mb-1">
                         {product.name}
                       </h3>
                       <div className="mt-1">
