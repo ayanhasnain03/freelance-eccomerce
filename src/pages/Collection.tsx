@@ -43,11 +43,10 @@ const Collection = () => {
     [price]
   );
 
-  // Fetch products using the category and price ranges
   const { data, error, isLoading } = useGetProductsQuery({
     category,
     price: priceRanges,
-    sizes: "", // You can expand this if sizes are needed
+    sizes: "",
   });
 
   if (isLoading) {

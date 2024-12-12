@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { FiMail, FiLock, FiUser, FiUpload } from "react-icons/fi";
 import { useRegisterUserMutation, useLoginUserMutation } from "../../redux/api/userApi";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { userExist } from "../../redux/reducers/userReducer";
 import toast from "react-hot-toast";
@@ -103,14 +103,9 @@ dispatch(userExist(response.user));
             transition={{ duration: 0.5 }}
           >
             <div className="text-center mb-6">
-              <img
-                src="https://via.placeholder.com/150"
-                alt="Logo"
-                className="mx-auto rounded-full w-32 h-32 object-cover"
-              />
-              <h2 className="text-2xl font-bold mt-4">Login</h2>
+
             </div>
-            <form onSubmit={loginHandler} className="space-y-4">
+            <form onSubmit={loginHandler} className="space-y-4 mt-20">
               <div className="relative">
                 <FiMail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500" />
                 <input
@@ -122,24 +117,47 @@ dispatch(userExist(response.user));
                 />
               </div>
               <div className="relative">
-                <FiLock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500" />
+                <FiLock className="absolute left-3 top-[22%] transform -translate-y-1/2 text-gray-500" />
                 <input
                   type="password"
                   placeholder="Password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full p-3 pl-10 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full p-3 pl-10 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 "
                 />
+                <p className="text-right text-sm mt-4">
+        <Link to="/forgot-password" className="text-blue-500">
+          Forgot Password?
+        </Link>
+                </p>
+
               </div>
+
+
               <motion.button
                 type="submit"
-                className="w-full p-3 bg-blue-500 text-white rounded-md hover:bg-blue-600"
+                className="w-full p-3 bg-blue-500 text-white rounded-md hover:bg-blue-600 mt-6"
                 whileHover={{ scale: 1.05 }}
                 transition={{ duration: 0.2 }}
                 disabled={isLoggingIn}
               >
                 {isLoggingIn ? "Logging in..." : "Login"}
               </motion.button>
+
+
+         <div className="text-center mt-6">
+              <p>
+                Don't have an account?{" "}
+                <span
+                  className="text-blue-500 cursor-pointer"
+                  onClick={() => handleTabChange(1)}
+                >
+                  Register
+                </span>
+              </p>
+            </div>
+
+
             </form>
           </motion.div>
         ) : (
@@ -151,7 +169,7 @@ dispatch(userExist(response.user));
             <div className="text-center mb-6">
               <div className="relative">
                 <motion.img
-                  src={avatar ? URL.createObjectURL(avatar) : "https://via.placeholder.com/150"}
+                  src={avatar ? URL.createObjectURL(avatar) : "register.png"}
                   alt="Profile"
                   className="mx-auto rounded-full w-32 h-32 object-cover"
                   initial={{ scale: 0.8 }}
@@ -172,7 +190,7 @@ dispatch(userExist(response.user));
                   className="hidden"
                 />
               </div>
-              <h2 className="text-2xl font-bold mt-4">Register</h2>
+
             </div>
 
             <form onSubmit={registerHandler} className="space-y-4">

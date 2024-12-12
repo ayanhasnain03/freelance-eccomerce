@@ -3,7 +3,7 @@ import TopSelling from "../components/Home/TopSelling";
 import BentoGrid from "../components/Home/BentoGrid";
 import CardLoader from "../components/shared/Loader/CardLoader";
 import Loader from "../components/shared/Loader/Loader";
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
 
 // Lazy-load components
 const MarqueeReviews = lazy(() => import("../components/Home/Marquee"));

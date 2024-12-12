@@ -1,4 +1,4 @@
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { useState } from "react";
 import { FiUpload } from "react-icons/fi";
 import { Link } from "react-router-dom";
@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 
 const Profile = () => {
   const { user } = useSelector((state: any) => state.user);
-  const dispatch = useDispatch();
+
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
@@ -35,7 +35,6 @@ const Profile = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle profile update logic here, such as API calls to update the user's profile
     console.log("Updated profile", formData, avatar);
     setIsModalOpen(false);
   };

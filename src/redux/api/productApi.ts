@@ -3,7 +3,7 @@ const api = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({
     // baseUrl: "https://free-ecco-backend.onrender.com/api/v1",
-    baseUrl: "https://free-ecco-backend.onrender.com/api/v1",
+    baseUrl: `${import.meta.env.VITE_SERVER}/api/v1`,
     credentials: "include",
   }),
   tagTypes: ["Product"],

@@ -58,12 +58,12 @@ const handlePlaceOrder = async () => {
     try {
       setLoading(true);
 
-      // Razorpay expects the amount in paise (integer)
-      const totalAmountInPaise = Math.round(total * 100);
+
+      const totalAmountInPaise = Math.round(total);
       console.log('Sending total amount in paise:', totalAmountInPaise);
 
-      const response = await axios.post('https://free-ecco-backend.onrender.com/api/v1/payment/create-payment', {
-        amount: totalAmountInPaise, // Corrected format
+      const response = await axios.post(`${import.meta.env.VITE_SERVER}/api/v1/payment/create-payment`, {
+        amount: totalAmountInPaise,
       });
 
       console.log('Backend Response:', response.data);
@@ -108,7 +108,7 @@ const handlePlaceOrder = async () => {
 
     const options = {
       key: 'rzp_test_H3dRMlyt954d2B',
-      amount: orderDetails.amount * 100, // Convert to paise
+      amount: orderDetails.amount * 100,
       currency: 'INR',
       order_id: orderId,
       name: formData.name,
@@ -135,7 +135,7 @@ const handlePlaceOrder = async () => {
   const verifyPayment = async (paymentId: string, orderId: string, razorpaySignature: string) => {
     try {
       const response = await axios.post(
-        'https://free-ecco-backend.onrender.com/api/v1/payment/verify',
+        `${import.meta.env.VITE_SERVER}/api/v1/payment/verify`,
         {
           razorpay_order_id: orderId,
           razorpay_payment_id: paymentId,

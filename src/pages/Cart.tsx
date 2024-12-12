@@ -7,13 +7,12 @@ import {
 } from "../redux/reducers/cartReducer";
 import { Link } from "react-router-dom";
 
-// Helper function to format currency
 const formatCurrency = (amount: number) => {
   return `₹${amount.toFixed(2)}`;
 };
 
 const CartPage: React.FC = () => {
-  const { cartItems, subtotal, shippingCharges, tax, discount, total } =
+  const { cartItems, subtotal, shippingCharges, tax, total } =
     useSelector((state: any) => state.cart);
   const dispatch = useDispatch();
 
@@ -60,7 +59,7 @@ const CartPage: React.FC = () => {
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-8 flex gap-8">
-      {/* Cart Items */}
+
       <div className="flex-1">
         <h1 className="text-3xl font-semibold mb-6">Your Shopping Cart</h1>
         {cartItems.length === 0 ? (
@@ -117,8 +116,6 @@ const CartPage: React.FC = () => {
           </div>
         )}
       </div>
-
-      {/* Sidebar - Calculation and Discounts */}
       <div className="w-80 p-6 bg-white rounded-lg shadow-md">
         <h2 className="text-2xl font-semibold mb-4">Order Summary</h2>
 
@@ -140,7 +137,7 @@ const CartPage: React.FC = () => {
           </div>
         </div>
 
-        {/* Total Calculation */}
+
         <div className="flex justify-between items-center mt-6">
           <h3 className="text-lg font-semibold">Subtotal</h3>
           <span className="text-lg">{formatCurrency(subtotal)}</span>
@@ -165,14 +162,12 @@ const CartPage: React.FC = () => {
           <span className="text-xl font-bold">{formatCurrency(total)}</span>
         </div>
 
-        {/* Checkout Button */}
+
 <Link to="/cart/shipping">
         <button  className="w-full bg-blue-500 text-white py-2 px-4 rounded-lg mt-8 font-semibold">
           Checkout
         </button>
         </Link>
-
-        {/* Reset Button */}
         <button
           onClick={handleResetCart}
           className="w-full bg-red-500 text-white py-2 px-4 rounded-lg mt-4 font-semibold"

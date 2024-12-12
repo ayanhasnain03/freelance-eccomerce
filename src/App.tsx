@@ -25,7 +25,7 @@ const App = () => {
 
   useEffect(() => {
     axios
-      .get("https://free-ecco-backend.onrender.com/api/v1/user/profile", {
+      .get(`${import.meta.env.VITE_SERVER}/api/v1/user/profile`, {
         withCredentials: true,
       })
       .then((res) => dispatch(userExist(res.data.user)))

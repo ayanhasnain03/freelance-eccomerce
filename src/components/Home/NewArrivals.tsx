@@ -3,7 +3,7 @@ import ProductCard from "../cards/product/ProductCard";
 import Loader from "../shared/Loader/Loader";
 
 const NewArrivals = () => {
-const {data,isLoading,isError} = useNewArriavalsQuery("");
+const {data,isLoading} = useNewArriavalsQuery("");
 
   return (
 <>
