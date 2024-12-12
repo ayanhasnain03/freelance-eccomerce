@@ -62,7 +62,7 @@ const handlePlaceOrder = async () => {
       const totalAmountInPaise = Math.round(total * 100);
       console.log('Sending total amount in paise:', totalAmountInPaise);
 
-      const response = await axios.post('http://localhost:3000/api/v1/payment/create-payment', {
+      const response = await axios.post('https://free-ecco-backend.onrender.com/api/v1/payment/create-payment', {
         amount: totalAmountInPaise, // Corrected format
       });
 
@@ -135,7 +135,7 @@ const handlePlaceOrder = async () => {
   const verifyPayment = async (paymentId: string, orderId: string, razorpaySignature: string) => {
     try {
       const response = await axios.post(
-        'http://localhost:3000/api/v1/payment/verify',
+        'https://free-ecco-backend.onrender.com/api/v1/payment/verify',
         {
           razorpay_order_id: orderId,
           razorpay_payment_id: paymentId,

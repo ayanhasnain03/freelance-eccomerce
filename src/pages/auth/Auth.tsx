@@ -26,7 +26,7 @@ const AuthTabs = () => {
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
-      setAvatar(e.target.files[0]);  // Save the File object
+      setAvatar(e.target.files[0]);
     }
   };
 
@@ -40,14 +40,14 @@ const AuthTabs = () => {
     formData.append("gender", gender);
 
     if (avatar) {
-      formData.append("avatar", avatar);  // Append the avatar file
+      formData.append("avatar", avatar);
     }
 
     try {
      const response = await registerUser(formData).unwrap();
       dispatch(userExist(response.user));
       toast.success("Registration successful!");
-      navigate("/"); // Redirect to the home page or a dashboard after successful registration
+      navigate("/");
     } catch (error) {
       console.error("Error during registration:", error);
     }

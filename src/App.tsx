@@ -25,7 +25,7 @@ const App = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:3000/api/v1/user/profile", {
+      .get("https://free-ecco-backend.onrender.com/api/v1/user/profile", {
         withCredentials: true,
       })
       .then((res) => dispatch(userExist(res.data.user)))
