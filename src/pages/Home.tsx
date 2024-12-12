@@ -13,9 +13,7 @@ const SalesCarouselCard = lazy(
 const CountdownTimer = lazy(
   () => import("../components/shared/TImer/CountdownTimer")
 );
-const ProductCarousel = lazy(
-  () => import("../components/Carousel/HomeCarousel")
-);
+
 const NewArrivals = lazy(() => import("../components/Home/NewArrivals"));
 
 const LoadingSpinner = () => (
@@ -29,9 +27,7 @@ const Home = () => {
     <div className="h-full w-full bg-white overflow-x-hidden">
       <div className="w-full border h-full px-4 sm:px-6 lg:px-8 flex items-center justify-center">
         <div className="h-full w-full mx-auto">
-          {/* <Suspense fallback={<LoadingSpinner />}>
-            <ProductCarousel />
-          </Suspense> */}
+      
 
           <div className="mt-8">
             <h1 className="text-3xl font-bold text-center font-integral text-black">
