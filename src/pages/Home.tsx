@@ -29,9 +29,9 @@ const Home = () => {
     <div className="h-full w-full bg-white overflow-x-hidden">
       <div className="w-full border h-full px-4 sm:px-6 lg:px-8 flex items-center justify-center">
         <div className="h-full w-full mx-auto">
-          <Suspense fallback={<LoadingSpinner />}>
+          {/* <Suspense fallback={<LoadingSpinner />}>
             <ProductCarousel />
-          </Suspense>
+          </Suspense> */}
 
           <div className="mt-8">
             <h1 className="text-3xl font-bold text-center font-integral text-black">
