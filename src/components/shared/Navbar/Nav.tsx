@@ -41,9 +41,9 @@ const Nav = ({ user }: any) => {
       {/* Logo */}
       <Link to="/" aria-label="Go to homepage" className="flex-shrink-0 ml-4 md:ml-0">
         <img
-          src="/SHOP.CO.svg"
+          src="fashALt.svg"
           alt="SHOP.CO Logo"
-          className="w-32 md:w-40 h-[40px] cursor-pointer"
+          className="h-8 w-8 md:h-10 md:w-24 cursor-pointer"
         />
       </Link>
 
