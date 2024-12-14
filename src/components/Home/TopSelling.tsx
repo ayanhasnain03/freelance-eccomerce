@@ -38,11 +38,47 @@ const TopSelling = () => {
       image: "card.png",
       rating: 4.6,
     },
+    {
+      id: "5",
+      name: "Floral Summer Dress",
+      description:
+        "A vibrant summer dress with floral patterns for a breezy look.",
+      price: 55,
+      image: "card.png",
+      rating: 4.6,
+    },
+    {
+      id: "6",
+      name: "Floral Summer Dress",
+      description:
+        "A vibrant summer dress with floral patterns for a breezy look.",
+      price: 55,
+      image: "card.png",
+      rating: 4.6,
+    },
+    {
+      id: "7",
+      name: "Floral Summer Dress",
+      description:
+        "A vibrant summer dress with floral patterns for a breezy look.",
+      price: 55,
+      image: "card.png",
+      rating: 4.6,
+    },
+    {
+      id: "8",
+      name: "Floral Summer Dress",
+      description:
+        "A vibrant summer dress with floral patterns for a breezy look.",
+      price: 55,
+      image: "card.png",
+      rating: 4.6,
+    },
   ];
   return (
-    <div className="flex flex-col gap-8 mt-8 h-full w-full items-center justify-center">
+    <div className="flex flex-col gap-2 mt-8 h-full overflow-hidden w-full items-center justify-center">
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-4 relative">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 mt-4 relative">
         {data.map((item) => (
           //@ts-ignore
           <ProductCard key={item.id} productId={item.id} name={item.name} image={item.image}  discount={0} price={item.price} rating={item.rating} isFav={true} isCart={false} handleFav={() => {}} removeFromFav={() => {}}/>

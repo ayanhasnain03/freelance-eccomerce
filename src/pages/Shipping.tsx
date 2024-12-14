@@ -15,18 +15,11 @@ interface FormData {
   secondPhoneNo: string;
 }
 
-interface OrderDetails {
-  id: string;
-  amount: number;
-}
-
 const ShippingPage: React.FC = () => {
   const { user } = useSelector((state: any) => state.user);
-  const {  subtotal, shippingCharges, tax, discount, total } = useSelector((state: any) => state.cart);
-  console.log('Total amount:', total);
+  const { subtotal, shippingCharges, tax, discount, total } = useSelector((state: any) => state.cart);
 
   const [paymentMethod, setPaymentMethod] = useState<'COD' | 'razorpay'>('COD');
-  const [orderDetails, setOrderDetails] = useState<OrderDetails | null>(null);
   const [formData, setFormData] = useState<FormData>({
     name: '',
     address: '',
@@ -41,82 +34,64 @@ const ShippingPage: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const navigate = useNavigate();
 
-const handlePlaceOrder = async () => {
-  if (
-    !formData.name ||
-    !formData.address ||
-    !formData.city ||
-    !formData.state ||
-    !formData.pincode ||
-    !formData.phoneNo
-  ) {
-    alert('Please fill in all required fields.');
-    return;
-  }
-
-  if (paymentMethod === 'razorpay') {
-    try {
-      setLoading(true);
-
-
-      const totalAmountInPaise = Math.round(total);
-      console.log('Sending total amount in paise:', totalAmountInPaise);
-
-      const response = await axios.post(`${import.meta.env.VITE_SERVER}/api/v1/payment/create-payment`, {
-        amount: totalAmountInPaise,
-      });
-
-      console.log('Backend Response:', response.data);
-
-      const order = response.data;
-      if (order.id) {
-        setOrderDetails(order);
-        handleRazorpayPayment(order.id);
-      } else {
-        alert('Invalid order response from server.');
-      }
-    } catch (error: any) {
-      console.error('Error creating order:', error.response || error.message);
-      alert(`Error: ${error.response?.data?.message || 'Something went wrong'}`);
-    } finally {
-      setLoading(false);
+  const handlePlaceOrder = async () => {
+    if (!formData.name || !formData.address || !formData.city || !formData.state || !formData.pincode || !formData.phoneNo) {
+      alert('Please fill in all required fields.');
+      return;
     }
-  } else {
-    alert('Order placed successfully with COD');
-    navigate('/myOrders');
-  }
-};
 
+    if (paymentMethod === 'razorpay') {
+      try {
+        setLoading(true);
+        const totalAmountInPaise = Math.round(total)
 
+        const { data: order } = await axios.post(`${import.meta.env.VITE_SERVER}/api/v1/payment/create-payment`, {
+          amount: totalAmountInPaise,
+        });
 
-  const handleRazorpayPayment = (orderId: string) => {
-    //@ts-ignore
-    if (!window.Razorpay) {
-      const script = document.createElement('script');
-      script.src = 'https://checkout-static-next.razorpay.com/v2/checkout.js';
-      script.onload = () => {
-        initializeRazorpayPayment(orderId);
-      };
-      document.body.appendChild(script);
+        if (order.id) {
+          initializeRazorpayPayment(order);
+        } else {
+          alert('Invalid order response from server.');
+        }
+      } catch (error: any) {
+        console.error('Error creating order:', error.response || error.message);
+        alert(`Error: ${error.response?.data?.message || 'Something went wrong'}`);
+      } finally {
+        setLoading(false);
+      }
     } else {
-      initializeRazorpayPayment(orderId);
+      alert('Order placed successfully with COD');
+      navigate('/myOrders');
     }
   };
 
-  const initializeRazorpayPayment = (orderId: string) => {
-    if (!orderDetails) return;
-
+  const initializeRazorpayPayment = (order: { id: string; amount: number }) => {
     const options = {
       key: 'rzp_test_H3dRMlyt954d2B',
-      amount: orderDetails.amount * 100,
+      amount: order.amount,
       currency: 'INR',
-      order_id: orderId,
+      order_id: order.id,
       name: formData.name,
       description: 'Your order description',
-      image: 'https://example.com/your-logo.png',
-      handler: function (response: any) {
-        alert('Payment success! Payment ID: ' + response.razorpay_payment_id);
-        verifyPayment(response.razorpay_payment_id, orderId, response.razorpay_signature);
+      handler: async (response: any) => {
+        try {
+          const { data } = await axios.post(`${import.meta.env.VITE_SERVER}/api/v1/payment/verify`, {
+            razorpay_order_id: order.id,
+            razorpay_payment_id: response.razorpay_payment_id,
+            razorpay_signature: response.razorpay_signature,
+          });
+
+          if (data.success) {
+            alert('Payment verified successfully! Your order is placed.');
+            navigate('/myOrders');
+          } else {
+            alert('Payment verification failed. Please contact support.');
+          }
+        } catch (error) {
+          console.error('Error verifying payment:', error);
+          alert('An unexpected error occurred during payment verification.');
+        }
       },
       prefill: {
         name: formData.name,
@@ -126,39 +101,14 @@ const handlePlaceOrder = async () => {
       notes: {
         address: formData.address,
       },
+      theme: {
+        color: '#3399cc',
+      },
     };
-//@ts-ignore
+
+    //@ts-ignore
     const razorpayInstance = new window.Razorpay(options);
     razorpayInstance.open();
-  };
-
-  const verifyPayment = async (paymentId: string, orderId: string, razorpaySignature: string) => {
-    try {
-      const response = await axios.post(
-        `${import.meta.env.VITE_SERVER}/api/v1/payment/verify`,
-        {
-          razorpay_order_id: orderId,
-          razorpay_payment_id: paymentId,
-          razorpay_signature: razorpaySignature,
-        },
-        {
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        }
-      );
-
-      if (response.data.success) {
-        alert('Payment verified successfully! Your order is placed.');
-        navigate('/myOrders');
-      } else {
-        alert('Payment verification failed. Please contact support.');
-        console.error('Verification Error:', response.data.message);
-      }
-    } catch (error) {
-      console.error('Error verifying payment:', error);
-      alert('An unexpected error occurred during payment verification. Please try again later.');
-    }
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>, field: keyof FormData) => {
@@ -186,24 +136,19 @@ const handlePlaceOrder = async () => {
 
         <section>
           <h2 className="text-2xl font-semibold mb-4">Payment Information</h2>
-          <div className="space-y-4">
-            <div>
-              <label className="block text-lg font-medium">Choose Payment Method:</label>
-              <div className="space-x-4">
-                <button
-                  onClick={() => setPaymentMethod('COD')}
-                  className={`p-2 rounded-md border ${paymentMethod === 'COD' ? 'bg-blue-500 text-white' : 'bg-white'}`}
-                >
-                  Cash on Delivery
-                </button>
-                <button
-                  onClick={() => setPaymentMethod('razorpay')}
-                  className={`p-2 rounded-md border ${paymentMethod === 'razorpay' ? 'bg-blue-500 text-white' : 'bg-white'}`}
-                >
-                  Online Payment (Razorpay)
-                </button>
-              </div>
-            </div>
+          <div className="space-x-4">
+            <button
+              onClick={() => setPaymentMethod('COD')}
+              className={`p-2 rounded-md border ${paymentMethod === 'COD' ? 'bg-blue-500 text-white' : 'bg-white'}`}
+            >
+              Cash on Delivery
+            </button>
+            <button
+              onClick={() => setPaymentMethod('razorpay')}
+              className={`p-2 rounded-md border ${paymentMethod === 'razorpay' ? 'bg-blue-500 text-white' : 'bg-white'}`}
+            >
+              Online Payment (Razorpay)
+            </button>
           </div>
         </section>
 
@@ -233,7 +178,7 @@ const handlePlaceOrder = async () => {
           </div>
         </section>
 
-        <div className="flex justify-between items-center mt-8">
+        <div className="flex justify-center mt-8">
           <button
             onClick={handlePlaceOrder}
             className="bg-blue-600 text-white py-2 px-6 rounded-md"

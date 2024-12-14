@@ -13,9 +13,9 @@ const Star: React.FC<StarProps> = ({ rating }) => {
   const emptyStars = totalStars - fullStars - halfStars;
 
   const starElements = [
-    ...Array(fullStars).fill(<FaStar className="text-yellow-400 w-5 h-5" />),
-    ...Array(halfStars).fill(<FaStarHalfAlt className="text-yellow-400 w-5 h-5 "/>),
-    ...Array(emptyStars).fill(<FaRegStar className="text-yellow-400 w-5 h-5" />),
+    ...Array(fullStars).fill(<FaStar className="text-yellow-400 w-3 h-3" />),
+    ...Array(halfStars).fill(<FaStarHalfAlt className="text-yellow-400 w-3 h-3 "/>),
+    ...Array(emptyStars).fill(<FaRegStar className="text-yellow-400 w-3 h-3" />),
   ];
 
   return (

@@ -36,7 +36,7 @@ const ProductCard: React.FC<ProductCardProps> = memo(
     }, [name]);
 
     return (
-      <article className="w-[250px] h-[350px] overflow-hidden bg-white rounded-lg shadow-lg relative transition-transform transform hover:scale-105">
+      <article className="w-[250px] h-[350px] overflow-hidden bg-white  relative transition-transform transform hover:scale-105">
         {/* Favorite Button */}
         <button
           className="absolute top-2 right-2 z-20"
@@ -91,10 +91,10 @@ const ProductCard: React.FC<ProductCardProps> = memo(
 
           {/* Price and Discount */}
           <div className="flex items-center mt-2 space-x-2">
-            <p className="text-lg font-semibold text-green-700">
+            <p className="text-lg font-semibold text-black">
               ${price.toFixed(2)}
             </p>
-            <p className="ml-4 text-sm line-through text-rose-500">
+            <p className="ml-4 text-sm line-through text-gray-500">
               ${(price / (1 - discount / 100)).toFixed(2)}
             </p>
           </div>

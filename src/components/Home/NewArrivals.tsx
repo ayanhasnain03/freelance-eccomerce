@@ -1,5 +1,6 @@
+import { lazy } from "react";
 import { useNewArriavalsQuery } from "../../redux/api/productApi";
-import ProductCard from "../cards/product/ProductCard";
+const ProductCard = lazy(() => import("../cards/product/ProductCard"));
 import Loader from "../shared/Loader/Loader";
 
 const NewArrivals = () => {
@@ -11,7 +12,7 @@ const {data,isLoading} = useNewArriavalsQuery("");
   isLoading ? (
     <Loader />
   ):(
-      <div className="flex flex-col gap-8 my-4 h-full w-full items-center justify-center">
+      <div className="flex flex-col gap-8 my-4 w-full items-center justify-center">
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-4">
       {data && data?.products?.map((item: any) => (
         <ProductCard
