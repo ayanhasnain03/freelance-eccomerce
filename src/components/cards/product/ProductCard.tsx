@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import Star from "../Star";
 import { memo, useCallback } from "react";
-import Fav from "../Fav";
+
 
 interface ProductCardProps {
   name: string;
@@ -26,28 +26,23 @@ const ProductCard: React.FC<ProductCardProps> = memo(
     rating,
     image,
     productId,
-    isFav,
+    // isFav,
     isCart,
-    handleFav,
-    removeFromFav,
+    // handleFav,
+    // removeFromFav,
   }) => {
     const handleAddToCart = useCallback(() => {
       console.log(`${name} added to the cart!`);
     }, [name]);
 
     return (
-      <article className="w-[250px] h-[350px] overflow-hidden bg-white  relative transition-transform transform hover:scale-105">
+      <article className="w-[250px] h-[350px] overflow-hidden bg-white  relative">
         {/* Favorite Button */}
         <button
           className="absolute top-2 right-2 z-20"
           aria-label={`Toggle favorite for ${name}`}
         >
-          <Fav
-            isFav={isFav}
-            addToFav={handleFav}
-            removeFromFav={removeFromFav}
-            productId={productId}
-          />
+    
         </button>
 
         {/* Product Link */}
@@ -56,10 +51,7 @@ const ProductCard: React.FC<ProductCardProps> = memo(
           className="block relative group"
           aria-label={`View details of ${name}`}
         >
-          {/* Discount Badge */}
-          <div className="absolute z-20 top-2 left-2 bg-rose-700 text-white text-xs px-2 py-1 rounded-r-xl">
-            -{discount}%
-          </div>
+   
 
           {/* Image */}
           <div className="w-full h-[200px] overflow-hidden p-4">

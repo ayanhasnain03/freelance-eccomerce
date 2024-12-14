@@ -1,184 +1,76 @@
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-} from "../ui/carousel";
-import { Card, CardContent } from "../ui/card";
-import { Link } from "react-router-dom";
-import { lazy, memo } from "react";
-const Star = lazy(() => import("../cards/Star"));
-const Fav = lazy(() => import("../cards/Fav"));
+import { motion } from 'framer-motion';
+import CountdownTimer from '../shared/TImer/CountdownTimer';
+import Stbtn from '../shared/Buttons/Stbtn';
+import { Link } from 'react-router-dom';
 
-const SalesCarouselCard = () => {
-  const data = [
-    {
-      id: "1",
-      name: "Casual Cotton T-Shirt",
-      description:
-        "A comfortable and breathable cotton T-shirt, perfect for casual wear.",
-      price: 15,
-      discount: 10,
-      rating: 4.5,
-      image: "card.png",
-      link: "/product/casual-cotton-t-shirt",
-      isFav: false,
-    },
-    {
-      id: "2",
-      name: "Casual Cotton T-Shirt",
-      description:
-        "A comfortable and breathable cotton T-shirt, perfect for casual wear.",
-      price: 15,
-      discount: 10,
-      rating: 4.5,
-      image: "card.png",
-      link: "/product/casual-cotton-t-shirt",
-      isFav: true,
-    },
-    {
-      id: "3",
-      name: "Casual Cotton T-Shirt",
-      description:
-        "A comfortable and breathable cotton T-shirt, perfect for casual wear.",
-      price: 15,
-      discount: 10,
-      rating: 4.5,
-      image: "card.png",
-      link: "/product/casual-cotton-t-shirt",
-      isFav: true,
-    },
-    {
-      id: "4",
-      name: "Casual Cotton T-Shirt",
-      description:
-        "A comfortable and breathable cotton T-shirt, perfect for casual wear.",
-      price: 15,
-      discount: 10,
-      rating: 4.5,
-      image: "card.png",
-      link: "/product/casual-cotton-t-shirt",
-      isFav: true,
-    },
-    {
-      id: "5",
-      name: "Casual Cotton T-Shirt",
-      description:
-        "A comfortable and breathable cotton T-shirt, perfect for casual wear.",
-      price: 15,
-      discount: 10,
-      rating: 4.5,
-      image: "card.png",
-      link: "/product/casual-cotton-t-shirt",
-      isFav: true,
-    },
-    {
-      id: "6",
-      name: "Casual Cotton T-Shirt",
-      description:
-        "A comfortable and breathable cotton T-shirt, perfect for casual wear.",
-      price: 15,
-      discount: 10,
-      rating: 4.5,
-      image: "card.png",
-      link: "/product/casual-cotton-t-shirt",
-      isFav: true,
-    },
-    {
-      id: "7",
-      name: "Casual Cotton T-Shirt",
-      description:
-        "A comfortable and breathable cotton T-shirt, perfect for casual wear.",
-      price: 15,
-      discount: 10,
-      rating: 4.5,
-      image: "card.png",
-      link: "/product/casual-cotton-t-shirt",
-      isFav: true,
-    },
-  ];
+const saleProductsData = [
+  { id: 1, title: 'Full Sleeve T-shirt', price: '$30', originalPrice: '$50', image: 'card.png' },
+  { id: 2, title: 'Short Sleeve T-shirt', price: '$25', originalPrice: '$40', image: 'arrival2.png' },
+  { id: 3, title: 'Hoodie', price: '$45', originalPrice: '$70', image: 'arrival3.png' },
+  { id: 4, title: 'Sweatshirt', price: '$35', originalPrice: '$60', image: 'card.png' },
+];
 
+const SaleProducts = () => {
   return (
-    <div className="relative w-full mx-auto">
-      <Carousel opts={{ align: "start" }} className="w-full">
-        <CarouselContent>
-          {data.map((product) => {
-            const discountedPrice = (
-              product.price *
-              (1 - product.discount / 100)
-            ).toFixed(2);
-            const originalPrice = product.price.toFixed(2);
-
-            return (
-              <CarouselItem
-                key={product.id}
-                className="p-3 basis-1/2 sm:basis-1/3 md:basis-1/4 lg:basis-1/4 xl:basis-1/5"
-              >
-                <Card className="w-full bg-white shadow-md rounded-lg overflow-hidden">
-                  <CardContent className="p-3 flex flex-col items-center">
-                    <div className="relative w-full h-full group">
-                      <Link
-                        to={product.link}
-                        className="block w-full h-[160px] relative"
-                      >
-                        <div className="absolute -top-3 left-1 bg-rose-500 text-white px-2 py-1 text-xs rounded-r-xl z-10 shadow-md">
-                          -{product.discount}%
-                        </div>
-
-                        <img
-                          src={product.image}
-                          alt={product.name}
-                          className="w-full h-full object-cover transition-transform duration-300 hover:scale-110"
-                          loading="lazy"
-                        />
-                        <div className="absolute top-2 right-2">
-                          <Fav isFav={product.isFav} addToFav={() => {console.log("Added to favorites")}} removeFromFav={() => {console.log("Removed from favorites")}} productId={product.id} />
-                        </div>
-                      </Link>
+    <motion.div
+      className="h-auto w-full mt-10 p-8"
+      initial={{ opacity: 0 }}
+      whileInView={{ opacity: 1 }}
+      transition={{ duration: 0.8 }}
+    >
 
 
-                      <button
-                        className="absolute inset-x-4 bottom-4 bg-black text-white text-sm font-noto px-4 py-2 rounded-md opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 ease-out"
-                        onClick={() =>
-                          console.log(`Added ${product.name} to cart!`)
-                        }
-                      >
-                        Add to Cart
-                      </button>
-                    </div>
 
-                    <div className="p-2 text-center">
-                      <h3 className="font-satoshi fomt-bold text-sm  mb-1">
-                        {product.name}
-                      </h3>
-                      <div className="mt-1">
-                        <Star rating={product.rating} />
-                      </div>
-                      <div className="flex items-center mt-1">
-                        <p className="text-base font-medium text-green-600">
-                          ${discountedPrice}
-                        </p>
-                        <p className="ml-2 text-xs line-through text-gray-500">
-                          ${originalPrice}
-                        </p>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              </CarouselItem>
-            );
-          })}
-        </CarouselContent>
-        <CarouselPrevious className="absolute -left-6 top-1/2 flex items-center justify-center text-black bg-gray-200 p-3 rounded-full hover:bg-gray-400">
-          &#9664;
-        </CarouselPrevious>
-        <CarouselNext className="absolute -right-6 top-1/2 flex items-center justify-center text-black bg-gray-200 p-3 rounded-full hover:bg-gray-400">
-          &#9654;
-        </CarouselNext>
-      </Carousel>
-    </div>
+<Stbtn text='Christmas Sale '/>
+<CountdownTimer/>
+
+
+      {/* Section Title */}
+      <div className="text-center mb-8">
+        <p className="mt-2 text-lg text-gray-600">Exclusive offers and discounts just for you!</p>
+      </div>
+
+      {/* Product Cards */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+        {saleProductsData.map((product) => (
+          <motion.div
+            key={product.id}
+            className="flex flex-col items-center bg-white rounded-lg shadow-lg overflow-hidden transition-transform duration-300 transform hover:scale-105 hover:shadow-xl"
+            initial={{ opacity: 0, scale: 0.9 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.6 }}
+          >
+            {/* Image */}
+            <img
+              src={product.image}
+              alt={product.title}
+              className="w-full h-56 object-cover transition-opacity duration-300 group-hover:opacity-80"
+            />
+
+            {/* Product Info */}
+            <div className="p-4 text-center">
+              <h3 className="text-lg font-semibold text-black">{product.title}</h3>
+              <div className="flex justify-center items-center mt-2">
+                <span className="text-xl font-semibold text-rose-600">{product.price}</span>
+                <span className="ml-2 text-sm line-through text-gray-500">{product.originalPrice}</span>
+              </div>
+            </div>
+
+      
+            
+          </motion.div>
+        ))}
+      </div>
+      <p className='text-center mt-4'>
+        <Link
+          to="/collections"
+          className="text-slate-600 hover:text-slate-800 transition underline duration-300"
+        >
+         More
+        </Link>
+      </p>
+    </motion.div>
   );
 };
 
-export default memo(SalesCarouselCard);
+export default SaleProducts;

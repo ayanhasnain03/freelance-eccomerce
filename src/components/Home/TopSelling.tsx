@@ -1,5 +1,8 @@
 
-import ProductCard from "../cards/product/ProductCard";
+import { lazy } from "react";
+const ProductCard = lazy(() => import("../cards/product/ProductCard"));
+import {motion} from 'framer-motion'
+import { Link } from "react-router-dom";
 
 const TopSelling = () => {
   const data = [
@@ -9,7 +12,7 @@ const TopSelling = () => {
       description:
         "A comfortable and breathable cotton T-shirt, perfect for casual wear.",
       price: 15,
-      image: "arrival1.png",
+      image: "menCat3.jpg",
       rating: 4.5,
     },
     {
@@ -76,16 +79,32 @@ const TopSelling = () => {
     },
   ];
   return (
-    <div className="flex flex-col gap-2 mt-8 h-full overflow-hidden w-full items-center justify-center">
+    <motion.div className="flex flex-col gap-2 mt-2 h-full  w-full items-center  justify-center relative"
+    initial={{ opacity: 0, y: 50 }} 
+    whileInView={{ opacity: 1, y: 0 }} 
+    viewport={{ once: true }} 
+    transition={{ duration: 0.8 }} 
+    
+    >
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 mt-4 relative">
+
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-4 relative">
         {data.map((item) => (
           //@ts-ignore
           <ProductCard key={item.id} productId={item.id} name={item.name} image={item.image}  discount={0} price={item.price} rating={item.rating} isFav={true} isCart={false} handleFav={() => {}} removeFromFav={() => {}}/>
         ))}
 
       </div>
-    </div>
+      <p className='text-center'>
+        <Link
+          to="/collections"
+          className="text-slate-600 hover:text-slate-800 transition underline duration-300"
+        >
+         More
+        </Link>
+      </p>
+    </motion.div>
   );
 };
 

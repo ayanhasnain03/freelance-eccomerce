@@ -1,43 +1,51 @@
-import { lazy } from "react";
-import { useNewArriavalsQuery } from "../../redux/api/productApi";
-const ProductCard = lazy(() => import("../cards/product/ProductCard"));
-import Loader from "../shared/Loader/Loader";
+
+import { Link } from 'react-router-dom'
+import Stbtn from '../shared/Buttons/Stbtn'
+import { motion } from 'framer-motion'
+const newArrivalsData = [
+  { id: 1, title: 'Full Sleeve', image: 'card.png' },
+  { id: 2, title: 'Short Sleeve', image: 'arrival2.png' },
+  { id: 3, title: 'Hoodie', image: 'arrival3.png' },
+  { id: 4, title: 'Sweatshirt', image: 'card.png' },
+]
 
 const NewArrivals = () => {
-const {data,isLoading} = useNewArriavalsQuery("");
-
   return (
-<>
-{
-  isLoading ? (
-    <Loader />
-  ):(
-      <div className="flex flex-col gap-8 my-4 w-full items-center justify-center">
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-4">
-      {data && data?.products?.map((item: any) => (
-        <ProductCard
-          key={item._id}
-          productId={item._id}
-          name={item.name}
-          description={item.description}
-          image={item.images[0].url}
-          discount={0}
-          price={item.price}
-          rating={item.rating}
-          isFav={true}
-          isCart={false}
-          handleFav={() => {}}
-          removeFromFav={() => {}}
-        />
-      ))}
-    </div>
-  </div>
+    <motion.div className=" h-full w-full relative mt-10 p-2 " 
+    initial={{ opacity: 0, y: -50 }} 
+    whileInView={{ opacity: 1, y: 0 }} 
+    viewport={{ once: true }} 
+    transition={{ duration: 0.8 }} 
+    
+    >
+<Stbtn text='New Arrivals'/>
+
+      {/* Product Cards */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 mt-4 ">
+        {newArrivalsData.map((item) => (
+          <div
+            key={item.id}
+            className="flex flex-col items-center bg-white rounded-lg shadow-lg overflow-hidden transition-transform duration-300 transform"
+          >
+            {/* Image */}
+            <img
+              src={item.image}
+              alt={item.title}
+              className="w-full h-full object-cover transition-opacity duration-300 brightness-75 cursor-pointer"
+            />
+            
+            {/* Text */}
+            <div className="absolute top-1/2 underline underline-offset-4 left-1/2 transform -translate-x-1/2 text-white text-lg md:text-sm font-inter z-10  px-1 py-1 rounded-md  transition-all duration-300">
+
+<Link to={`/collections/${item.title}`}>{item.title}</Link>
+
+            </div>
+          </div>
+        ))}
+      </div>
+
+    </motion.div>
   )
 }
 
-</>
-
-  );
-};
-
-export default NewArrivals;
+export default NewArrivals
