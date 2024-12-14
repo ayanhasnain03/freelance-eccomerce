@@ -29,37 +29,37 @@ const ProductPage = () => {
 
   const product = data?.product;
 
-  // Dummy related products data
-  const relatedProducts = [
-    {
-      _id: "1",
-      name: "Product 1",
-      description: "This is a description for product 1",
-      price: 1200,
-      images: [{ url: "https://via.placeholder.com/500" }],
-    },
-    {
-      _id: "2",
-      name: "Product 2",
-      description: "This is a description for product 2",
-      price: 1500,
-      images: [{ url: "https://via.placeholder.com/500" }],
-    },
-    {
-      _id: "3",
-      name: "Product 3",
-      description: "This is a description for product 3",
-      price: 800,
-      images: [{ url: "https://via.placeholder.com/500" }],
-    },
-    {
-      _id: "4",
-      name: "Product 4",
-      description: "This is a description for product 4",
-      price: 1300,
-      images: [{ url: "https://via.placeholder.com/500" }],
-    },
-  ];
+  // // Dummy related products data
+  // const relatedProducts = [
+  //   {
+  //     _id: "1",
+  //     name: "Product 1",
+  //     description: "This is a description for product 1",
+  //     price: 1200,
+  //     images: [{ url: "https://via.placeholder.com/500" }],
+  //   },
+  //   {
+  //     _id: "2",
+  //     name: "Product 2",
+  //     description: "This is a description for product 2",
+  //     price: 1500,
+  //     images: [{ url: "https://via.placeholder.com/500" }],
+  //   },
+  //   {
+  //     _id: "3",
+  //     name: "Product 3",
+  //     description: "This is a description for product 3",
+  //     price: 800,
+  //     images: [{ url: "https://via.placeholder.com/500" }],
+  //   },
+  //   {
+  //     _id: "4",
+  //     name: "Product 4",
+  //     description: "This is a description for product 4",
+  //     price: 1300,
+  //     images: [{ url: "https://via.placeholder.com/500" }],
+  //   },
+  // ];
 
   return (
     <>
