@@ -1,9 +1,10 @@
 import React, { useState, useMemo } from "react";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-hot-toast";
 import { resetCart, setShippingInfo } from "../redux/reducers/cartReducer";
+import { useCreateOrdersMutation } from "../redux/api/orderApi";
+import axios from "axios";
 
 interface FormData {
   name: string;
@@ -18,17 +19,16 @@ interface FormData {
 const ShippingPage: React.FC = () => {
   const dispatch = useDispatch();
   const { user } = useSelector((state: any) => state.user);
-  const { subtotal, shippingCharges, tax, discount, total, cartItems, shippingInfo } =
-    useSelector((state: any) => state.cart);
+  const { subtotal, shippingCharges, tax, discount, total, cartItems, shippingInfo } = useSelector((state: any) => state.cart);
 
   const modifiedCartItems = useMemo(() => {
     return cartItems.map((item: any) => ({
       productId: item._id,
-name: item.productName,
-quantity: item.quantity,
-price: item.price,
-image: item.image,
-size: item.sizes,
+      name: item.productName,
+      quantity: item.quantity,
+      price: item.price,
+      image: item.image,
+      size: item.sizes,
     }));
   }, [cartItems]);
 
@@ -45,6 +45,9 @@ size: item.sizes,
   const [loading, setLoading] = useState<boolean>(false);
   const [paymentStatus, setPaymentStatus] = useState<string | null>(null);
   const navigate = useNavigate();
+
+  // Use the createOrders mutation
+  const [createOrder, { isLoading: isCreatingOrder }] = useCreateOrdersMutation();
 
   const handlePlaceOrder = async () => {
     if (!formData.name || !formData.address || !formData.city || !formData.state || !formData.pincode || !formData.phoneNo) {
@@ -86,39 +89,36 @@ size: item.sizes,
   };
 
   const placeOrder = async (razorpayOrderId: string | null = null) => {
+    const orderData = {
+      userId: user._id,
+      razorpayOrderId: razorpayOrderId, // Pass razorpayOrderId here
+      items: modifiedCartItems,
+      paymentMethod: paymentMethod,
+      shippingAddress: {
+        street: formData.address,
+        city: formData.city,
+        state: formData.state,
+        zipCode: formData.pincode,
+        country: formData.country,
+      },
+      discounts: discount,
+      tax,
+      subtotal,
+      total,
+      customerPhoneNumber: formData.phoneNo,
+      customerName: formData.name,
+    };
+
     try {
-      const orderData = {
-        userId: user._id,
-        razorpayOrderId: razorpayOrderId, // Pass razorpayOrderId here
-        items: modifiedCartItems,
-        paymentMethod: paymentMethod,
-        shippingAddress: {
-          street: formData.address,
-          city: formData.city,
-          state: formData.state,
-          zipCode: formData.pincode,
-          country: formData.country,
-        },
-        discounts: discount,
-        tax,
-        subtotal,
-        total,
-        customerPhoneNumber: formData.phoneNo,
-        customerName: formData.name,
-      };
-
-      await axios.post(
-        `${import.meta.env.VITE_SERVER}/api/v1/order/create`,
-        orderData,
-        { withCredentials: true }
-      );
-
+      // Use the createOrders mutation here
+      const response = await createOrder(orderData).unwrap();
+      console.log("Order created:", response);
+      toast.success("Order placed successfully!");
       dispatch(resetCart());
       navigate("/myOrders");
-
-    } catch (error: any) {
-      console.error("Order creation failed:", error.response || error.message);
-      setPaymentStatus("Order creation failed. Please try again.");
+    } catch (error) {
+      toast.error("Order creation failed. Please try again.");
+      console.error("Error creating order:", error);
     }
   };
 
@@ -171,10 +171,7 @@ size: item.sizes,
     razorpayInstance.open();
   };
 
-  const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement>,
-    field: keyof FormData
-  ) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>, field: keyof FormData) => {
     setFormData({ ...formData, [field]: e.target.value });
   };
 
@@ -205,19 +202,13 @@ size: item.sizes,
             <div className="space-x-4">
               <button
                 onClick={() => setPaymentMethod("COD")}
-                className={`p-2 rounded-md border ${
-                  paymentMethod === "COD" ? "bg-blue-500 text-white" : "bg-white"
-                }`}
+                className={`p-2 rounded-md border ${paymentMethod === "COD" ? "bg-blue-500 text-white" : "bg-white"}`}
               >
                 Cash on Delivery
               </button>
               <button
                 onClick={() => setPaymentMethod("razorpay")}
-                className={`p-2 rounded-md border ${
-                  paymentMethod === "razorpay"
-                    ? "bg-blue-500 text-white"
-                    : "bg-white"
-                }`}
+                className={`p-2 rounded-md border ${paymentMethod === "razorpay" ? "bg-blue-500 text-white" : "bg-white"}`}
               >
                 Online Payment (Razorpay)
               </button>
@@ -254,9 +245,9 @@ size: item.sizes,
             <button
               onClick={handlePlaceOrder}
               className="bg-blue-600 text-white py-2 px-6 rounded-md"
-              disabled={loading}
+              disabled={loading || isCreatingOrder}
             >
-              {loading
+              {loading || isCreatingOrder
                 ? "Processing..."
                 : paymentMethod === "razorpay"
                 ? "Pay Now"
@@ -267,32 +258,6 @@ size: item.sizes,
           {paymentStatus && (
             <div className="mt-4 text-center text-red-500">{paymentStatus}</div>
           )}
-        </div>
-
-        {/* Right Side: Cart Items */}
-        <div className="w-full sm:w-1/3 bg-white shadow-lg rounded-lg p-6 space-y-6">
-          <h2 className="text-2xl font-semibold mb-4 text-gray-800">Cart Items</h2>
-          <div className="space-y-4">
-            {cartItems.map((item: any) => (
-              <div
-                key={item._id}
-                className="flex justify-between items-center border-b py-4 hover:bg-gray-50 transition duration-200"
-              >
-                <div className="flex items-center space-x-4">
-                  <img
-                    src={item.image}
-                    alt={item.productName}
-                    className="h-20 w-20 object-cover rounded-lg shadow-md"
-                  />
-                  <div>
-                    <p className="text-lg font-semibold text-gray-900">{item.productName}</p>
-                    <p className="text-sm text-gray-500">₹{item.price}</p>
-                  </div>
-                </div>
-                <span className="text-lg font-semibold text-gray-800">x{item.quantity}</span>
-              </div>
-            ))}
-          </div>
         </div>
       </div>
     </div>

@@ -3,12 +3,13 @@ import { motion } from "framer-motion";
 import Loader from "../components/shared/Loader/Loader";
 import { useNavigate } from "react-router-dom";
 import moment from "moment";
-import { useState } from "react";
+import {  useState } from "react";
 
 const MyOrders = () => {
   const [step, setStep] = useState(1);
   
   const { data, isLoading, isError } = useGetMyOrdersQuery({ page: step });
+
   const navigate = useNavigate();
 
   if (isLoading) {
@@ -37,6 +38,7 @@ const MyOrders = () => {
       setStep(step - 1);
     }
   };
+
 
   return (
     <div className="bg-gray-50 min-h-screen py-10">
