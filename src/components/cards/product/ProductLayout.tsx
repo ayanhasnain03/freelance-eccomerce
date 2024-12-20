@@ -4,6 +4,7 @@ import ProductCard from "./ProductCard";
 interface Product {
   _id: string;
   name: string;
+  description: string;
   price: number;
   images: { url: string }[];
   rating: number;
@@ -16,7 +17,6 @@ interface ProductLayoutProps {
 }
 
 const ProductLayout: React.FC<ProductLayoutProps> = ({ data }) => {
-
   const handleFav = useCallback((id: string) => {
     console.log(`Added to favorites: ${id}`);
   }, []);
@@ -25,13 +25,12 @@ const ProductLayout: React.FC<ProductLayoutProps> = ({ data }) => {
     console.log(`Removed from favorites: ${id}`);
   }, []);
 
-
   const productCards = useMemo(
     () =>
       data?.products.map((product) => (
         //@ts-ignore
         <ProductCard
-        // description={product.description}
+          description={product?.description}
           key={product._id}
           name={product.name}
           price={product.price}
@@ -48,7 +47,11 @@ const ProductLayout: React.FC<ProductLayoutProps> = ({ data }) => {
     [data, handleFav, removeFromFav]
   );
 
-  return <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2 max-h-[90vh]">{productCards}</div>;
+  return (
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 w-full h-full">
+      {productCards}
+    </div>
+  );
 };
 
 export default React.memo(ProductLayout);

@@ -36,8 +36,8 @@ const ProductCard: React.FC<ProductCardProps> = memo(
     }, [name]);
 
     return (
-      <article className="w-[250px] h-[350px] overflow-hidden bg-white  relative">
-        {/* Favorite Button */}
+      <article className="w-[250px]  h-[350px] overflow-hidden bg-white  relative">
+ 
         <button
           className="absolute top-2 right-2 z-20"
           aria-label={`Toggle favorite for ${name}`}
@@ -45,7 +45,7 @@ const ProductCard: React.FC<ProductCardProps> = memo(
     
         </button>
 
-        {/* Product Link */}
+
         <Link
           to={`/collections/item/${productId}`}
           className="block relative group"
@@ -53,35 +53,35 @@ const ProductCard: React.FC<ProductCardProps> = memo(
         >
    
 
-          {/* Image */}
-          <div className="w-full h-[200px] overflow-hidden p-4">
+   
+          <div className="">
             <img
               src={image}
               alt={name}
-              className="group-hover:scale-105 transition-all duration-300 ease-in-out w-full h-full object-cover"
+              className="w-[200px] h-[200px] object-cover"
               loading="lazy"
+              
             />
           </div>
         </Link>
 
-        {/* Product Details */}
-        <div className="p-4">
+      
+        <div className="p-4 bg-white">
           <h2 className="text-sm font-satoshi text-gray-700 font-semibold mb-2 truncate">{name}</h2>
 
-          {/* Description */}
           <p className="text-xs text-gray-600 font-medium mb-2">
             {description && description.length > 40
               ? description.slice(0, 40) + "..."
               : description}
           </p>
 
-          {/* Rating */}
+    
           <div className="flex items-center space-x-2 text-xs text-gray-700">
-            <Star rating={rating} />
+            <Star rating={3.5} />
             <span>{rating.toFixed(1)} / 5</span>
           </div>
 
-          {/* Price and Discount */}
+         
           <div className="flex items-center mt-2 space-x-2">
             <p className="text-lg font-semibold text-black">
               ${price.toFixed(2)}
@@ -92,7 +92,7 @@ const ProductCard: React.FC<ProductCardProps> = memo(
           </div>
         </div>
 
-        {/* Add to Cart Button */}
+  
         {isCart && (
           <button
             className="absolute bottom-2 left-2 bg-blue-600 text-white text-sm px-4 py-2 rounded-md hover:bg-blue-700 transition-all"

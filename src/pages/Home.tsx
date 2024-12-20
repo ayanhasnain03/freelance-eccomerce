@@ -1,7 +1,6 @@
 import { lazy } from "react";
 import { motion } from "framer-motion";
-import MenCategory from "../components/Home/MenCategory";
-import WoMenCategory from "../components/Home/WoMenCategory";
+
 
 const LandingPage = lazy(() => import("../components/Home/LandingPage"));
 const TopSelling = lazy(() => import("../components/Home/TopSelling"));
@@ -9,7 +8,11 @@ const NewArrivals = lazy(() => import("../components/Home/NewArrivals"));
 const Stbtn = lazy(() => import("../components/shared/Buttons/Stbtn"));
 const SaleProducts = lazy(
   () => import("../components/Carousel/SalesCarouselCard")
+
 );
+const WoMenCategory = lazy(() => import("../components/Home/WoMenCategory"));
+const MenCategory = lazy(() => import("../components/Home/MenCategory"));
+
 const Home = () => {
   return (
     <div className=" bg-white min-h-screen overflow-x-hidden flex flex-col  justify-center">
@@ -32,7 +35,7 @@ const Home = () => {
       </div>
 
       <div className="flex flex-row items-center justify-center w-full md:p-8">
-        {/* Text Section */}
+      
         <motion.div
           className="w-1/2 bg-red-400 h-[400px] flex flex-col items-center justify-center px-6"
           initial={{ opacity: 0, x: -100 }}
@@ -52,7 +55,7 @@ const Home = () => {
           </button>
         </motion.div>
 
-        {/* Image Section */}
+   
         <motion.div
           className="w-1/2"
           initial={{ opacity: 0, x: 100 }}

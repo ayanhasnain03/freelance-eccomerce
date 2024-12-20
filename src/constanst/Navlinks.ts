@@ -5,15 +5,15 @@
     },
     {
         name:"Mens",
-        path:"/mens"
+        path:"/collections/mens"
     },
     {
         name:"Womens",
-        path:"/womens"
+        path:"/collections/womens"
     },
     {
         name:"Kids",
-        path:"/kids"
+        path:"/collections/kids"
     },{
         name:"Accessories",
         path:"/accessories"

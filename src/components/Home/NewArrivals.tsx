@@ -20,21 +20,20 @@ const NewArrivals = () => {
     >
 <Stbtn text='New Arrivals'/>
 
-      {/* Product Cards */}
+ 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 mt-4 ">
         {newArrivalsData.map((item) => (
           <div
             key={item.id}
             className="flex flex-col items-center bg-white rounded-lg shadow-lg overflow-hidden transition-transform duration-300 transform"
           >
-            {/* Image */}
+    
             <img
               src={item.image}
               alt={item.title}
               className="w-full h-full object-cover transition-opacity duration-300 brightness-75 cursor-pointer"
             />
-            
-            {/* Text */}
+         
             <div className="absolute top-1/2 underline underline-offset-4 left-1/2 transform -translate-x-1/2 text-white text-lg md:text-sm font-inter z-10  px-1 py-1 rounded-md  transition-all duration-300">
 
 <Link to={`/collections/${item.title}`}>{item.title}</Link>

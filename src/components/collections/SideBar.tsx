@@ -18,7 +18,7 @@ const SideBar = () => {
   return (
     <>
       {/* Desktop Sidebar */}
-      <div className="hidden md:flex flex-col bg-white shadow-md p-6 max-w-[300px] relative">
+      <div className="hidden md:flex flex-col bg-white  p-6 max-w-[300px] relative">
         <h1 className="text-2xl font-bold mb-4 ml-3">Filters</h1>
         <Suspense
           fallback={
@@ -26,7 +26,7 @@ const SideBar = () => {
           }
         >
           <div className="filter-section">
-            <DiscountSideBar />
+            {/* <DiscountSideBar /> */}
           </div>
           <div className="filter-price">
             <PriceFilter />
@@ -38,7 +38,7 @@ const SideBar = () => {
             <Category />
           </div>
           <div className="filter-brand">
-            <BrandFilter />
+            {/* <BrandFilter /> */}
           </div>
           <div className="filter-rating">
             <RatingFilter />
@@ -75,7 +75,7 @@ const SideBarMobile = () => {
 
       {handleFilterMob && (
         <div
-          className={`fixed top-0 left-0 w-4/5 h-full bg-white shadow-xl p-6 z-50 transition-all duration-500 ease-in-out transform overflow-y-auto ${
+          className={`fixed top-0 left-0 w-4/5 h-full bg-white  p-6 z-50 transition-all duration-500 ease-in-out transform overflow-y-auto ${
             handleFilterMob
               ? "translate-x-0 opacity-100"
               : "-translate-x-full opacity-0"
@@ -96,7 +96,7 @@ const SideBarMobile = () => {
               }
             >
               <div className="filter-section">
-                <DiscountSideBar />
+                {/* <DiscountSideBar /> */}
               </div>
               <div className="filter-price">
                 <PriceFilter />
@@ -108,7 +108,7 @@ const SideBarMobile = () => {
                 <Category />
               </div>
               <div className="filter-brand">
-                <BrandFilter />
+                {/* <BrandFilter /> */}
               </div>
               <div className="filter-rating">
                 <RatingFilter />

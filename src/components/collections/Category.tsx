@@ -4,9 +4,14 @@ import { MdKeyboardArrowDown } from "react-icons/md";
 import { useDispatch } from "react-redux";
 import { useGetCategoriesQuery } from "../../redux/api/productApi";
 import { setCategories } from "../../redux/reducers/productReducer";
+import { useLocation } from "react-router-dom";
 
 const CategoryFilter = () => {
-  const { data } = useGetCategoriesQuery("");
+const params = useLocation();
+const forWhat = useMemo(() => params.pathname.split("/")[2], [params.pathname]);
+  const { data } = useGetCategoriesQuery({
+    forWhat: forWhat,
+  });
   const categoryOptions = useMemo(() => data?.categories || [], [data]);
   const dispatch = useDispatch();
 

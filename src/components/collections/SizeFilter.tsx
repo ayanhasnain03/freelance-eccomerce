@@ -15,7 +15,7 @@ const dispatch = useDispatch();
     []
   );
 
-  // Handle checkbox change
+
   const handleCheckboxChange = useCallback((size: string) => {
     setSelectedSizes((prev) =>
       prev.includes(size)
@@ -25,6 +25,7 @@ const dispatch = useDispatch();
   }, []);
 
   const handleApplyFilter = useCallback(() => {
+    
     dispatch(setSizes(selectedSizes));
   }, [selectedSizes]);
 

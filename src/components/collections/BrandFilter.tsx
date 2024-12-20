@@ -1,9 +1,11 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { MdKeyboardArrowDown } from "react-icons/md";
+import { useDispatch } from "react-redux";
+import { setBrands } from "../../redux/reducers/productReducer";
 
 const brands = [
-  { id: 1, name: "Nike" },
+  { id: 1, name: "louisz" },
   { id: 2, name: "Adidas" },
   { id: 3, name: "Puma" },
   { id: 4, name: "Reebok" },
@@ -14,6 +16,7 @@ const brands = [
 ];
 
 const BrandFilter = () => {
+  const dispatch = useDispatch();
   const [isOpen, setIsOpen] = useState(false);
   const [selectedBrands, setSelectedBrands] = useState<number[]>([]);
 
@@ -31,11 +34,8 @@ const BrandFilter = () => {
     const selectedFilters = brands.filter((brand) =>
       selectedBrands.includes(brand.id)
     );
-    const message =
-      selectedFilters.map((brand) => brand.name).join(", ") ||
-      "No brands selected";
-
-    alert(`Selected brands: ${message}`);
+    dispatch(setBrands(selectedFilters));
+ 
   };
 
   return (

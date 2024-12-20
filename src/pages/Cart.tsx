@@ -16,10 +16,10 @@ const CartPage: React.FC = () => {
     useSelector((state: any) => state.cart);
   const dispatch = useDispatch();
 
-  // State for coupon
+ 
   const [coupon, setCoupon] = useState("");
 
-  // Handlers
+
   const handleRemoveItem = (id: string) => {
     dispatch(removeToCart(id));
   };
@@ -50,7 +50,7 @@ const CartPage: React.FC = () => {
     cartItems.forEach((item: any) => dispatch(removeToCart(item._id)));
   };
 
-  // Apply discount based on coupon
+
   const appliedDiscount = coupon === "DISCOUNT10" ? subtotal * 0.1 : 0;
 
   useEffect(() => {
@@ -119,7 +119,6 @@ const CartPage: React.FC = () => {
       <div className="w-80 p-6 bg-white rounded-lg shadow-md">
         <h2 className="text-2xl font-semibold mb-4">Order Summary</h2>
 
-        {/* Coupon Section */}
         <div className="mb-4">
           <label htmlFor="coupon" className="text-sm font-medium">
             Coupon Code

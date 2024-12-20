@@ -5,11 +5,11 @@ const MobileLandingPage = () => {
   return (
 
     <div className="md:hidden">
-    {/* Mobile Banner Section */}
+
     <div className="relative">
       <img src="hero.webp" alt="Mobile Banner" className="w-full h-auto object-cover" />
       
-      {/* Overlay with Text and Button */}
+ 
       <div className="absolute top-0 left-0 right-0 bottom-0 bg-black bg-opacity-50 flex flex-col justify-center items-center text-center px-6">
         <h2 className="text-white text-4xl font-agu mb-4">
           Unleash Your Style

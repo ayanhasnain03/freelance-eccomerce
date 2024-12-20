@@ -9,16 +9,24 @@ const api = createApi({
   tagTypes: ["Product"],
   endpoints: (builder) => ({
     getCategories: builder.query({
-      query: () => "/category",
+      query: ({ forWhat }) => {
+        let base = `/category`;
+        const queryParams: string[] = [];
+        if (forWhat) queryParams.push(`forWhat=${forWhat}`);
+        if (queryParams.length > 0) {
+          base += `?${queryParams.join("&")}`;
+        }
+        return base;
+      },
       providesTags: ["Product"],
-      // Enable caching
-      keepUnusedDataFor: 60, // Cache data for 60 seconds
+      keepUnusedDataFor: 60, 
     }),
  getProducts: builder.query({
-  query: ({ category, price, brand, sort, page,discount,sizes }) => {
+  query: ({ category, price, brand, sort, page,discount,sizes,forwhat }) => {
     let base = `/product`;
     const queryParams: string[] = [];
     if (category) queryParams.push(`category=${category}`);
+    if (forwhat) queryParams.push(`forwhat=${forwhat}`);
   if(price) queryParams.push(`price=${price}`);
     if (brand) queryParams.push(`brand=${brand}`);
     if (discount) queryParams.push(`discount=${discount}`);

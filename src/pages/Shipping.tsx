@@ -1,96 +1,156 @@
-import React, { useState } from 'react';
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import React, { useState, useMemo } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { toast } from "react-hot-toast";
+import { resetCart, setShippingInfo } from "../redux/reducers/cartReducer";
 
 interface FormData {
   name: string;
   address: string;
-  landmark: string;
   city: string;
   state: string;
   pincode: string;
   country: string;
   phoneNo: string;
-  secondPhoneNo: string;
 }
 
 const ShippingPage: React.FC = () => {
+  const dispatch = useDispatch();
   const { user } = useSelector((state: any) => state.user);
-  const { subtotal, shippingCharges, tax, discount, total } = useSelector((state: any) => state.cart);
+  const { subtotal, shippingCharges, tax, discount, total, cartItems, shippingInfo } =
+    useSelector((state: any) => state.cart);
 
-  const [paymentMethod, setPaymentMethod] = useState<'COD' | 'razorpay'>('COD');
+  const modifiedCartItems = useMemo(() => {
+    return cartItems.map((item: any) => ({
+      productId: item._id,
+name: item.productName,
+quantity: item.quantity,
+price: item.price,
+image: item.image,
+size: item.sizes,
+    }));
+  }, [cartItems]);
+
+  const [paymentMethod, setPaymentMethod] = useState<"COD" | "razorpay">("COD");
   const [formData, setFormData] = useState<FormData>({
-    name: '',
-    address: '',
-    landmark: '',
-    city: '',
-    state: '',
-    pincode: '',
-    country: '',
-    phoneNo: '',
-    secondPhoneNo: '',
+    name: user?.name || "",
+    address: shippingInfo?.address || "",
+    city: shippingInfo?.city || "",
+    state: shippingInfo?.state || "",
+    pincode: shippingInfo?.pinCode || "",
+    country: shippingInfo?.country || "",
+    phoneNo: user?.phoneNo || "",
   });
   const [loading, setLoading] = useState<boolean>(false);
+  const [paymentStatus, setPaymentStatus] = useState<string | null>(null);
   const navigate = useNavigate();
 
   const handlePlaceOrder = async () => {
     if (!formData.name || !formData.address || !formData.city || !formData.state || !formData.pincode || !formData.phoneNo) {
-      alert('Please fill in all required fields.');
+      toast.error("Please fill in all required fields.");
       return;
     }
 
-    if (paymentMethod === 'razorpay') {
-      try {
-        setLoading(true);
-        const totalAmountInPaise = Math.round(total)
+    setLoading(true);
+    dispatch(setShippingInfo({
+      address: formData.address,
+      city: formData.city,
+      state: formData.state,
+      pinCode: formData.pincode,
+      country: formData.country,
+    }));
 
-        const { data: order } = await axios.post(`${import.meta.env.VITE_SERVER}/api/v1/payment/create-payment`, {
-          amount: totalAmountInPaise,
-        });
+    if (paymentMethod === "razorpay") {
+      try {
+        const totalAmountInPaise = Math.round(total);
+        const { data: order } = await axios.post(
+          `${import.meta.env.VITE_SERVER}/api/v1/payment/create-payment`,
+          { amount: totalAmountInPaise }
+        );
 
         if (order.id) {
           initializeRazorpayPayment(order);
         } else {
-          alert('Invalid order response from server.');
+          toast.error("Invalid order response from server.");
         }
       } catch (error: any) {
-        console.error('Error creating order:', error.response || error.message);
-        alert(`Error: ${error.response?.data?.message || 'Something went wrong'}`);
+        setPaymentStatus("Payment creation failed. Please try again.");
+        console.error("Error creating order:", error.response || error.message);
       } finally {
         setLoading(false);
       }
     } else {
-      alert('Order placed successfully with COD');
-      navigate('/myOrders');
+      await placeOrder();
+    }
+  };
+
+  const placeOrder = async (razorpayOrderId: string | null = null) => {
+    try {
+      const orderData = {
+        userId: user._id,
+        razorpayOrderId: razorpayOrderId, // Pass razorpayOrderId here
+        items: modifiedCartItems,
+        paymentMethod: paymentMethod,
+        shippingAddress: {
+          street: formData.address,
+          city: formData.city,
+          state: formData.state,
+          zipCode: formData.pincode,
+          country: formData.country,
+        },
+        discounts: discount,
+        tax,
+        subtotal,
+        total,
+        customerPhoneNumber: formData.phoneNo,
+        customerName: formData.name,
+      };
+
+      await axios.post(
+        `${import.meta.env.VITE_SERVER}/api/v1/order/create`,
+        orderData,
+        { withCredentials: true }
+      );
+
+      dispatch(resetCart());
+      navigate("/myOrders");
+
+    } catch (error: any) {
+      console.error("Order creation failed:", error.response || error.message);
+      setPaymentStatus("Order creation failed. Please try again.");
     }
   };
 
   const initializeRazorpayPayment = (order: { id: string; amount: number }) => {
     const options = {
-      key: 'rzp_test_H3dRMlyt954d2B',
+      key: "rzp_test_H3dRMlyt954d2B",
       amount: order.amount,
-      currency: 'INR',
+      currency: "INR",
       order_id: order.id,
       name: formData.name,
-      description: 'Your order description',
+      description: "Your order description",
       handler: async (response: any) => {
         try {
-          const { data } = await axios.post(`${import.meta.env.VITE_SERVER}/api/v1/payment/verify`, {
-            razorpay_order_id: order.id,
-            razorpay_payment_id: response.razorpay_payment_id,
-            razorpay_signature: response.razorpay_signature,
-          });
+          const { data } = await axios.post(
+            `${import.meta.env.VITE_SERVER}/api/v1/payment/verify`,
+            {
+              razorpay_order_id: order.id,
+              razorpay_payment_id: response.razorpay_payment_id,
+              razorpay_signature: response.razorpay_signature,
+            }
+          );
 
           if (data.success) {
-            alert('Payment verified successfully! Your order is placed.');
-            navigate('/myOrders');
+            toast.success("Payment successful, order placed.");
+            await placeOrder(order.id);
+            toast.success("Invoice sent to your email.");
           } else {
-            alert('Payment verification failed. Please contact support.');
+            setPaymentStatus("Payment verification failed. Please contact support.");
           }
         } catch (error) {
-          console.error('Error verifying payment:', error);
-          alert('An unexpected error occurred during payment verification.');
+          setPaymentStatus("Error during payment verification.");
+          console.error("Error verifying payment:", error);
         }
       },
       prefill: {
@@ -102,7 +162,7 @@ const ShippingPage: React.FC = () => {
         address: formData.address,
       },
       theme: {
-        color: '#3399cc',
+        color: "#3399cc",
       },
     };
 
@@ -111,81 +171,128 @@ const ShippingPage: React.FC = () => {
     razorpayInstance.open();
   };
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>, field: keyof FormData) => {
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    field: keyof FormData
+  ) => {
     setFormData({ ...formData, [field]: e.target.value });
   };
 
   return (
     <div className="min-h-screen bg-gray-50 py-8 px-6">
-      <div className="max-w-4xl mx-auto bg-white shadow-lg rounded-lg p-6 space-y-8">
-        <section>
-          <h2 className="text-2xl font-semibold mb-4">Enter Shipping Address</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {Object.keys(formData).map((key) => (
-              <input
-                key={key}
-                type="text"
-                placeholder={key.replace(/([A-Z])/g, ' $1')}
-                className="w-full p-2 border border-gray-300 rounded-md"
-                value={(formData as any)[key]}
-                onChange={(e) => handleInputChange(e, key as keyof FormData)}
-              />
+      <div className="flex max-w-7xl mx-auto space-x-8">
+        {/* Left Side: Shipping Form */}
+        <div className="flex-1 bg-white shadow-lg rounded-lg p-6 space-y-8">
+          <section>
+            <h2 className="text-2xl font-semibold mb-4">Enter Shipping Address</h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {Object.keys(formData).map((key) => (
+                <div key={key} className="w-full">
+                  <input
+                    type="text"
+                    placeholder={key.replace(/([A-Z])/g, " $1")}
+                    className="w-full p-2 border border-gray-300 rounded-md"
+                    value={(formData as any)[key]}
+                    onChange={(e) => handleInputChange(e, key as keyof FormData)}
+                  />
+                </div>
+              ))}
+            </div>
+          </section>
+
+          <section>
+            <h2 className="text-2xl font-semibold mb-4">Payment Information</h2>
+            <div className="space-x-4">
+              <button
+                onClick={() => setPaymentMethod("COD")}
+                className={`p-2 rounded-md border ${
+                  paymentMethod === "COD" ? "bg-blue-500 text-white" : "bg-white"
+                }`}
+              >
+                Cash on Delivery
+              </button>
+              <button
+                onClick={() => setPaymentMethod("razorpay")}
+                className={`p-2 rounded-md border ${
+                  paymentMethod === "razorpay"
+                    ? "bg-blue-500 text-white"
+                    : "bg-white"
+                }`}
+              >
+                Online Payment (Razorpay)
+              </button>
+            </div>
+          </section>
+
+          <section>
+            <h2 className="text-2xl font-semibold mb-4">Order Summary</h2>
+            <div className="space-y-4">
+              <div className="flex justify-between">
+                <span>Item Total</span>
+                <span>₹{subtotal.toFixed(2)}</span>
+              </div>
+              <div className="flex justify-between">
+                <span>Shipping Fee</span>
+                <span>₹{shippingCharges.toFixed(2)}</span>
+              </div>
+              <div className="flex justify-between">
+                <span>Tax</span>
+                <span>₹{tax.toFixed(2)}</span>
+              </div>
+              <div className="flex justify-between">
+                <span>Discount</span>
+                <span>-₹{discount.toFixed(2)}</span>
+              </div>
+              <div className="flex justify-between font-semibold text-lg">
+                <span>Total</span>
+                <span>₹{total.toFixed(2)}</span>
+              </div>
+            </div>
+          </section>
+
+          <div className="flex justify-center mt-8">
+            <button
+              onClick={handlePlaceOrder}
+              className="bg-blue-600 text-white py-2 px-6 rounded-md"
+              disabled={loading}
+            >
+              {loading
+                ? "Processing..."
+                : paymentMethod === "razorpay"
+                ? "Pay Now"
+                : "Place Order (COD)"}
+            </button>
+          </div>
+
+          {paymentStatus && (
+            <div className="mt-4 text-center text-red-500">{paymentStatus}</div>
+          )}
+        </div>
+
+        {/* Right Side: Cart Items */}
+        <div className="w-full sm:w-1/3 bg-white shadow-lg rounded-lg p-6 space-y-6">
+          <h2 className="text-2xl font-semibold mb-4 text-gray-800">Cart Items</h2>
+          <div className="space-y-4">
+            {cartItems.map((item: any) => (
+              <div
+                key={item._id}
+                className="flex justify-between items-center border-b py-4 hover:bg-gray-50 transition duration-200"
+              >
+                <div className="flex items-center space-x-4">
+                  <img
+                    src={item.image}
+                    alt={item.productName}
+                    className="h-20 w-20 object-cover rounded-lg shadow-md"
+                  />
+                  <div>
+                    <p className="text-lg font-semibold text-gray-900">{item.productName}</p>
+                    <p className="text-sm text-gray-500">₹{item.price}</p>
+                  </div>
+                </div>
+                <span className="text-lg font-semibold text-gray-800">x{item.quantity}</span>
+              </div>
             ))}
           </div>
-        </section>
-
-        <section>
-          <h2 className="text-2xl font-semibold mb-4">Payment Information</h2>
-          <div className="space-x-4">
-            <button
-              onClick={() => setPaymentMethod('COD')}
-              className={`p-2 rounded-md border ${paymentMethod === 'COD' ? 'bg-blue-500 text-white' : 'bg-white'}`}
-            >
-              Cash on Delivery
-            </button>
-            <button
-              onClick={() => setPaymentMethod('razorpay')}
-              className={`p-2 rounded-md border ${paymentMethod === 'razorpay' ? 'bg-blue-500 text-white' : 'bg-white'}`}
-            >
-              Online Payment (Razorpay)
-            </button>
-          </div>
-        </section>
-
-        <section>
-          <h2 className="text-2xl font-semibold mb-4">Order Summary</h2>
-          <div className="space-y-4">
-            <div className="flex justify-between">
-              <span>Item Total</span>
-              <span>₹{subtotal.toFixed(2)}</span>
-            </div>
-            <div className="flex justify-between">
-              <span>Shipping Fee</span>
-              <span>₹{shippingCharges.toFixed(2)}</span>
-            </div>
-            <div className="flex justify-between">
-              <span>Tax</span>
-              <span>₹{tax.toFixed(2)}</span>
-            </div>
-            <div className="flex justify-between">
-              <span>Discount</span>
-              <span>-₹{discount.toFixed(2)}</span>
-            </div>
-            <div className="flex justify-between font-semibold text-lg">
-              <span>Total</span>
-              <span>₹{total.toFixed(2)}</span>
-            </div>
-          </div>
-        </section>
-
-        <div className="flex justify-center mt-8">
-          <button
-            onClick={handlePlaceOrder}
-            className="bg-blue-600 text-white py-2 px-6 rounded-md"
-            disabled={loading}
-          >
-            {loading ? 'Processing...' : paymentMethod === 'razorpay' ? 'Pay Now' : 'Place Order (COD)'}
-          </button>
         </div>
       </div>
     </div>

@@ -30,7 +30,7 @@ const RatingFilter = () => {
   const toggleDropdown = () => setIsDropdownOpen((prev) => !prev);
 
   return (
-    <div className="w-full max-w-xs p-4 bg-white rounded-lg shadow-lg">
+    <div className="w-full max-w-xs p-4 bg-white rounded-lg">
       <h3 className="text-xl font-semibold text-gray-800 mb-3">
         Rating Filter
       </h3>

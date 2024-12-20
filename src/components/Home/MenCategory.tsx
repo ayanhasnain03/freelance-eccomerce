@@ -1,6 +1,7 @@
 import Stbtn from "../shared/Buttons/Stbtn";
 import { FaArrowRightLong } from "react-icons/fa6";
 import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
 
 const MenCategory = () => {
   const menCategory = [
@@ -31,7 +32,11 @@ const MenCategory = () => {
             />
             <div className="mt-4 flex justify-between px-4 w-full items-center">
               <p className="text-sm font-semibold text-gray-900">{item.name}</p>
-              <FaArrowRightLong className="text-gray-900 hover:text-primary-red cursor-pointer" />
+
+<Link to={`/collections/mens?category=${item.name}`}>
+<FaArrowRightLong className="text-gray-900 hover:text-primary-red cursor-pointer" />
+
+</Link>
             </div>
           </motion.div>
         ))}

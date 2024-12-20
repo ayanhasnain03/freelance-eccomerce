@@ -12,6 +12,7 @@ import ProtectedRoute from "./components/shared/ProtectedRoute";
 import Dashboard from "./pages/dashbaord/Dashboard";
 import Profile from "./pages/auth/Profile";
 import Shipping from "./pages/Shipping";
+import MyOrders from "./pages/MyOrders";
 
 const Home = lazy(() => import("./pages/Home"));
 const Collection = lazy(() => import("./pages/Collection"));
@@ -42,10 +43,11 @@ const App = () => {
           <Routes>
 
             <Route path="/" element={<Home />} />
-            <Route path="/collections" element={<Collection />} />
+            <Route path="/collections/womens" element={<Collection forWhat={"womens"}  />} />
+            <Route path="/collections/mens" element={<Collection forWhat={"mens"}  />} />
+            <Route path="/collections/kids" element={<Collection forWhat={"kids"}  />} />
             <Route path="/collections/item/:id" element={<ProductPage />} />
             <Route path="/cart" element={<Cart />} />
-            <Route path="/cart/shipping" element={<Shipping />} />
 
             <Route
               element={
@@ -59,9 +61,12 @@ const App = () => {
             </Route>
 
             <Route
-              element={<ProtectedRoute isAuthenticated={isAuthenticated} />}
+              element={<ProtectedRoute isAuthenticated={isAuthenticated} redirect="/auth" />}
             >
               <Route path="/profile" element={<Profile />} />
+            <Route path="/cart/shipping" element={<Shipping />} />
+            <Route path="/myorders" element={<MyOrders />} />
+
             </Route>
 
 

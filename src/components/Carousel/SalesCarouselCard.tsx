@@ -25,12 +25,12 @@ const SaleProducts = () => {
 <CountdownTimer/>
 
 
-      {/* Section Title */}
+
       <div className="text-center mb-8">
         <p className="mt-2 text-lg text-gray-600">Exclusive offers and discounts just for you!</p>
       </div>
 
-      {/* Product Cards */}
+
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
         {saleProductsData.map((product) => (
           <motion.div
@@ -40,14 +40,14 @@ const SaleProducts = () => {
             whileInView={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.6 }}
           >
-            {/* Image */}
+
             <img
               src={product.image}
               alt={product.title}
               className="w-full h-56 object-cover transition-opacity duration-300 group-hover:opacity-80"
             />
 
-            {/* Product Info */}
+
             <div className="p-4 text-center">
               <h3 className="text-lg font-semibold text-black">{product.title}</h3>
               <div className="flex justify-center items-center mt-2">
