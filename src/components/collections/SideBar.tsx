@@ -4,10 +4,10 @@ import { IoMdClose } from "react-icons/io";
 
 
 const Category = lazy(() => import("./Category"));
-const DiscountSideBar = lazy(() => import("./DiscountSideBar"));
+// const DiscountSideBar = lazy(() => import("./DiscountSideBar"));
 const PriceFilter = lazy(() => import("./PriceFilter"));
 const SizeFilter = lazy(() => import("./SizeFilter"));
-const BrandFilter = lazy(() => import("./BrandFilter"));
+// const BrandFilter = lazy(() => import("./BrandFilter"));
 const RatingFilter = lazy(() => import("./RatingFilter"));
 
 
