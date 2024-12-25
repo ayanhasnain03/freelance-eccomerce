@@ -110,7 +110,7 @@ const ShippingPage: React.FC = () => {
     };
 
     try {
-      // Use the createOrders mutation here
+     
       const response = await createOrder(orderData).unwrap();
       console.log("Order created:", response);
       toast.success("Order placed successfully!");

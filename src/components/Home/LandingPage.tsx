@@ -1,5 +1,6 @@
 import { lazy } from "react";
 import { motion } from "framer-motion";  
+import AnimText from "../shared/AnimText";
 const MobileLandingPage = lazy(() => import("./MobileLandingPage"));
 
 const LandingPage = () => {
@@ -58,7 +59,12 @@ const LandingPage = () => {
               animate={{ opacity: 1, y: 0 }}   
               transition={{ duration: 0.6, delay: 0.2 }}
             >
-              Discover our exclusive collection of fashion. Free shipping on orders over $50!
+              Discover our exclusive collection of fashion. Free  
+
+<span className="mx-[0.3rem]">
+<AnimText text="shipping" color="text-black" fontSize="text-[15px]" fontWeight="font-semibold" />
+</span>              
+               on orders over $50!
             </motion.p>
             <motion.button
               className="font-inter underline text-semibold text-rose-600 transition duration-300"

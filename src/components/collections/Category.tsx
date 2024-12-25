@@ -9,9 +9,12 @@ import { useLocation } from "react-router-dom";
 const CategoryFilter = () => {
 const params = useLocation();
 const forWhat = useMemo(() => params.pathname.split("/")[2], [params.pathname]);
+
   const { data } = useGetCategoriesQuery({
-    forWhat: forWhat,
+    forwhat: forWhat,
   });
+ 
+ 
   const categoryOptions = useMemo(() => data?.categories || [], [data]);
   const dispatch = useDispatch();
 
@@ -70,7 +73,7 @@ const forWhat = useMemo(() => params.pathname.split("/")[2], [params.pathname]);
                 id={`category-${category._id}`}
                 checked={selectedCategories.includes(category.name)}
                 onChange={() => handleCheckboxChange(category.name)}
-                className="text-teal-600 focus:ring-2 focus:ring-teal-500"
+                className="w-4 h-4 text-teal-600 bg-gray-100 border-gray-300 rounded  dark:bg-gray-700 dark:border-gray-600"
               />
               <label htmlFor={`category-${category._id}`} className="text-sm text-gray-700">
                 {category.name}
@@ -81,7 +84,7 @@ const forWhat = useMemo(() => params.pathname.split("/")[2], [params.pathname]);
 
         <button
           onClick={handleApplyFilter}
-          className="mt-6 w-full bg-teal-400 text-white text-sm font-medium py-2 px-4 rounded-lg hover:bg-teal-500 transition duration-200"
+          className="mt-6 w-full bg-[#0F766E] text-white text-sm font-medium py-2 px-4 rounded-lg hover:bg-[#0F766E]/90 transition duration-200"
         >
           Apply Filter
         </button>

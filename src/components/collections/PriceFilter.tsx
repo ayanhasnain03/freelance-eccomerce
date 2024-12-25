@@ -61,7 +61,7 @@ const handleApplyFilter = useCallback(() => {
   };
 
   return (
-    <div className="w-full max-w-sm p-4 bg-white shadow-lg rounded-lg">
+    <div className="w-full max-w-xs p-4 bg-white ">
       <div
         className="flex justify-between items-center cursor-pointer"
         onClick={toggleDropdown}

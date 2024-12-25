@@ -19,7 +19,7 @@ const Collection = memo(({ forWhat }: any) => {
   const params = useLocation();
   const fromCategory = new URLSearchParams(params.search).get("category");
 
-  const { categories, price, sizes, brands } = useSelector(
+  const { categories, price, sizes, brands,rating } = useSelector(
     (state: {
       product: {
         categories: string[];
@@ -27,6 +27,7 @@ const Collection = memo(({ forWhat }: any) => {
         sizes: string[];
         brands: { name: string }[];
         forWhat: { name: string }[];
+        rating: number;
       };
     }) => state.product
   );
@@ -63,6 +64,7 @@ const Collection = memo(({ forWhat }: any) => {
     brand: selectedBrand.join(","),
     forwhat: forWhat,
     page: currentPage,
+    rating: rating
   });
 
   const totalPages = data?.totalPage || 1;
@@ -99,7 +101,7 @@ const Collection = memo(({ forWhat }: any) => {
         </p>
         <button
           onClick={handleResetFilters}
-          className="mt-4 px-6 py-2 text-white bg-blue-600 rounded hover:bg-blue-700"
+          className="mt-4 px-6 py-2 text-white bg-rose-600 rounded hover:bg-rose-700"
         >
           Retry
         </button>
@@ -111,7 +113,7 @@ const Collection = memo(({ forWhat }: any) => {
     <div className="flex flex-col md:flex-row relative h-full bg-white">
       <Suspense fallback={<Loader />}>
         <CollectionLayout>
-          <div>
+          <div >
             <SideBar />
           </div>
           {data?.products?.length === 0 ? (
@@ -124,22 +126,22 @@ const Collection = memo(({ forWhat }: any) => {
               </p>
               <button
                 onClick={handleResetFilters}
-                className="mt-4 px-6 py-2 text-white bg-blue-600 rounded hover:bg-blue-700"
+                className="mt-4 px-6 py-2 text-white bg-rose-600 rounded hover:bg-rose-700"
               >
                 Reset Filters
               </button>
             </div>
           ) : (
-            <div className="max-w-full mx-auto h-full">
+            <div className="max-w-full mx-auto h-full p-8 mt-20 md:p-0 md:mt-0">
               <ProductLayout data={data} />
-              <div className="flex justify-center items-center space-x-4 mt-6">
+              <div className="flex justify-center right-0 items-center space-x-4 mt-6">
                 <button
                   onClick={() => setCurrentPage(currentPage - 1)}
                   disabled={currentPage === 1}
-                  className={`px-4 py-2 text-white bg-blue-600 rounded ${
+                  className={`px-4 py-2 text-white bg-rose-600 rounded ${
                     currentPage === 1
                       ? "opacity-50 cursor-not-allowed"
-                      : "hover:bg-blue-700"
+                      : "hover:bg-rose-700"
                   }`}
                 >
                   Previous
@@ -150,10 +152,10 @@ const Collection = memo(({ forWhat }: any) => {
                 <button
                   onClick={() => setCurrentPage(currentPage + 1)}
                   disabled={currentPage === totalPages}
-                  className={`px-4 py-2 text-white bg-blue-600 rounded ${
+                  className={`px-4 py-2 text-white bg-rose-600 rounded ${
                     currentPage === totalPages
                       ? "opacity-50 cursor-not-allowed"
-                      : "hover:bg-blue-700"
+                      : "hover:bg-rose-700"
                   }`}
                 >
                   Next

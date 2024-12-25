@@ -1,109 +1,51 @@
+import React, { lazy, Suspense } from "react";
+import { motion } from "framer-motion";
 
-import { lazy } from "react";
-const ProductCard = lazy(() => import("../cards/product/ProductCard"));
-import {motion} from 'framer-motion'
-import { Link } from "react-router-dom";
+import { useGetTopSellingProductQuery } from "../../redux/api/productApi";
+import Skeleton from "../shared/Skeleton"; // Replace with your skeleton loader component
 
-const TopSelling = () => {
-  const data = [
-    {
-      id: "1",
-      name: "Casual Cotton T-Shirt",
-      description:
-        "A comfortable and breathable cotton T-shirt, perfect for casual wear.",
-      price: 15,
-      image: "menCat3.jpg",
-      rating: 4.5,
-    },
-    {
-      id: "2",
-      name: "Slim Fit Jeans",
-      description: "Stylish slim-fit jeans crafted from high-quality denim.",
-      price: 40,
-      image: "arrival2.png",
-      rating: 4.2,
-    },
-    {
-      id: "3",
-      name: "Leather Jacket",
-      description:
-        "Premium leather jacket with a modern design for all seasons.",
-      price: 120,
-      image: "arrival3.png",
-      rating: 4.8,
-    },
-    {
-      id: "4",
-      name: "Floral Summer Dress",
-      description:
-        "A vibrant summer dress with floral patterns for a breezy look.",
-      price: 55,
-      image: "card.png",
-      rating: 4.6,
-    },
-    {
-      id: "5",
-      name: "Floral Summer Dress",
-      description:
-        "A vibrant summer dress with floral patterns for a breezy look.",
-      price: 55,
-      image: "card.png",
-      rating: 4.6,
-    },
-    {
-      id: "6",
-      name: "Floral Summer Dress",
-      description:
-        "A vibrant summer dress with floral patterns for a breezy look.",
-      price: 55,
-      image: "card.png",
-      rating: 4.6,
-    },
-    {
-      id: "7",
-      name: "Floral Summer Dress",
-      description:
-        "A vibrant summer dress with floral patterns for a breezy look.",
-      price: 55,
-      image: "card.png",
-      rating: 4.6,
-    },
-    {
-      id: "8",
-      name: "Floral Summer Dress",
-      description:
-        "A vibrant summer dress with floral patterns for a breezy look.",
-      price: 55,
-      image: "card.png",
-      rating: 4.6,
-    },
-  ];
-  return (
-    <motion.div className="flex flex-col gap-2 mt-2 h-full  w-full items-center  justify-center relative"
-    initial={{ opacity: 0, y: 50 }} 
-    whileInView={{ opacity: 1, y: 0 }} 
-    viewport={{ once: true }} 
-    transition={{ duration: 0.8 }} 
-    
-    >
+const ProductLayout = lazy(() => import("../cards/product/ProductLayout"));
 
+const TopSelling: React.FC = () => {
+  const { data, isLoading, isError } = useGetTopSellingProductQuery("");
 
-
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-4 relative">
-        {data.map((item) => (
-          //@ts-ignore
-          <ProductCard key={item.id} productId={item.id} name={item.name} image={item.image}  discount={0} price={item.price} rating={item.rating} isFav={true} isCart={false} handleFav={() => {}} removeFromFav={() => {}}/>
-        ))}
-
+  if (isError) {
+    return (
+      <div className="text-center py-10 text-red-500">
+        Failed to load top-selling products. Please try again later.
       </div>
-      <p className='text-center'>
-        <Link
-          to="/collections"
-          className="text-slate-600 hover:text-slate-800 transition underline duration-300"
-        >
-         More
-        </Link>
-      </p>
+    );
+  }
+  
+
+  return (
+    <motion.div
+      className="flex flex-col gap-6 mt-6 w-full items-center justify-center relative px-8"
+      initial={{ opacity: 0, y: 50 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.8 }}
+    >
+  
+      <div className="flex flex-col items-center justify-center">
+        <h2 className="text-2xl md:text-3xl font-bold text-gray-800 mb-4">
+          Top-Selling Products
+        </h2>
+        <p className="text-gray-600 text-sm md:text-base">
+          Explore the best-selling products from our store.
+        </p>
+      </div>
+
+   
+      <Suspense fallback={<Skeleton quantity={3} />}>
+        {isLoading ? (
+          <Skeleton quantity={4} />
+        ) : (
+          <div className="w-full flex flex-wrap justify-center gap-4">
+            <ProductLayout data={data} />
+          </div>
+        )}
+      </Suspense>
     </motion.div>
   );
 };

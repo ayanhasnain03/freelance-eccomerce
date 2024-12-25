@@ -1,6 +1,8 @@
 import { useState, useCallback, useMemo } from "react";
 import { FaStar, FaRegStar } from "react-icons/fa";
 import { MdKeyboardArrowDown } from "react-icons/md";
+import { useDispatch } from "react-redux";
+import { setRating } from "../../redux/reducers/productReducer";
 
 const RatingFilter = () => {
   const [selectedRating, setSelectedRating] = useState<number | null>(null);
@@ -18,13 +20,11 @@ const RatingFilter = () => {
     return [5, 4, 3, 2, 1];
   }, []);
 
+  const dispatch = useDispatch();
   const handleApplyFilter = () => {
-    const message = selectedRating
-      ? `Selected rating: ${selectedRating} Star${
-          selectedRating > 1 ? "s" : ""
-        }`
-      : "No rating selected";
-    alert(message);
+    if (selectedRating) {
+      dispatch(setRating(selectedRating));
+    }
   };
 
   const toggleDropdown = () => setIsDropdownOpen((prev) => !prev);
@@ -45,9 +45,19 @@ const RatingFilter = () => {
           aria-expanded={isDropdownOpen}
         >
           <span className="text-sm text-gray-700">
-            {selectedRating
-              ? `${selectedRating} Star${selectedRating > 1 ? "s" : ""}`
-              : "Select Rating"}
+            {selectedRating ? (
+              <div className="flex space-x-1">
+                {Array.from({ length: 5 }, (_, index) =>
+                  index < selectedRating ? (
+                    <FaStar key={index} className="text-yellow-500" />
+                  ) : (
+                    <FaRegStar key={index} className="text-yellow-500" />
+                  )
+                )}
+              </div>
+            ) : (
+              "Select Rating"
+            )}
           </span>
 
           <MdKeyboardArrowDown

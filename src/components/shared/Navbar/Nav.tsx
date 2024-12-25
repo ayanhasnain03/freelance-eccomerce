@@ -160,8 +160,12 @@ const Nav: React.FC<NavProps> = ({ user }) => {
           </Link>
         </div>
 
-        <FaRegHeart className="w-6 h-6 cursor-pointer text-[#3f3f3f]" aria-label="Wishlist" />
-      </div>
+<Link to="/profile/wishlist" aria-label="Go to wishlist">
+<FaRegHeart className="w-6 h-6 cursor-pointer text-[#3f3f3f]" aria-label="Wishlist" />
+
+          </Link>
+  
+        </div>
 
       {isMobile && (
         <div

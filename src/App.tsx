@@ -13,6 +13,7 @@ import Dashboard from "./pages/dashbaord/Dashboard";
 import Profile from "./pages/auth/Profile";
 import Shipping from "./pages/Shipping";
 import MyOrders from "./pages/MyOrders";
+import WishList from "./pages/WishList";
 
 const Home = lazy(() => import("./pages/Home"));
 const Collection = lazy(() => import("./pages/Collection"));
@@ -29,7 +30,10 @@ const App = () => {
       .get(`${import.meta.env.VITE_SERVER}/api/v1/user/profile`, {
         withCredentials: true,
       })
-      .then((res) => dispatch(userExist(res.data.user)))
+      .then((res) => {
+        dispatch(userExist(res.data.user));
+      }
+    )
       .catch(() => dispatch(userNotExist()));
   }, [dispatch]);
 
@@ -64,6 +68,7 @@ const App = () => {
               element={<ProtectedRoute isAuthenticated={isAuthenticated} redirect="/auth" />}
             >
               <Route path="/profile" element={<Profile />} />
+              <Route path="/profile/wishlist" element={<WishList />} />
             <Route path="/cart/shipping" element={<Shipping />} />
             <Route path="/myorders" element={<MyOrders />} />
 

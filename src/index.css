@@ -41,3 +41,58 @@ html {
 body {
     -webkit-overflow-scrolling: touch; /* For iOS devices */
 }
+
+/* CSS for optimized animations */
+
+/* Fade-in effect for text */
+@keyframes fadeIn {
+    0% {
+      opacity: 0;
+      transform: scale(0.95); /* Slight scale down for initial state */
+    }
+    100% {
+      opacity: 1;
+      transform: scale(1); /* Return to normal size */
+    }
+  }
+  
+  /* Drawing animation for the SVG path */
+  @keyframes draw {
+    0% {
+      stroke-dashoffset: 500; /* Start with the path hidden */
+    }
+    100% {
+      stroke-dashoffset: 0; /* End with the full path visible */
+    }
+  }
+  
+  .animate-visible {
+    opacity: 1;
+    transform: scale(1);
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+  }
+  
+  .animate-fade-in {
+    animation: fadeIn 1s ease-out forwards;
+  }
+  
+  .animate-draw {
+    animation: draw 1.5s ease-in-out forwards;
+    stroke-dasharray: 500;
+    stroke-dashoffset: 500; 
+    transition: stroke-dashoffset 1.5s ease-in-out; 
+  }
+  
+
+  .animate-draw:nth-child(1) {
+    animation-delay: 0s;
+  }
+  
+  .animate-draw:nth-child(2) {
+    animation-delay: 1s; 
+  }
+  
+  .animate-draw:nth-child(3) {
+    animation-delay: 2s; 
+  }
+  

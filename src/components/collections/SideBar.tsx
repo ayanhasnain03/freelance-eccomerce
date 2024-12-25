@@ -18,7 +18,7 @@ const SideBar = () => {
   return (
     <>
       {/* Desktop Sidebar */}
-      <div className="hidden md:flex flex-col bg-white  p-6 max-w-[300px] relative">
+      <div className="hidden md:flex flex-col bg-white   max-w-[400px] relative">
         <h1 className="text-2xl font-bold mb-4 ml-3">Filters</h1>
         <Suspense
           fallback={
@@ -98,7 +98,7 @@ const SideBarMobile = () => {
               <div className="filter-section">
                 {/* <DiscountSideBar /> */}
               </div>
-              <div className="filter-price">
+              <div className="filter-price mt-10">
                 <PriceFilter />
               </div>
               <div className="filter-size">

@@ -5,6 +5,7 @@ const initialState = {
   brands: [],
   price: [],
  sizes: [],
+ rating:0,
   sort: "",
   page: 1,
 
@@ -33,6 +34,9 @@ const productSlice = createSlice({
     setPage: (state, action) => {
       state.page = action.payload;
     },
+    setRating:(state,action)=>{
+      state.rating = action.payload
+    },
     resetFilters: (state) => {
       state.categories = [];
       state.brands = [];
@@ -53,4 +57,5 @@ export const {
   setSort,
   setPage,
   resetFilters,
+  setRating
 } = productSlice.actions;
