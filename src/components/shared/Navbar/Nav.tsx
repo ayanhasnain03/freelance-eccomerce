@@ -7,7 +7,7 @@ import { setIsMobile } from "../../../redux/reducers/misc";
 import { memo, useCallback, useState, ChangeEvent } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
-
+import Logo from "../../../assets/fashalt.svg"
 interface User {
   _id?: string;
 }
@@ -66,7 +66,9 @@ const Nav: React.FC<NavProps> = ({ user }) => {
   };
 
   return (
-    <nav className="flex items-center justify-between px-6 py-4 md:px-12 md:py-4 bg-white shadow-md relative">
+   <header>
+
+<nav className="flex items-center justify-between px-6 py-4 md:px-12 md:py-4 bg-white shadow-md relative">
       <button
         className="md:hidden"
         aria-label={isMobile ? "Close menu" : "Open menu"}
@@ -85,7 +87,7 @@ const Nav: React.FC<NavProps> = ({ user }) => {
 
       <Link to="/" aria-label="Go to homepage" className="flex-shrink-0 ml-4 md:ml-0">
         <img
-          src="logo.jpg"
+          src={Logo}
           alt="Logo"
           className="h-8 w-16 md:h-10 md:w-24 cursor-pointer"
         />
@@ -189,6 +191,8 @@ const Nav: React.FC<NavProps> = ({ user }) => {
         </div>
       )}
     </nav>
+
+   </header>
   );
 };
 

@@ -4,6 +4,7 @@ import toast from "react-hot-toast";
 import { useSelector, useDispatch } from "react-redux";
 import { useCreateFavMutation } from "../../../redux/api/productApi";
 import { addtoWishList, removeFromWishList } from "../../../redux/reducers/userReducer";
+import { useNavigate } from "react-router-dom";
 
 const ProductCard = React.lazy(() => import("./ProductCard"));
 
@@ -14,6 +15,7 @@ interface Product {
   price: number;
   images: { url: string }[];
   rating: number;
+  discount: number;
 }
 
 interface ProductLayoutProps {
@@ -31,12 +33,13 @@ interface UserState {
 const API_BASE_URL = import.meta.env.VITE_SERVER;
 
 const ProductLayout: React.FC<ProductLayoutProps> = ({ data }) => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   //@ts-ignore
   const {wishlist} = useSelector((state: UserState) => state.user);
   const [createFav] = useCreateFavMutation();
   const [loading, setLoading] = useState(true);
-console.log(wishlist);
+
   const handleFav = async (id: string) => {
 
     dispatch(addtoWishList(id));
@@ -45,9 +48,12 @@ console.log(wishlist);
       const res = await createFav({ productId: id }).unwrap();
       toast.success(res?.data?.message || "Added to favorites!");
     } catch (error: any) {
-
+      if(error?.data?.message === "Unauthorized"){
+        navigate("/auth");
+        
+      }
       dispatch(removeFromWishList(id));
-      toast.error(error?.message || "Failed to add to favorites.");
+      toast.error(error?.data?.message || "Failed to add to favorites.");
     }
   };
 
@@ -70,17 +76,18 @@ console.log(wishlist);
     }
   };
 
+  
 
   const productCards = useMemo(() => {
-    return data.products.map((product) => (
+    return data?.products?.map((product) => (
       <ProductCard
         key={product._id}
         description={product.description}
         name={product.name}
-        price={product.price}
+        price={product.price - (product.price * product.discount) / 100}
         image={product.images[0]?.url || ""}
         rating={product.rating}
-        discount={10}
+        discount={product.discount}
         productId={product._id}
         //@ts-ignore
         isFav={wishlist.includes(product._id)}
@@ -89,7 +96,7 @@ console.log(wishlist);
         isCart={false}
       />
     ));
-  }, [data.products, wishlist, handleFav, removeFromFav]);
+  }, [data?.products, wishlist, handleFav, removeFromFav]);
 
 
   useEffect(() => {
@@ -98,7 +105,7 @@ console.log(wishlist);
   }, []);
 
 
-  if (data.products.length === 0 && !loading) {
+  if (data?.products?.length === 0 && !loading) {
     return (
       <div className="text-center w-full py-10">
         <p className="text-xl text-gray-700 font-medium">
@@ -109,9 +116,9 @@ console.log(wishlist);
   }
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 w-full h-full">
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 w-full h-full">
       {loading ? (
-        Array.from({ length: data.products.length || 8 }).map((_, index) => (
+        Array.from({ length: data?.products?.length || 8 }).map((_, index) => (
           <div
             key={index}
             className="animate-pulse bg-gray-200 h-64 w-[300px] rounded-md"
@@ -121,7 +128,7 @@ console.log(wishlist);
         <Suspense
           fallback={
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 w-full h-full">
-              {Array.from({ length: data.products.length || 8 }).map((_, index) => (
+              {Array.from({ length: data?.products?.length || 8 }).map((_, index) => (
                 <div
                   key={index}
                   className="animate-pulse bg-gray-200 h-64 w-[300px] rounded-md"

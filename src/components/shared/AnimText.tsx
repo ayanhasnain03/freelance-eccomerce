@@ -8,6 +8,7 @@ interface AnimTextProps {
   underlinePosition?: { top?: string; bottom?: string; left?: string; right?: string }; 
   svgStrokeWidth?: number; 
   svgCurveHeight?: number; 
+  fontFamily?: string
 }
 
 const AnimText = ({
@@ -18,6 +19,7 @@ const AnimText = ({
   underlinePosition = { bottom: "-4px", left: "0%" },
   svgStrokeWidth = 3, 
   svgCurveHeight = 6, 
+  fontFamily="dancing"
 }: AnimTextProps) => {
   const [isVisible, setIsVisible] = useState(false);
   const [textWidth, setTextWidth] = useState(0);
@@ -70,7 +72,7 @@ const AnimText = ({
       ref={textRef}
     >
       <span
-        className={`font-${fontWeight} ${color} text-${fontSize} ${isVisible ? 'animate-fade-in' : ''}`}
+        className={`font-${fontWeight} ${color} text-${fontSize} font-${fontFamily} ${isVisible ? 'animate-fade-in' : ''}`}
       >
         {text}
       </span>
@@ -93,7 +95,7 @@ const AnimText = ({
 
           <path
             d={`M0,${svgCurveHeight} C${textWidth / 4},${svgCurveHeight + 4} ${textWidth / 2},${svgCurveHeight - 4} ${textWidth},${svgCurveHeight}`} 
-            stroke="#3B82F6" 
+            stroke="#F39EA2" 
             strokeWidth={svgStrokeWidth}
             strokeLinecap="round"
             className="animate-draw"
@@ -103,7 +105,7 @@ const AnimText = ({
         
           <path
             d={`M${textWidth},${svgCurveHeight} C${textWidth / 4 * 3},${svgCurveHeight + 4} ${textWidth / 2},${svgCurveHeight - 4} 0,${svgCurveHeight}`} 
-            stroke="#3B82F6"
+            stroke="#F39EA2"
             strokeWidth={svgStrokeWidth}
             strokeLinecap="round"
             className="animate-draw"
@@ -113,7 +115,7 @@ const AnimText = ({
 
           <path
             d={`M0,${svgCurveHeight} C${textWidth / 4},${svgCurveHeight + 4} ${textWidth / 2},${svgCurveHeight - 4} ${textWidth},${svgCurveHeight}`} 
-            stroke="#3B82F6"
+            stroke="#F39EA2"
             strokeWidth={svgStrokeWidth}
             strokeLinecap="round"
             className="animate-draw"

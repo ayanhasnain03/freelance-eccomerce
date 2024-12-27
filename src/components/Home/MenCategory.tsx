@@ -33,10 +33,15 @@ const MenCategory = () => {
             <div className="mt-4 flex justify-between px-4 w-full items-center">
               <p className="text-sm font-semibold text-gray-900">{item.name}</p>
 
-<Link to={`/collections/mens?category=${item.name}`}>
-<FaArrowRightLong className="text-gray-900 hover:text-primary-red cursor-pointer" />
-
+              <Link 
+  to={`/collections/mens?category=${item.name}`} 
+  aria-label={`View items in ${item.name} category`}
+>
+  <FaArrowRightLong 
+    className="text-gray-900 hover:text-primary-red cursor-pointer" 
+  />
 </Link>
+
             </div>
           </motion.div>
         ))}

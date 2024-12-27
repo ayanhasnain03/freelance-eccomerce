@@ -1,5 +1,6 @@
 
 import { Link } from 'react-router-dom'
+import Highlighter from '../shared/Highlight'
 
 const MobileLandingPage = () => {
   return (
@@ -15,7 +16,7 @@ const MobileLandingPage = () => {
           Unleash Your Style
         </h2>
         <p className="text-white text-lg mb-6 font-inter">
-          Discover our exclusive collection of fashion. Free shipping on orders over $50!
+          Discover our exclusive <Highlighter animationDuration={1} text="Collection" /> of fashion. Free <Highlighter animationDuration={1} text="Shipping" /> on orders over $50!
         </p>
   
   

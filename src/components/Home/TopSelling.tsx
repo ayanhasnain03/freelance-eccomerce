@@ -2,7 +2,9 @@ import React, { lazy, Suspense } from "react";
 import { motion } from "framer-motion";
 
 import { useGetTopSellingProductQuery } from "../../redux/api/productApi";
-import Skeleton from "../shared/Skeleton"; // Replace with your skeleton loader component
+import Skeleton from "../shared/Skeleton";
+import AnimText from "../shared/AnimText";
+import Highlighter from "../shared/Highlight";
 
 const ProductLayout = lazy(() => import("../cards/product/ProductLayout"));
 
@@ -16,7 +18,6 @@ const TopSelling: React.FC = () => {
       </div>
     );
   }
-  
 
   return (
     <motion.div
@@ -26,26 +27,24 @@ const TopSelling: React.FC = () => {
       viewport={{ once: true }}
       transition={{ duration: 0.8 }}
     >
-  
       <div className="flex flex-col items-center justify-center">
-        <h2 className="text-2xl md:text-3xl font-bold text-gray-800 mb-4">
-          Top-Selling Products
-        </h2>
-        <p className="text-gray-600 text-sm md:text-base">
-          Explore the best-selling products from our store.
+        <AnimText text="Top Selling" fontSize="3xl" fontFamily="dancing" />
+        <p className="text-gray-600 text-sm md:text-base mt-4">
+          Explore the Top <Highlighter animationDuration={1} text="Selling" /> products from our store.
         </p>
       </div>
 
-   
-      <Suspense fallback={<Skeleton quantity={3} />}>
-        {isLoading ? (
-          <Skeleton quantity={4} />
-        ) : (
+     
+      {isLoading ? (
+        <Skeleton quantity={4} />
+      ) : (
+       
+        <Suspense fallback={<Skeleton quantity={3} />}>
           <div className="w-full flex flex-wrap justify-center gap-4">
-            <ProductLayout data={data} />
+            {data && <ProductLayout data={data} />}
           </div>
-        )}
-      </Suspense>
+        </Suspense>
+      )}
     </motion.div>
   );
 };

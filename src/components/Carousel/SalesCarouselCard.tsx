@@ -1,74 +1,41 @@
-import { motion } from 'framer-motion';
-import CountdownTimer from '../shared/TImer/CountdownTimer';
-import Stbtn from '../shared/Buttons/Stbtn';
-import { Link } from 'react-router-dom';
+import { motion } from "framer-motion";
 
-const saleProductsData = [
-  { id: 1, title: 'Full Sleeve T-shirt', price: '$30', originalPrice: '$50', image: 'card.png' },
-  { id: 2, title: 'Short Sleeve T-shirt', price: '$25', originalPrice: '$40', image: 'arrival2.png' },
-  { id: 3, title: 'Hoodie', price: '$45', originalPrice: '$70', image: 'arrival3.png' },
-  { id: 4, title: 'Sweatshirt', price: '$35', originalPrice: '$60', image: 'card.png' },
-];
+import { useGetSaleProductsQuery } from "../../redux/api/productApi";
+import React from "react";
+
+const ProductLayout=React.lazy(() => import('../cards/product/ProductLayout'))
+const CountdownTimer=React.lazy(() => import('../shared/TImer/CountdownTimer'))
+const Highlighter=React.lazy(() => import('../shared/Highlight'))
+const Stbtn=React.lazy(() => import('../shared/Buttons/Stbtn'))
 
 const SaleProducts = () => {
+  const {data}=useGetSaleProductsQuery ('');
+
   return (
     <motion.div
-      className="h-auto w-full mt-10 p-8"
+      className="h-auto w-full mt-10 p-8 text-center"
       initial={{ opacity: 0 }}
       whileInView={{ opacity: 1 }}
       transition={{ duration: 0.8 }}
     >
-
-
-
-<Stbtn text='Christmas Sale '/>
-<CountdownTimer/>
-
-
+      <Stbtn text="Christmas Sale " />
+     <CountdownTimer saleDate="28-12-2024" /> 
 
       <div className="text-center mb-8">
-        <p className="mt-2 text-lg text-gray-600">Exclusive offers and discounts just for you!</p>
+        <p className="mt-2 text-lg text-gray-600">
+          Exclusive offers and{" "}
+         <span>
+         <Highlighter animationDuration={1} text="Discounts" />
+          </span> just for you!
+        </p>
       </div>
 
-
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
-        {saleProductsData.map((product) => (
-          <motion.div
-            key={product.id}
-            className="flex flex-col items-center bg-white rounded-lg shadow-lg overflow-hidden transition-transform duration-300 transform hover:scale-105 hover:shadow-xl"
-            initial={{ opacity: 0, scale: 0.9 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.6 }}
-          >
-
-            <img
-              src={product.image}
-              alt={product.title}
-              className="w-full h-56 object-cover transition-opacity duration-300 group-hover:opacity-80"
-            />
-
-
-            <div className="p-4 text-center">
-              <h3 className="text-lg font-semibold text-black">{product.title}</h3>
-              <div className="flex justify-center items-center mt-2">
-                <span className="text-xl font-semibold text-rose-600">{product.price}</span>
-                <span className="ml-2 text-sm line-through text-gray-500">{product.originalPrice}</span>
-              </div>
-            </div>
-
-      
-            
-          </motion.div>
-        ))}
-      </div>
-      <p className='text-center mt-4'>
-        <Link
-          to="/collections"
-          className="text-slate-600 hover:text-slate-800 transition underline duration-300"
-        >
-         More
-        </Link>
-      </p>
+   <div>
+    <ProductLayout
+      data={data}
+    />
+   </div>
+   
     </motion.div>
   );
 };

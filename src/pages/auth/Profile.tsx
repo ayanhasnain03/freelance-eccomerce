@@ -20,7 +20,7 @@ const Profile = () => {
       {isLoading ? (
         <Loader />
       ) : (
-        <div className="min-h-screen bg-red-50 flex justify-center items-center py-10">
+        <div className="min-h-screen  flex justify-center items-center py-10">
           <div className="max-w-4xl w-full bg-white shadow-xl rounded-lg p-8">
             <div className="flex items-center space-x-6">
               <img
@@ -56,12 +56,9 @@ const Profile = () => {
                 </div>
                 <div className="flex justify-between text-gray-600 mt-2">
                   <p className="font-medium">Phone Number:</p>
-                  <p>+123 456 789</p>
+                  <p>+91 {user?.phoneNo}</p>
                 </div>
-                <div className="flex justify-between text-gray-600 mt-2">
-                  <p className="font-medium">Shipping Address:</p>
-                  <p>1234 Elm Street, Springfield, IL</p>
-                </div>
+            
               </div>
             </div>
 
@@ -70,8 +67,9 @@ const Profile = () => {
                 Order History
               </h3>
               <div className="mt-4 space-y-4">
-                {data?.orders?.map((order: any) => (
-                  <div
+                {data?.orders?.map((order: any, index: number) => (
+               <Link to={`/order/${order._id}`} key={index}>
+                   <div
                     key={order.orderId}
                     className="flex justify-between items-center border-b py-4"
                   >
@@ -87,6 +85,7 @@ const Profile = () => {
                       Total: {order.subtotal}
                     </div>
                   </div>
+               </Link>
                 ))}
               </div>
 

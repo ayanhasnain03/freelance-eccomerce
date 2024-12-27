@@ -1,14 +1,23 @@
 import { FaShoppingCart } from "react-icons/fa";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addToCart, calculatePrice } from "../../../redux/reducers/cartReducer";
 import { useCallback } from "react";
+import toast from "react-hot-toast";
 
 
 
 const AddToCart = ({ productName, price, sizes, image, _id, stock, quantity }:any) => {
+  const {cartItems} = useSelector((state: any) => state.cart);
+
+  const isItemInCart = cartItems.some((item: any) => item._id === _id);
+
   const dispatch = useDispatch();
 
   const addToCartHandler = useCallback(() => {
+    if(isItemInCart) {
+      toast.error("Item already in cart");
+      return;
+    }
     dispatch(
       addToCart({
         //@ts-ignore
@@ -22,6 +31,7 @@ const AddToCart = ({ productName, price, sizes, image, _id, stock, quantity }:an
       })
     );
     dispatch(calculatePrice());
+    toast.success("Product added to cart");
   }, [dispatch, productName, price, sizes, image, _id, stock, quantity]);
 
   return (

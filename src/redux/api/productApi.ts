@@ -110,9 +110,26 @@ getTopSellingProduct: builder.query({
   }),
   providesTags: ['Product'],
   keepUnusedDataFor: 60,
+}),
+newArrivals: builder.query({
+  query: () => ({
+    url: `/product/new-arrivals`,
+    method: 'GET',
+  }),
+  providesTags: ['Product'],
+  keepUnusedDataFor: 60,
+}),
+getSaleProducts: builder.query({
+  query: () => ({
+    url: `/product/sale`,
+    method: 'GET',
+  }),
+  providesTags: ['Product'],
+  keepUnusedDataFor: 60,
+
 })
   })
 });
 
 export default api;
-export const { useGetProductsQuery, useGetCategoriesQuery,useGetProductByIdQuery,useNewArriavalsQuery,useCreateFavMutation,useRemoveFavMutation,useGetRelatedProductsQuery,useCreateReviewMutation,useGetReviewsQuery,useDeleteReviewMutation,useGetTopSellingProductQuery } = api;
+export const { useGetProductsQuery, useGetCategoriesQuery,useGetProductByIdQuery,useNewArriavalsQuery,useCreateFavMutation,useRemoveFavMutation,useGetRelatedProductsQuery,useCreateReviewMutation,useGetReviewsQuery,useDeleteReviewMutation,useGetTopSellingProductQuery,useNewArrivalsQuery,useGetSaleProductsQuery } = api;

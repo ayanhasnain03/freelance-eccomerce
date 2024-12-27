@@ -2,23 +2,29 @@ import { lazy, Suspense, useEffect } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import {Toaster} from "react-hot-toast"
 import axios from "axios";
-import Nav from "./components/shared/Navbar/Nav";
+
 import Loader from "./components/shared/Loader/Loader";
-import Cart from "./pages/Cart";
+
 import { useDispatch, useSelector } from "react-redux";
 import { userExist, userNotExist } from "./redux/reducers/userReducer";
-import AuthTabs from "./pages/auth/Auth";
+
 import ProtectedRoute from "./components/shared/ProtectedRoute";
-import Dashboard from "./pages/dashbaord/Dashboard";
-import Profile from "./pages/auth/Profile";
-import Shipping from "./pages/Shipping";
-import MyOrders from "./pages/MyOrders";
-import WishList from "./pages/WishList";
+import Nav from "./components/shared/Navbar/Nav";
+import OrderPage from "./pages/OrderPage";
+
 
 const Home = lazy(() => import("./pages/Home"));
 const Collection = lazy(() => import("./pages/Collection"));
 const ProductPage = lazy(() => import("./pages/ProductPage"));
+const Cart = lazy(() => import("./pages/Cart"));
+const Shipping = lazy(() => import("./pages/Shipping"));
+const Profile = lazy(() => import("./pages/auth/Profile"));
+const WishList = lazy(() => import("./pages/WishList"));
 
+const AuthTabs = lazy(() => import("./pages/auth/Auth"));
+const MyOrders = lazy(() => import("./pages/MyOrders"));
+const Dashboard = lazy(() => import("./pages/dashbaord/Dashboard"));
+const Footer = lazy(() => import("./components/shared/Footer"));
 const App = () => {
   const dispatch = useDispatch();
   const { user, isAuthenticated, loading } = useSelector(
@@ -71,6 +77,7 @@ const App = () => {
               <Route path="/profile/wishlist" element={<WishList />} />
             <Route path="/cart/shipping" element={<Shipping />} />
             <Route path="/myorders" element={<MyOrders />} />
+            <Route path="/order/:id" element={<OrderPage />} />
 
             </Route>
 
@@ -88,6 +95,7 @@ const App = () => {
             </Route>
 
           </Routes>
+          <Footer/>
 
         </Suspense>
         <Toaster position="bottom-center"/>
