@@ -1,10 +1,15 @@
-import { useParams } from "react-router-dom";
+import {useParams } from "react-router-dom";
 import { useGetOrderByIdQuery } from "../redux/api/orderApi";
 import { motion } from "framer-motion";
+import { useSelector } from "react-redux";
+import PageNotFound from "./PageNotFound";
 
 const OrderPage = () => {
+  const _id = useSelector((state: any) => state.user.user?._id);
+  const role = useSelector((state: any) => state.user.user?.role); 
   const params = useParams();
   const { data, isLoading, isError } = useGetOrderByIdQuery(params.id || "");
+
 
   if (isLoading) {
     return <div className="text-center text-lg font-medium text-gray-700">Loading...</div>;
@@ -28,7 +33,15 @@ const OrderPage = () => {
     status,
     estimatedDelivery,
     discounts,
+    userId,
   } = data?.order || {};
+
+  if (role !== "admin" && userId !== _id) {
+   return(
+    <PageNotFound />
+   )
+
+  }
 
   return (
     <motion.div
@@ -40,7 +53,6 @@ const OrderPage = () => {
       <h1 className="text-4xl font-extrabold text-center text-gray-800 mb-8">Order Details</h1>
       
       <div className="space-y-8">
-        {/* Order Information */}
         <section className="space-y-4">
           <h2 className="text-2xl font-semibold text-gray-700">Order Information</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
@@ -58,7 +70,6 @@ const OrderPage = () => {
           </div>
         </section>
 
-        {/* Shipping Address */}
         <section className="space-y-4">
           <h2 className="text-2xl font-semibold text-gray-700">Shipping Address</h2>
           <p className="text-gray-600">{shippingAddress.street}</p>
@@ -66,7 +77,6 @@ const OrderPage = () => {
           <p className="text-gray-600">{shippingAddress.country}</p>
         </section>
 
-        {/* Order Items */}
         <section className="space-y-6">
           <h2 className="text-2xl font-semibold text-gray-700">Items</h2>
           <ul className="space-y-4">
@@ -86,7 +96,6 @@ const OrderPage = () => {
           </ul>
         </section>
 
-  
         <section className="mt-8 border-t border-gray-200 pt-6 space-y-4">
           <h2 className="text-2xl font-semibold text-gray-700">Order Summary</h2>
           <div className="flex justify-between text-gray-600">

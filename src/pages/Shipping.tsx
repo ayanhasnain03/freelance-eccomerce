@@ -20,7 +20,7 @@ const ShippingPage: React.FC = () => {
   const dispatch = useDispatch();
   const { user } = useSelector((state: any) => state.user);
   const { subtotal, shippingCharges, tax, discount, total, cartItems, shippingInfo } = useSelector((state: any) => state.cart);
-
+console.log(user);
   const modifiedCartItems = useMemo(() => {
     return cartItems.map((item: any) => ({
       productId: item._id,
@@ -35,18 +35,18 @@ const ShippingPage: React.FC = () => {
   const [paymentMethod, setPaymentMethod] = useState<"COD" | "razorpay">("COD");
   const [formData, setFormData] = useState<FormData>({
     name: user?.name || "",
-    address: shippingInfo?.address || "",
-    city: shippingInfo?.city || "",
-    state: shippingInfo?.state || "",
-    pincode: shippingInfo?.pinCode || "",
-    country: shippingInfo?.country || "",
+    address: user?.shippingAddress?.address || "",
+    city: user?.shippingAddress?.city || "",
+    state: user?.shippingAddress?.state || "",
+    pincode: user?.shippingAddress?.pincode || "",
+    country: user?.shippingAddress?.country || "",
     phoneNo: user?.phoneNo || "",
   });
+
   const [loading, setLoading] = useState<boolean>(false);
   const [paymentStatus, setPaymentStatus] = useState<string | null>(null);
   const navigate = useNavigate();
 
-  // Use the createOrders mutation
   const [createOrder, { isLoading: isCreatingOrder }] = useCreateOrdersMutation();
 
   const handlePlaceOrder = async () => {
@@ -91,7 +91,7 @@ const ShippingPage: React.FC = () => {
   const placeOrder = async (razorpayOrderId: string | null = null) => {
     const orderData = {
       userId: user._id,
-      razorpayOrderId: razorpayOrderId, // Pass razorpayOrderId here
+      razorpayOrderId: razorpayOrderId,
       items: modifiedCartItems,
       paymentMethod: paymentMethod,
       shippingAddress: {

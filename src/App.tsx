@@ -11,6 +11,8 @@ import { userExist, userNotExist } from "./redux/reducers/userReducer";
 import ProtectedRoute from "./components/shared/ProtectedRoute";
 import Nav from "./components/shared/Navbar/Nav";
 import OrderPage from "./pages/OrderPage";
+import PageNotFound from "./pages/PageNotFound";
+import Orders from "./pages/dashbaord/Orders";
 
 
 const Home = lazy(() => import("./pages/Home"));
@@ -92,8 +94,9 @@ const App = () => {
               }
             >
               <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/dashboard/orders" element={<Orders />} />
             </Route>
-
+<Route path="*" element={<PageNotFound />} />
           </Routes>
           <Footer/>
 
