@@ -35,7 +35,8 @@ const Orders = () => {
   if (isError) {
     return (
       <div className="flex justify-center items-center py-6 text-red-500">
-        Error: {error?.message}
+      //@ts-ignore
+        Error: 
       </div>
     );
   }

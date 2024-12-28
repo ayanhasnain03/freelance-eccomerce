@@ -19,8 +19,7 @@ interface FormData {
 const ShippingPage: React.FC = () => {
   const dispatch = useDispatch();
   const { user } = useSelector((state: any) => state.user);
-  const { subtotal, shippingCharges, tax, discount, total, cartItems, shippingInfo } = useSelector((state: any) => state.cart);
-console.log(user);
+  const { subtotal, shippingCharges, tax, discount, total, cartItems } = useSelector((state: any) => state.cart);
   const modifiedCartItems = useMemo(() => {
     return cartItems.map((item: any) => ({
       productId: item._id,
