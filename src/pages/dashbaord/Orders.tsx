@@ -5,7 +5,7 @@ import { FaTrash } from "react-icons/fa";
 
 const Orders = () => {
   const [currentPage, setCurrentPage] = useState(1);
-  const { data, isLoading, isError, error } = useGetAllOrdersQuery({
+  const { data, isLoading, isError } = useGetAllOrdersQuery({
     page: currentPage,
     limit: 10,
   });
