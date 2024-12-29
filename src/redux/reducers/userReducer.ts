@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-// Define types for the user and wishlist item
+
 interface User {
   _id?: string;
   name?: string;
