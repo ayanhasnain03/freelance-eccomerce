@@ -1,29 +1,20 @@
 import moment from "moment";
 import { useDispatch, useSelector } from "react-redux";
 import Loader from "../../components/shared/Loader/Loader";
-
+import { useLogoutUserMutation } from "../../redux/api/userApi";
 import toast from "react-hot-toast";
 import { userNotExist } from "../../redux/reducers/userReducer";
 import { useGetMyOrdersQuery } from "../../redux/api/orderApi";
 import { Link } from "react-router-dom";
-import axios from "axios";
 
 const Profile = () => {
   const { user, isLoading } = useSelector((state: any) => state.user);
-
+  const [logoutUser, { isLoading: logoutLoading }] = useLogoutUserMutation();
   const { data } = useGetMyOrdersQuery({
     limit: 5,
   });
   const dispatch = useDispatch();
-const logoutHandler = async () => {
-  try {
-    const res = await axios.post(`${import.meta.env.VITE_SERVER}/api/v1/user/logout`, {}, {withCredentials: true});
-    dispatch(userNotExist());
-    toast.success(res?.data?.message);
-  } catch (error: any) {
-    toast.error(error?.data?.message);
-  }
-}
+
   return (
     <>
       {isLoading ? (
@@ -110,9 +101,14 @@ const logoutHandler = async () => {
                 Edit Profile
               </button>
               <button
-              
+                disabled={logoutLoading}
                 className="bg-gray-300 text-gray-800 py-2 px-6 rounded-lg hover:bg-gray-400 transition"
-                onClick={logoutHandler}
+                onClick={async () => {
+                //@ts-ignore
+                  await logoutUser().unwrap();
+                  toast.success("Logged out successfully");
+                  dispatch(userNotExist());
+                }}
               >
                 Logout
               </button>

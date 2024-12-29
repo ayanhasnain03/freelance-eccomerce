@@ -63,8 +63,8 @@ const AuthTabs = () => {
     e.preventDefault();
     try {
       const response = await loginUser({ email, password }).unwrap();
-      navigate("/profile");
       dispatch(userExist(response.user));
+      navigate("/");
       toast.success(response?.message);
     } catch (error: any) {
       toast.error(error?.data?.message);

@@ -49,7 +49,7 @@ const App = () => {
       dispatch(userExist(res.data.user));
     })
     .catch((error) => {
-      console.error("Error fetching profile:", error); 
+      console.error("Error fetching profile:", error?.response?.data?.message); 
       dispatch(userNotExist());
     });
   
