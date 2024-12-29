@@ -17,9 +17,12 @@ interface FormData {
 }
 
 const ShippingPage: React.FC = () => {
+  const navigate = useNavigate();
+  
   const dispatch = useDispatch();
   const { user } = useSelector((state: any) => state.user);
   const { subtotal, shippingCharges, tax, discount, total, cartItems } = useSelector((state: any) => state.cart);
+
   const modifiedCartItems = useMemo(() => {
     return cartItems.map((item: any) => ({
       productId: item._id,
@@ -44,7 +47,6 @@ const ShippingPage: React.FC = () => {
 
   const [loading, setLoading] = useState<boolean>(false);
   const [paymentStatus, setPaymentStatus] = useState<string | null>(null);
-  const navigate = useNavigate();
 
   const [createOrder, { isLoading: isCreatingOrder }] = useCreateOrdersMutation();
 

@@ -32,19 +32,26 @@ const userApi = createApi({
       }),
       invalidatesTags: ["User"],
     }),
+    foregetPassword: builder.mutation({
+      query: (data) => ({
+        url: "/user/forgetpassword",
+        method: "POST",
+        body: data,
+      }),
+    }),
+    resetPassword: builder.mutation({
+      query: ({ token, data }) => ({
+        url: `/user/resetpassword/${token}`,
+        method: "POST",
+        body: data,
+      }),
+    })
 
   }),
 });
 
 
-export const loadUser = async () => {
-  const res = await fetch(`${import.meta.env.VITE_SERVER}/api/v1/user/me`, {
-    credentials: "include",
-  });
-  const data = await res.json();
-  return data;
-};
 
 
 export default userApi;
-export const { useRegisterUserMutation, useLoginUserMutation, useLogoutUserMutation } = userApi;
+export const { useRegisterUserMutation, useLoginUserMutation, useLogoutUserMutation,useForegetPasswordMutation,useResetPasswordMutation } = userApi;

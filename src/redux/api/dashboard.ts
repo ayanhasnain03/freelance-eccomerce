@@ -28,10 +28,20 @@ const dashboard = createApi({
       query: ({ page = 1, limit = 10}) => `/dashboard/orders?page=${page}&limit=${limit}`,
       providesTags: ['Dashboard'],
       keepUnusedDataFor: 60,
+    }),
+    getMonthsDashboardData: builder.query({
+      query: () => `/dashboard/months`,
+      providesTags: ['Dashboard'],
+      keepUnusedDataFor: 60,
+    }),
+    getOrderPieChart: builder.query({
+      query: () => `/dashboard/order-status`,
+      providesTags: ['Dashboard'],
+      keepUnusedDataFor: 60,
     })
   }),
 });
 
-export const { useGetWeekDashboardQuery, useGetDashCountQuery, useGteLatestTransactionsQuery ,useGetAllOrdersQuery} = dashboard;
+export const { useGetWeekDashboardQuery, useGetDashCountQuery, useGteLatestTransactionsQuery ,useGetAllOrdersQuery,useGetMonthsDashboardDataQuery,useGetOrderPieChartQuery} = dashboard;
 
 export default dashboard;

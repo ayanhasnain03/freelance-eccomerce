@@ -80,6 +80,7 @@ const ProductLayout: React.FC<ProductLayoutProps> = ({ data }) => {
 
   const productCards = useMemo(() => {
     return data?.products?.map((product) => (
+      
       <ProductCard
         key={product._id}
         description={product.description}

@@ -26,10 +26,19 @@ const orderApi = createApi({
       providesTags: ['Order'],
       keepUnusedDataFor: 60,
 
+    }),
+    updateOrderById: builder.mutation({
+      query: ({ id, data }) => ({
+        url: `/order/${id}`,
+        method: 'PUT',
+        body: data,
+      }),
+      //@ts-ignore
+      invalidatesTags: ["Order"],
     })
   }),
 });
 
-export const { useGetMyOrdersQuery, useCreateOrdersMutation, useGetOrderByIdQuery } = orderApi;
+export const { useGetMyOrdersQuery, useCreateOrdersMutation, useGetOrderByIdQuery, useUpdateOrderByIdMutation } = orderApi;
 
 export default orderApi;

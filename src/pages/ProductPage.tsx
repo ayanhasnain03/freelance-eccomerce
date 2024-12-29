@@ -11,8 +11,9 @@ import { FaEllipsisV } from "react-icons/fa";
 import { toast } from "react-hot-toast";
 import Skeleton from "../components/shared/Skeleton";
 import { useSelector } from "react-redux";
+import ScrollToTopOnReload from "../components/ResetPage";
 
-// Lazy load components
+
 const Star = lazy(() => import("../components/cards/Star"));
 const AddToCart = lazy(() => import("../components/shared/Buttons/AddToCart"));
 const ReviewModal = lazy(() => import("../components/shared/ReviewModal"));
@@ -67,7 +68,7 @@ const ProductPage: React.FC = () => {
   const openReviewModal = () => setIsReviewModalOpen(true);
   const closeReviewModal = useCallback(() => setIsReviewModalOpen(false), []);
 
-  const [deleteReview] = useDeleteReviewMutation();
+  const [deleteReview, { isLoading: isDeleting }] = useDeleteReviewMutation();
   const { data: productData, isLoading, isError } = useGetProductByIdQuery(id);
   const { data: reviews, isLoading: reviewLoading } = useGetReviewsQuery(id);
 
@@ -115,7 +116,8 @@ const ProductPage: React.FC = () => {
       {isLoading ? (
         <Skeleton quantity={5} />
       ) : (
-        <div className="bg-white">
+        <div className="bg-white px-8 md:p-2">
+          <ScrollToTopOnReload />
           <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-8 px-4 md:px-8 py-10">
             <div className="w-full md:w-1/2 flex flex-col items-center">
               <motion.div
@@ -151,7 +153,7 @@ const ProductPage: React.FC = () => {
             </div>
 
             <motion.div
-              className="w-full md:w-1/2 flex flex-col px-4 md:px-8"
+              className=" w-full overflow-hidden md:w-1/2 flex flex-col px-4 md:px-8"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.5 }}
@@ -211,7 +213,7 @@ const ProductPage: React.FC = () => {
 
           <div className="flex flex-col items-center justify-center mx-auto w-full mt-8">
             <AnimText text="Related Products" fontSize="3xl" fontWeight="bold" />
-            <div className="w-full flex flex-col md:flex-row items-center mt-10 flex-wrap justify-center px-8">
+            <div onClick={()=>window.scrollTo(0,0)} className="w-full flex flex-col md:flex-row items-center mt-10 flex-wrap justify-center px-8">
               <ProductLayout data={{ products: relatedProducts }} />
             </div>
           </div>
@@ -219,7 +221,7 @@ const ProductPage: React.FC = () => {
           <div className="flex flex-col items-center justify-center mx-auto w-full mt-10 px-8">
             <AnimText text="Customer Reviews" fontSize="3xl" fontWeight="bold" />
             <div className="mt-10 gap-4 flex flex-col md:flex-row flex-wrap flex-1 items-center w-full">
-              {reviewLoading ? (
+              {reviewLoading || isDeleting ? (
                 <Skeleton quantity={3} />
               ) : (
                 reviews?.reviews?.map((review: any) => (

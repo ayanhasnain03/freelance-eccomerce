@@ -7,7 +7,7 @@ const NavItem = () => {
   const { pathname } = useLocation();
 
   return (
-    <div className="w-full md:flex items-center justify-center space-x-4">
+    <div className="w-full md:flex items-center justify-center space-x-[10px] md:space-x-4">
       {NavConstants.map((item) => {
         const isActive = pathname === item.path;
         return (

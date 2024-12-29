@@ -5,7 +5,7 @@ import {
   useRegisterUserMutation,
   useLoginUserMutation,
 } from "../../redux/api/userApi";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { userExist } from "../../redux/reducers/userReducer";
 import toast from "react-hot-toast";
@@ -72,7 +72,7 @@ const AuthTabs = () => {
   };
 
   return (
-    <div className="flex justify-center items-center w-full min-h-screen bg-gray-50">
+    <div className="flex justify-center items-center w-full min-h-screen bg-gray-50 ">
       <motion.div
         className="w-full max-w-4xl p-6 bg-white rounded-lg shadow-xl"
         initial={{ opacity: 0 }}
@@ -109,12 +109,12 @@ const AuthTabs = () => {
             transition={{ duration: 0.5 }}
           >
             <section className="bg-gray-50 flex justify-center items-center">
-              <div className="bg-white rounded-2xl flex max-w-4xl w-full p-8">
+              <div className="bg-white rounded-2xl flex max-w-4xl md:w-full md:p-8">
                 <div className="md:w-1/2 w-full flex flex-col justify-center px-8">
                   <h2 className="font-bold text-3xl text-primary-red font-agu mb-4">
                     Login
                   </h2>
-                  <p className="text-2xl text-gray-600 font-dancing mb-6">
+                  <p className="text-base md:text-2xl text-gray-600 font-dancing mb-6">
                     If you are already a member, easily log in now.
                   </p>
 
@@ -149,9 +149,9 @@ const AuthTabs = () => {
                       />
                     </div>
 
-                    <button className="bg-white text-left text-sm text-gray-600 duration-300 hover:underline font-inter">
+                    <Link to="/forgot-password" className="bg-white text-left text-sm text-gray-600 duration-300 hover:underline font-inter">
                       Forgot Password?
-                    </button>
+                    </Link>
 
                     <button
                       className="hover:bg-rose-600 text-white py-2 rounded-xl transition duration-300 bg-primary-red font-inter mt-6"
@@ -216,7 +216,7 @@ const AuthTabs = () => {
                   transition={{ duration: 0.5 }}
                 >
                   <section className="bg-gray-50 flex justify-center items-center">
-                    <div className="bg-white rounded-2xl flex max-w-4xl w-full p-8">
+                    <div className="bg-white rounded-2xl flex max-w-4xl md:w-full md:p-8">
                       <div className="md:w-1/2 w-full flex flex-col justify-center px-8">
                         <form onSubmit={registerHandler} className="space-y-4">
                           <div className="relative">

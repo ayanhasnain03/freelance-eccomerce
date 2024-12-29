@@ -12,6 +12,7 @@ const OrderPage = () => {
 
 
   if (isLoading) {
+    
     return <div className="text-center text-lg font-medium text-gray-700">Loading...</div>;
   }
 

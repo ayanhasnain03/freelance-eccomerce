@@ -124,7 +124,9 @@ const MyOrders = () => {
           </div>
         )}
         
-      
+    {
+      orders?.length > 10 && (
+          
         <div className="mt-8 flex justify-between items-center">
           <button
             onClick={handlePrev}
@@ -144,6 +146,8 @@ const MyOrders = () => {
             Next
           </button>
         </div>
+      )
+    }
       </div>
     </div>
   );

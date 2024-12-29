@@ -10,9 +10,9 @@ import { userExist, userNotExist } from "./redux/reducers/userReducer";
 
 import ProtectedRoute from "./components/shared/ProtectedRoute";
 import Nav from "./components/shared/Navbar/Nav";
-import OrderPage from "./pages/OrderPage";
-import PageNotFound from "./pages/PageNotFound";
-import Orders from "./pages/dashbaord/Orders";
+
+
+
 
 
 const Home = lazy(() => import("./pages/Home"));
@@ -26,7 +26,13 @@ const WishList = lazy(() => import("./pages/WishList"));
 const AuthTabs = lazy(() => import("./pages/auth/Auth"));
 const MyOrders = lazy(() => import("./pages/MyOrders"));
 const Dashboard = lazy(() => import("./pages/dashbaord/Dashboard"));
+const OrderPage = lazy(() => import("./pages/OrderPage"));
+const PageNotFound = lazy(() => import("./pages/PageNotFound"));
+const Orders = lazy(() => import("./pages/dashbaord/Orders"));
+const Graph = lazy(() => import("./pages/dashbaord/Graph"));
 const Footer = lazy(() => import("./components/shared/Footer"));
+const ForgotPassword = lazy(() => import("./pages/auth/ForgotPassword"));
+const ResetPassword = lazy(() => import("./pages/auth/ResetPassword"));
 const App = () => {
   const dispatch = useDispatch();
   const { user, isAuthenticated, loading } = useSelector(
@@ -70,6 +76,8 @@ const App = () => {
               }
             >
               <Route path="/auth" element={<AuthTabs />} />
+              <Route path="/forgot-password" element={<ForgotPassword />} />
+              <Route path="/resetpassword/:token" element={<ResetPassword />} />
             </Route>
 
             <Route
@@ -95,6 +103,7 @@ const App = () => {
             >
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/dashboard/orders" element={<Orders />} />
+              <Route path="/dashboard/graphs" element={<Graph />} />
             </Route>
 <Route path="*" element={<PageNotFound />} />
           </Routes>

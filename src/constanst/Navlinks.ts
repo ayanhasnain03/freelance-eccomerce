@@ -20,7 +20,7 @@
     },
     {
         name:"Orders",
-        path:"/orders"
+        path:"/myorders"
     }
     ]
 
