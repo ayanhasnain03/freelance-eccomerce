@@ -41,14 +41,18 @@ const App = () => {
 
   useEffect(() => {
     axios
-      .get(`${import.meta.env.VITE_SERVER}/api/v1/user/profile`, {
-        withCredentials: true,
-      })
-      .then((res) => {
-        dispatch(userExist(res.data.user));
-      }
-    )
-      .catch(() => dispatch(userNotExist()));
+    .get(`${import.meta.env.VITE_SERVER}/api/v1/user/profile`, {
+      withCredentials: true,
+    })
+    .then((res) => {
+      console.log("User Profile:", res.data); 
+      dispatch(userExist(res.data.user));
+    })
+    .catch((error) => {
+      console.error("Error fetching profile:", error); 
+      dispatch(userNotExist());
+    });
+  
   }, [dispatch]);
 
   if (loading) return <Loader />;

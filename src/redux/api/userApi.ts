@@ -28,10 +28,11 @@ const userApi = createApi({
     logoutUser: builder.mutation({
       query: () => ({
         url: "/user/logout",
-        method: "GET",
+        method: "POST", 
       }),
-      invalidatesTags: ["User"],
+      invalidatesTags: ["User"], 
     }),
+    
     foregetPassword: builder.mutation({
       query: (data) => ({
         url: "/user/forgetpassword",
