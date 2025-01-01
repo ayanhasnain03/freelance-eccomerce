@@ -16,15 +16,17 @@ const navigate = useNavigate();
   const [deleteHandler, { isLoading: deleteLoading }] =
     useDeleteCAtegoriesMutation();
 
-  const handleDelete = (id: string) => {
-    deleteHandler(id)
-      .unwrap()
-      .then(() => {
-        toast.success("Category deleted successfully!");
-      })
-      .catch((error: any) => {
-        toast.error(error?.data?.message || "Failed to delete category.");
-      });
+  const handleDelete = async(id: string) => {
+
+    try {
+      const res = await deleteHandler(id).unwrap();
+      navigate("/dashboard/categories");
+      toast.success(res?.data?.message || "Category deleted successfully!");
+    } catch (error) {
+      toast.error("Failed to delete category.");
+      console.log(error);
+    }
+
   };
 
   if (isLoading)

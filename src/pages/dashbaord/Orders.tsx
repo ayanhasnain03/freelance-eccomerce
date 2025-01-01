@@ -9,7 +9,7 @@ import Skeleton from "../../components/shared/Skeleton";
 
 const Orders = () => {
   const [currentPage, setCurrentPage] = useState(1);
-  const [deleteOrder,{isLoading:isDeleting}] = useDeleteOrderByIdMutation();
+  const [deleteOrder] = useDeleteOrderByIdMutation();
   const { data, isLoading, isError, refetch } = useGetAllOrdersQuery({
     page: currentPage,
   });
@@ -128,7 +128,7 @@ const Orders = () => {
                             toast.success("Order deleted successfully!");
                             refetch();
                           }).catch((error: any) => {
-                            toast.error("Failed to delete order.");
+                            toast.error(error?.data?.message || "Failed to delete order. Please try again.");
                           })
                         }
                         className="text-red-500 hover:text-red-700 transition duration-200"
