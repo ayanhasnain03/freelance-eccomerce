@@ -25,19 +25,19 @@ const NewArrivals = () => {
       viewport={{ once: true }}
       transition={{ duration: 0.8 }}
     >
-      {/* Lazy-loaded button */}
+
       <div className="my-10">
         <Suspense fallback={<div>Loading Button...</div>}>
           <Stbtn text="New Arrivals" />
         </Suspense>
       </div>
 
-      {/* Show Skeleton while loading data */}
+
       {isLoading ? (
         <Skeleton quantity={3} />
       ) : (
         <Suspense fallback={<div>Loading Products...</div>}>
-          {/* Lazy-loaded ProductLayout */}
+        
           <ProductLayout data={data} />
         </Suspense>
       )}

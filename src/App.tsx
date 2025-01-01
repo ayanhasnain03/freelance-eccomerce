@@ -15,6 +15,7 @@ import Nav from "./components/shared/Navbar/Nav";
 
 
 
+
 const Home = lazy(() => import("./pages/Home"));
 const Collection = lazy(() => import("./pages/Collection"));
 const ProductPage = lazy(() => import("./pages/ProductPage"));
@@ -33,6 +34,9 @@ const Graph = lazy(() => import("./pages/dashbaord/Graph"));
 const Footer = lazy(() => import("./components/shared/Footer"));
 const ForgotPassword = lazy(() => import("./pages/auth/ForgotPassword"));
 const ResetPassword = lazy(() => import("./pages/auth/ResetPassword"));
+const ProductDashboardCreate = lazy(() => import("./pages/dashbaord/ProductCreate"));
+const CategoryManagement = lazy(() => import("./pages/dashbaord/CategoryManagement"));
+const CreateCategoryPage = lazy(() => import("./pages/dashbaord/CreateCategoryPage"));
 const App = () => {
   const dispatch = useDispatch();
   const { user, isAuthenticated, loading } = useSelector(
@@ -108,6 +112,10 @@ const App = () => {
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/dashboard/orders" element={<Orders />} />
               <Route path="/dashboard/graphs" element={<Graph />} />
+              <Route path="/dashboard/categories" element={<CategoryManagement />} />
+              <Route path="/dashboard/categories/create" element={<CreateCategoryPage />} />
+              <Route path="/dashboard/product/create" element={<ProductDashboardCreate />} />
+              
             </Route>
 <Route path="*" element={<PageNotFound />} />
           </Routes>

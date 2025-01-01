@@ -111,7 +111,6 @@ const ShippingPage: React.FC = () => {
     };
 
     try {
-     
       const response = await createOrder(orderData).unwrap();
       console.log("Order created:", response);
       toast.success("Order placed successfully!");
@@ -259,6 +258,23 @@ const ShippingPage: React.FC = () => {
           {paymentStatus && (
             <div className="mt-4 text-center text-red-500">{paymentStatus}</div>
           )}
+        </div>
+
+        {/* Right Side: Cart Items */}
+        <div className="w-96 bg-white shadow-lg rounded-lg p-6 space-y-8">
+          <h2 className="text-2xl font-semibold mb-4">Your Cart</h2>
+          <div className="space-y-4">
+            {modifiedCartItems.map((item: any) => (
+              <div key={item.productId} className="flex justify-between items-center">
+                <img src={item.image} alt={item.name} className="w-16 h-16 object-cover rounded-md" />
+                <div className="flex-1 ml-4">
+                  <p className="text-sm font-semibold">{item.name}</p>
+                  <p className="text-xs text-gray-500">Size: {item.size}</p>
+                </div>
+                <p className="text-sm font-semibold">₹{item.price * item.quantity}</p>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </div>

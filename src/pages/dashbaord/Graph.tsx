@@ -3,11 +3,11 @@ import { Bar } from "react-chartjs-2";
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from "chart.js";
 import MenuBtn from "../../components/admin/MenuBtn";
 import OrderPieChart from "../../components/admin/OrderPieChart";
-
-
+import { getLastMonths } from "../../utils/features";  
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
 const Graph = () => {
+  const { last12Months } = getLastMonths(); 
   const { data, error, isLoading } = useGetMonthsDashboardDataQuery("");
 
   if (isLoading) return <div className="text-center text-lg">Loading...</div>;
@@ -16,10 +16,7 @@ const Graph = () => {
   const { revenueByMonth, ordersByMonth, usersByMonth } = data.stats;
 
   const revenueData = {
-    labels: Array.from({ length: 12 }, (_, i) => {
-      const month = new Date(0, i).toLocaleString("default", { month: "short" });
-      return month;
-    }),
+    labels: last12Months, 
     datasets: [
       {
         label: "Revenue",
@@ -30,6 +27,7 @@ const Graph = () => {
       },
     ],
   };
+
 
   const barOptions = {
     responsive: true,
@@ -56,11 +54,9 @@ const Graph = () => {
     },
   };
 
+
   const ordersUsersData = {
-    labels: Array.from({ length: 12 }, (_, i) => {
-      const month = new Date(0, i).toLocaleString("default", { month: "short" });
-      return month;
-    }),
+    labels: last12Months, 
     datasets: [
       {
         label: "Orders",
@@ -78,7 +74,6 @@ const Graph = () => {
       },
     ],
   };
- 
 
   return (
     <div className="container mx-auto px-4 py-6">
@@ -97,8 +92,8 @@ const Graph = () => {
         <Bar data={ordersUsersData} options={barOptions} />
       </div>
 
-  
-      <div className="bg-white shadow-lg rounded-lg p-6 mb-8 w-full  mx-auto">
+    
+      <div className="bg-white shadow-lg rounded-lg p-6 mb-8 w-full mx-auto">
         <h3 className="text-xl font-medium text-gray-700 mb-4">Orders Status</h3>
         <OrderPieChart />
       </div>

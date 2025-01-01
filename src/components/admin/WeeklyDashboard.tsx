@@ -3,6 +3,7 @@ import UniversalChart from "./charts/UniversalChart";
 import { useGetWeekDashboardQuery } from "../../redux/api/dashboard";
 import Skeleton from "../shared/Skeleton";
 
+
 interface ChartCardProps {
   title: string;
   chartData: number[];
@@ -32,9 +33,20 @@ const ChartCard = ({
   </div>
 );
 
+const getWeekLabels = () => {
+  const labels = [];
+  const today = new Date();
+  const dayOfWeek = today.getDay();
+  for (let i = 0; i < 7; i++) {
+    const date = new Date(today);
+    date.setDate(today.getDate() - dayOfWeek + i); 
+    labels.push(date.toLocaleString('en-US', { weekday: 'short' })); 
+  }
+  return labels;
+};
+
 const WeeklyDashboard = () => {
   const { data, error, isLoading, refetch } = useGetWeekDashboardQuery("");
-
   const [chartData, setChartData] = useState({
     orderWeekCounts: [],
     lastWeekRevenueCounts: [],
@@ -43,11 +55,11 @@ const WeeklyDashboard = () => {
   useEffect(() => {
     if (data) {
       refetch();
-      setChartData(data.stats);
+      setChartData(data.stats); 
     }
   }, [data, refetch]);
 
-  const orderLabels = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+  const weekLabels = getWeekLabels(); 
 
   const orderOptions = useMemo(
     () => ({
@@ -88,13 +100,13 @@ const WeeklyDashboard = () => {
   );
 
   if (isLoading) {
-    return <Skeleton quantity={2} />;
+    return <Skeleton quantity={2} />; 
   }
 
   if (error) {
     return (
       <div className="text-center text-lg text-red-500">Error loading data</div>
-    );
+    ); 
   }
 
   return (
@@ -104,18 +116,20 @@ const WeeklyDashboard = () => {
       </h2>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 gap-8">
+     
         <ChartCard
           title="Orders per Day"
           chartData={chartData.orderWeekCounts}
-          labels={orderLabels}
+          labels={weekLabels} 
           options={orderOptions}
           colors={orderColors}
         />
 
+
         <ChartCard
           title="Revenue per Day"
           chartData={chartData.lastWeekRevenueCounts}
-          labels={orderLabels} // Same labels can be reused
+          labels={weekLabels} 
           options={revenueOptions}
           colors={revenueColors}
         />

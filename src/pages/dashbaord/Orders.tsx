@@ -2,13 +2,14 @@ import { useState, useEffect } from "react";
 import { useGetAllOrdersQuery } from "../../redux/api/dashboard";
 import { Link } from "react-router-dom";
 import { FaTrash } from "react-icons/fa";
-import { useUpdateOrderByIdMutation } from "../../redux/api/orderApi";
+import { useDeleteOrderByIdMutation, useUpdateOrderByIdMutation } from "../../redux/api/orderApi";
 import toast from "react-hot-toast";
 import MenuBtn from "../../components/admin/MenuBtn";
 import Skeleton from "../../components/shared/Skeleton";
 
 const Orders = () => {
   const [currentPage, setCurrentPage] = useState(1);
+  const [deleteOrder,{isLoading:isDeleting}] = useDeleteOrderByIdMutation();
   const { data, isLoading, isError, refetch } = useGetAllOrdersQuery({
     page: currentPage,
   });
@@ -122,8 +123,13 @@ const Orders = () => {
                     </td>
                     <td className="px-6 py-4">
                       <button
-                        onClick={() =>
-                          toast.error("Delete functionality not implemented")
+                        onClick={async() =>
+                          await deleteOrder(order._id).unwrap().then(() => {
+                            toast.success("Order deleted successfully!");
+                            refetch();
+                          }).catch((error: any) => {
+                            toast.error("Failed to delete order.");
+                          })
                         }
                         className="text-red-500 hover:text-red-700 transition duration-200"
                       >

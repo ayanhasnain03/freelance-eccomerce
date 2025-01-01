@@ -21,6 +21,33 @@ const api = createApi({
       providesTags: ["Product"],
       keepUnusedDataFor: 60, 
     }),
+    createProduct: builder.mutation({
+      query: (data) => ({
+        url: "/product/create",
+        method: "POST",
+        body: data,
+      }),
+      invalidatesTags: ["Product"],
+    }),
+    getForWhat: builder.query({
+      query: (forWhat) => `/category/what/${forWhat}`,
+      providesTags: ["Product"],
+    }),
+    createCategories: builder.mutation({
+      query: (data) => ({
+        url: "/category/create",
+        method: "POST",
+        body: data,
+      }),
+      invalidatesTags: ["Product"],
+    }),
+    deleteCAtegories: builder.mutation({
+      query: (id) => ({
+        url: `/category/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["Product"],
+    }),
  getProducts: builder.query({
   query: ({ category, price, brand, sort, page,discount,sizes,forwhat,rating }) => {
     let base = `/product`;
@@ -132,4 +159,4 @@ getSaleProducts: builder.query({
 });
 
 export default api;
-export const { useGetProductsQuery, useGetCategoriesQuery,useGetProductByIdQuery,useNewArriavalsQuery,useCreateFavMutation,useRemoveFavMutation,useGetRelatedProductsQuery,useCreateReviewMutation,useGetReviewsQuery,useDeleteReviewMutation,useGetTopSellingProductQuery,useNewArrivalsQuery,useGetSaleProductsQuery } = api;
+export const { useGetProductsQuery, useGetCategoriesQuery,useCreateProductMutation,useGetForWhatQuery,useCreateCategoriesMutation,useDeleteCAtegoriesMutation,useGetProductByIdQuery,useNewArriavalsQuery,useCreateFavMutation,useRemoveFavMutation,useGetRelatedProductsQuery,useCreateReviewMutation,useGetReviewsQuery,useDeleteReviewMutation,useGetTopSellingProductQuery,useNewArrivalsQuery,useGetSaleProductsQuery } = api;

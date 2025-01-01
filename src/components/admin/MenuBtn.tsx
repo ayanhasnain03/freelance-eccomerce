@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { FaUsers, FaBox, FaChartBar, FaEnvelope, FaTimes } from 'react-icons/fa';
+import { FaUsers, FaBox, FaChartBar, FaEnvelope, FaTimes, FaCogs, FaTags } from 'react-icons/fa';
 import { MdDashboard } from 'react-icons/md';
 import { Link } from 'react-router-dom';
 
@@ -19,14 +19,12 @@ const MenuBtn = () => {
         ></div>
       )}
 
-
       <button
         onClick={toggleMenu}
-        className="p-4 bg-black border-2 border-white rounded-full shadow-xl text-white focus:outline-none fixed top-5 left-5 z-30 transition-transform transform hover:scale-110"
+        className="p-4 bg-black border-2 border-white rounded-full shadow-xl text-white focus:outline-none fixed top-[40%] left-5 z-30 transition-transform transform hover:scale-110"
       >
         <MdDashboard className="w-6 h-6" />
       </button>
-
 
       <div
         className={`fixed top-0 left-0 h-full w-72 bg-black shadow-2xl rounded-r-xl transform ${isOpen ? 'translate-x-0' : '-translate-x-full'} transition-transform duration-300 ease-in-out z-40`}
@@ -37,7 +35,6 @@ const MenuBtn = () => {
           </button>
           <h2 className="text-xl font-semibold">Menu</h2>
         </div>
-
 
         <div className="flex flex-col space-y-5 p-4">
           <Link
@@ -78,6 +75,23 @@ const MenuBtn = () => {
           >
             <FaEnvelope className="text-white w-6 h-6" />
             <span className="text-lg font-medium text-white">Messages</span>
+          </Link>
+
+        
+          <Link
+            to="/dashboard/products"
+            className="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-700 transition-all duration-200 ease-in-out transform hover:scale-105"
+          >
+            <FaCogs className="text-white w-6 h-6" />
+            <span className="text-lg font-medium text-white">Product Management</span>
+          </Link>
+
+          <Link
+            to="/dashboard/categories"
+            className="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-700 transition-all duration-200 ease-in-out transform hover:scale-105"
+          >
+            <FaTags className="text-white w-6 h-6" />
+            <span className="text-lg font-medium text-white">Category Management</span>
           </Link>
         </div>
       </div>

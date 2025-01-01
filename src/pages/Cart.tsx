@@ -79,6 +79,11 @@ const CartPage: React.FC = () => {
                     <p className="text-sm text-gray-500">
                       Price: {formatCurrency(item.price)}
                     </p>
+                    
+                    <del className="text-sm text-gray-500">
+                      MRP: {item.realPrice}
+                    </del>
+                    
                   </div>
                 </div>
 

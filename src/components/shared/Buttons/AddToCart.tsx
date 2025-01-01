@@ -6,7 +6,7 @@ import toast from "react-hot-toast";
 
 
 
-const AddToCart = ({ productName, price, sizes, image, _id, stock, quantity }:any) => {
+const AddToCart = ({ productName, price, sizes, image, _id, stock, quantity,discount,realPrice }:any) => {
   const {cartItems} = useSelector((state: any) => state.cart);
 
   const isItemInCart = cartItems.some((item: any) => item._id === _id);
@@ -28,6 +28,9 @@ const AddToCart = ({ productName, price, sizes, image, _id, stock, quantity }:an
         _id,
         stock,
         quantity,
+        discount,
+        realPrice
+
       })
     );
     dispatch(calculatePrice());

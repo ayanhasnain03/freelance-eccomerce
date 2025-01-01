@@ -96,15 +96,14 @@ export const cartReducer = createSlice({
       state.shippingCharges = state.subtotal > 1000 ? 0 : 250;
 
    
-      state.tax = parseFloat((state.subtotal * 0.18).toFixed(2));
+      state.tax = Math.round(state.subtotal * 0.18);
 
      
       state.discount = 0;
 
-
-      state.total =
-        state.subtotal + state.shippingCharges + state.tax - state.discount;
-
+      state.total = Math.round(
+        state.subtotal + state.shippingCharges + state.tax - state.discount
+      );
  
       localStorage.setItem(
         "cart",

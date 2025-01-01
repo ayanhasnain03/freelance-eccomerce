@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 * {
-  box-sizing: border-box; /* Ensure padding and border are included in the element's width/height */
+  box-sizing: border-box;
 }
 body {
     margin: 0;
@@ -16,54 +16,54 @@ body {
 
 
 html, body {
-  width: 100%; /* Prevents horizontal scrolling */
-  max-width: 100%; /* Restricts width on all screens */
+  width: 100%; 
+  max-width: 100%; 
 }
 
-/* Custom Scrollbar */
+
 ::-webkit-scrollbar {
-    width: 6px; /* Thin scrollbar */
-    height: 6px; /* Thin horizontal scrollbar */
+    width: 6px; 
+    height: 6px; 
 }
 
 ::-webkit-scrollbar-thumb {
-    background-color: #888; /* Light grey color for the thumb */
-    border-radius: 10px; /* Rounded corners */
-    transition: background-color 0.3s ease-in-out; /* Smooth transition */
+    background-color: #888;
+    border-radius: 10px; 
+    transition: background-color 0.3s ease-in-out; 
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background-color: #555; /* Darker grey when hovered */
+    background-color: #555; 
 }
 
 ::-webkit-scrollbar-track {
-    background-color: transparent; /* Track background */
-    border-radius: 10px; /* Rounded corners */
+    background-color: transparent;
+    border-radius: 10px;
 }
 
 
 
 
 
-/* Fade-in effect for text */
+
 @keyframes fadeIn {
     0% {
       opacity: 0;
-      transform: scale(0.95); /* Slight scale down for initial state */
+      transform: scale(0.95); 
     }
     100% {
       opacity: 1;
-      transform: scale(1); /* Return to normal size */
+      transform: scale(1);
     }
   }
   
-  /* Drawing animation for the SVG path */
+
   @keyframes draw {
     0% {
-      stroke-dashoffset: 500; /* Start with the path hidden */
+      stroke-dashoffset: 500;
     }
     100% {
-      stroke-dashoffset: 0; /* End with the full path visible */
+      stroke-dashoffset: 0;
     }
   }
   
@@ -98,4 +98,13 @@ html, body {
   }
 
 
-  
+
+.search-modal {
+  backdrop-filter: blur(10px);
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 999;
+}
