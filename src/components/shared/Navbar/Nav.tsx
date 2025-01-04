@@ -73,7 +73,7 @@ const Nav: React.FC<NavProps> = ({ user }) => {
 
   return (
     <header className="mx-auto">
-      <nav className="flex items-center justify-between px-6 py-4 md:px-12 md:py-4 bg-white shadow-md relative z-50">
+      <nav className="flex items-center justify-between px-6 py-4 md:px-12 md:py-4 bg-white shadow-md relative z-20">
         <button
           className="md:hidden"
           aria-label={isMobile ? "Close menu" : "Open menu"}

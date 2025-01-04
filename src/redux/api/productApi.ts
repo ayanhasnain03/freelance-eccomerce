@@ -29,6 +29,14 @@ const api = createApi({
       }),
       invalidatesTags: ["Product"],
     }),
+    updateProduct: builder.mutation({
+      query: ({ id, data }) => ({
+        url: `/product/update/${id}`,
+        method: "PUT",
+        body: data,
+      }),
+      invalidatesTags: ["Product"],
+    }),
     getForWhat: builder.query({
       query: (forWhat) => `/category/what/${forWhat}`,
       providesTags: ["Product"],
@@ -49,10 +57,11 @@ const api = createApi({
       invalidatesTags: ["Product"],
     }),
  getProducts: builder.query({
-  query: ({ category, price, brand, sort, page,discount,sizes,forwhat,rating }) => {
+  query: ({ category, price, brand, sort, page,discount,sizes,forwhat,rating,search="" }) => {
     let base = `/product`;
     const queryParams: string[] = [];
     if (category) queryParams.push(`category=${category}`);
+    if(search) queryParams.push(`search=${search}`);
     if (rating) queryParams.push(`rating=${rating}`);
     if (forwhat) queryParams.push(`forwhat=${forwhat}`);
   if(price) queryParams.push(`price=${price}`);
@@ -75,6 +84,13 @@ getProductById: builder.query({
   query: (id) => `/product/${id}`,
   providesTags: ["Product"],
   keepUnusedDataFor: 60,
+}),
+deleteProduct: builder.mutation({
+  query: (id) => ({
+    url: `/product/${id}`,
+    method: "DELETE",
+  }),
+  invalidatesTags: ["Product"],
 }),
 newArriavals: builder.query({
   query: () => `/product/new-arrivals`,
@@ -154,9 +170,9 @@ getSaleProducts: builder.query({
   providesTags: ['Product'],
   keepUnusedDataFor: 60,
 
-})
+}),
   })
 });
 
 export default api;
-export const { useGetProductsQuery, useGetCategoriesQuery,useCreateProductMutation,useGetForWhatQuery,useCreateCategoriesMutation,useDeleteCAtegoriesMutation,useGetProductByIdQuery,useNewArriavalsQuery,useCreateFavMutation,useRemoveFavMutation,useGetRelatedProductsQuery,useCreateReviewMutation,useGetReviewsQuery,useDeleteReviewMutation,useGetTopSellingProductQuery,useNewArrivalsQuery,useGetSaleProductsQuery } = api;
+export const { useGetProductsQuery, useGetCategoriesQuery,useCreateProductMutation,useUpdateProductMutation,useGetForWhatQuery,useCreateCategoriesMutation,useDeleteCAtegoriesMutation,useGetProductByIdQuery,useDeleteProductMutation,useNewArriavalsQuery,useCreateFavMutation,useRemoveFavMutation,useGetRelatedProductsQuery,useCreateReviewMutation,useGetReviewsQuery,useDeleteReviewMutation,useGetTopSellingProductQuery,useNewArrivalsQuery,useGetSaleProductsQuery } = api;

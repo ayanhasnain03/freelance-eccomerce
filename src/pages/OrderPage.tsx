@@ -35,6 +35,7 @@ const OrderPage = () => {
     estimatedDelivery,
     discounts,
     userId,
+    shippingCharge
   } = data?.order || {};
 
   if (role !== "admin" && userId !== _id) {
@@ -104,13 +105,19 @@ const OrderPage = () => {
             <p className="font-semibold">₹{subtotal.toFixed(2)}</p>
           </div>
           <div className="flex justify-between text-gray-600">
-            <p>Discount:</p>
-            <p className="text-red-500">- ₹{discounts.toFixed(2)}</p>
+            <p>Shipping Charge:</p> <p className="font-semibold">₹{shippingCharge?.toFixed(2)}</p>
           </div>
+
           <div className="flex justify-between text-gray-600">
             <p>Tax:</p>
             <p className="font-semibold">₹{tax.toFixed(2)}</p>
           </div>
+
+          <div className="flex justify-between text-gray-600">
+            <p>Discount:</p>
+            <p className="text-red-500">- ₹{discounts.toFixed(2)}</p>
+          </div>
+    
           <div className="flex justify-between text-gray-800 font-semibold">
             <p>Total:</p>
             <p className="text-xl">₹{total.toFixed(2)}</p>

@@ -230,9 +230,12 @@ const ProductPage = () => {
          
             <div className="mt-16">
               <AnimText text="Related Products" fontSize="2xl" fontWeight="bold" />
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
-                <ProductLayout data={{ products: relatedProducts }} />
-              </div>
+             
+<div className="mt-10">
+
+<ProductLayout data={{ products: relatedProducts }} />
+
+  </div>         
             </div>
 
           

@@ -142,7 +142,7 @@ const Orders = () => {
             </table>
           </div>
 
-          {/* Pagination */}
+
           <div className="mt-6 flex justify-center items-center space-x-4">
             <button
               onClick={() => handlePageChange(currentPage - 1)}

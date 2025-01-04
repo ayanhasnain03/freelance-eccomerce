@@ -106,6 +106,7 @@ const ShippingPage: React.FC = () => {
       tax,
       subtotal,
       total,
+      shippingCharge:shippingCharges,
       customerPhoneNumber: formData.phoneNo,
       customerName: formData.name,
     };
@@ -260,7 +261,7 @@ const ShippingPage: React.FC = () => {
           )}
         </div>
 
-        {/* Right Side: Cart Items */}
+      
         <div className="w-96 bg-white shadow-lg rounded-lg p-6 space-y-8">
           <h2 className="text-2xl font-semibold mb-4">Your Cart</h2>
           <div className="space-y-4">

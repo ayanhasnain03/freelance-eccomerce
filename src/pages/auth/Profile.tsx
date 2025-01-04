@@ -5,16 +5,21 @@ import { useLogoutUserMutation } from "../../redux/api/userApi";
 import toast from "react-hot-toast";
 import { userNotExist } from "../../redux/reducers/userReducer";
 import { useGetMyOrdersQuery } from "../../redux/api/orderApi";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Profile = () => {
+  const naviagte = useNavigate();
   const { user, isLoading } = useSelector((state: any) => state.user);
+
   const [logoutUser, { isLoading: logoutLoading }] = useLogoutUserMutation();
   const { data } = useGetMyOrdersQuery({
     limit: 5,
   });
   const dispatch = useDispatch();
-
+  if (!user._id) {
+    dispatch(userNotExist());
+    naviagte("/login");
+   }
   return (
     <>
       {isLoading ? (
@@ -82,7 +87,7 @@ const Profile = () => {
                       </p>
                     </div>
                     <div className="text-sm text-gray-600">
-                      Total: {order.subtotal}
+                      Total: {order.total}
                     </div>
                   </div>
                </Link>

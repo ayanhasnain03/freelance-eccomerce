@@ -5,7 +5,7 @@ interface CartItem {
   price: number;
   quantity: number;
   selectedSize: string;
-  stock: number; 
+  stock: number;
 }
 
 interface ShippingInfo {
@@ -15,7 +15,6 @@ interface ShippingInfo {
   pinCode: string;
   country: string;
 }
-
 
 interface CartState {
   loading: boolean;
@@ -44,7 +43,7 @@ const getInitialState = (): CartState => {
           address: "",
           city: "",
           state: "",
-          pinCode: 0,
+          pinCode: "",
           country: "",
         },
       };
@@ -64,47 +63,49 @@ export const cartReducer = createSlice({
       );
 
       if (index === -1) {
-       
         state.cartItems.push(action.payload);
       } else {
-       
         state.cartItems[index].quantity = action.payload.quantity;
       }
 
       localStorage.setItem("cart", JSON.stringify(state));
-      state.loading = false; 
+      state.loading = false;
     },
 
     removeToCart: (state, action: PayloadAction<string>) => {
-      
       state.cartItems = state.cartItems.filter(
         (item) => item._id !== action.payload
       );
 
-     
       localStorage.setItem("cart", JSON.stringify(state));
     },
 
     calculatePrice: (state) => {
- 
+
       state.subtotal = state.cartItems.reduce(
         (total, item) => total + item.price * item.quantity,
         0
       );
 
-
-      state.shippingCharges = state.subtotal > 1000 ? 0 : 250;
-
    
+      if (state.subtotal >= 500) {
+        state.shippingCharges = 0; 
+      } else if (state.subtotal >= 200) {
+        state.shippingCharges = 20; 
+      } else {
+        state.shippingCharges = 50;
+      }
+
+
       state.tax = Math.round(state.subtotal * 0.18);
 
-     
       state.discount = 0;
 
+    
       state.total = Math.round(
         state.subtotal + state.shippingCharges + state.tax - state.discount
       );
- 
+
       localStorage.setItem(
         "cart",
         JSON.stringify({
@@ -124,6 +125,7 @@ export const cartReducer = createSlice({
 
       localStorage.setItem("cart", JSON.stringify(state));
     },
+
     resetCart: (state) => {
       Object.assign(state, {
         cartItems: [],
@@ -136,7 +138,7 @@ export const cartReducer = createSlice({
           address: "",
           city: "",
           state: "",
-          pinCode: 0,
+          pinCode: "",
           country: "",
         },
       });

@@ -1,6 +1,6 @@
 import { lazy, Suspense, useEffect } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import {Toaster} from "react-hot-toast"
+import { Toaster } from "react-hot-toast";
 import axios from "axios";
 
 import Loader from "./components/shared/Loader/Loader";
@@ -10,13 +10,10 @@ import { userExist, userNotExist } from "./redux/reducers/userReducer";
 
 import ProtectedRoute from "./components/shared/ProtectedRoute";
 import Nav from "./components/shared/Navbar/Nav";
-
-
-
-
-
+import ProductManagement from "./pages/dashbaord/ProductManagement";
 
 const Home = lazy(() => import("./pages/Home"));
+const Contact = lazy(() => import("./pages/Contact"));
 const Collection = lazy(() => import("./pages/Collection"));
 const ProductPage = lazy(() => import("./pages/ProductPage"));
 const Cart = lazy(() => import("./pages/Cart"));
@@ -34,9 +31,21 @@ const Graph = lazy(() => import("./pages/dashbaord/Graph"));
 const Footer = lazy(() => import("./components/shared/Footer"));
 const ForgotPassword = lazy(() => import("./pages/auth/ForgotPassword"));
 const ResetPassword = lazy(() => import("./pages/auth/ResetPassword"));
-const ProductDashboardCreate = lazy(() => import("./pages/dashbaord/ProductCreate"));
-const CategoryManagement = lazy(() => import("./pages/dashbaord/CategoryManagement"));
-const CreateCategoryPage = lazy(() => import("./pages/dashbaord/CreateCategoryPage"));
+const ProductDashboardCreate = lazy(
+  () => import("./pages/dashbaord/ProductCreate")
+);
+const ProductDashboardUpdate = lazy(
+  () => import("./pages/dashbaord/UpdateProductPage")
+);
+const CategoryManagement = lazy(
+  () => import("./pages/dashbaord/CategoryManagement")
+);
+const CreateCategoryPage = lazy(
+  () => import("./pages/dashbaord/CreateCategoryPage")
+);
+const UserManagement = lazy(() => import("./pages/dashbaord/UserManagement"));
+const ContactManagement = lazy(() => import("./pages/dashbaord/ContactManagement"));
+
 const App = () => {
   const dispatch = useDispatch();
   const { user, isAuthenticated, loading } = useSelector(
@@ -45,18 +54,20 @@ const App = () => {
 
   useEffect(() => {
     axios
-    .get(`${import.meta.env.VITE_SERVER}/api/v1/user/profile`, {
-      withCredentials: true,
-    })
-    .then((res) => {
-      console.log("User Profile:", res.data); 
-      dispatch(userExist(res.data.user));
-    })
-    .catch((error) => {
-      console.error("Error fetching profile:", error?.response?.data?.message); 
-      dispatch(userNotExist());
-    });
-  
+      .get(`${import.meta.env.VITE_SERVER}/api/v1/user/profile`, {
+        withCredentials: true,
+      })
+      .then((res) => {
+        console.log("User Profile:", res.data);
+        dispatch(userExist(res.data.user));
+      })
+      .catch((error) => {
+        console.error(
+          "Error fetching profile:",
+          error?.response?.data?.message
+        );
+        dispatch(userNotExist());
+      });
   }, [dispatch]);
 
   if (loading) return <Loader />;
@@ -67,11 +78,20 @@ const App = () => {
         <Nav user={user} />
         <Suspense fallback={<Loader />}>
           <Routes>
-
             <Route path="/" element={<Home />} />
-            <Route path="/collections/womens" element={<Collection forWhat={"womens"}  />} />
-            <Route path="/collections/mens" element={<Collection forWhat={"mens"}  />} />
-            <Route path="/collections/kids" element={<Collection forWhat={"kids"}  />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route
+              path="/collections/womens"
+              element={<Collection forWhat={"womens"} />}
+            />
+            <Route
+              path="/collections/mens"
+              element={<Collection forWhat={"mens"} />}
+            />
+            <Route
+              path="/collections/kids"
+              element={<Collection forWhat={"kids"} />}
+            />
             <Route path="/collections/item/:id" element={<ProductPage />} />
             <Route path="/cart" element={<Cart />} />
 
@@ -89,16 +109,19 @@ const App = () => {
             </Route>
 
             <Route
-              element={<ProtectedRoute isAuthenticated={isAuthenticated} redirect="/auth" />}
+              element={
+                <ProtectedRoute
+                  isAuthenticated={isAuthenticated}
+                  redirect="/auth"
+                />
+              }
             >
               <Route path="/profile" element={<Profile />} />
               <Route path="/profile/wishlist" element={<WishList />} />
-            <Route path="/cart/shipping" element={<Shipping />} />
-            <Route path="/myorders" element={<MyOrders />} />
-            <Route path="/order/:id" element={<OrderPage />} />
-
+              <Route path="/cart/shipping" element={<Shipping />} />
+              <Route path="/myorders" element={<MyOrders />} />
+              <Route path="/order/:id" element={<OrderPage />} />
             </Route>
-
 
             <Route
               element={
@@ -112,17 +135,37 @@ const App = () => {
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/dashboard/orders" element={<Orders />} />
               <Route path="/dashboard/graphs" element={<Graph />} />
-              <Route path="/dashboard/categories" element={<CategoryManagement />} />
-              <Route path="/dashboard/categories/create" element={<CreateCategoryPage />} />
-              <Route path="/dashboard/product/create" element={<ProductDashboardCreate />} />
-              
+              <Route
+                path="/dashboard/categories"
+                element={<CategoryManagement />}
+              />
+              <Route
+                path="/dashboard/categories/create"
+                element={<CreateCategoryPage />}
+              />
+              <Route path="/dashboard/users" element={<UserManagement />} />
+              <Route
+                path="/dashboard/products"
+                element={<ProductManagement />}
+              />
+              <Route
+                path="/dashboard/messages"
+                element={<ContactManagement />}
+              />
+              <Route
+                path="/dashboard/product/create"
+                element={<ProductDashboardCreate />}
+              />
+              <Route
+                path="/dashboard/product/update/:id"
+                element={<ProductDashboardUpdate />}
+              />
             </Route>
-<Route path="*" element={<PageNotFound />} />
+            <Route path="*" element={<PageNotFound />} />
           </Routes>
-          <Footer/>
-
+          <Footer />
         </Suspense>
-        <Toaster position="bottom-center"/>
+        <Toaster position="bottom-center" />
       </BrowserRouter>
     </>
   );
