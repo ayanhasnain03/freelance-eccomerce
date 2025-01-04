@@ -1,9 +1,8 @@
-import  { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback } from "react";
 import axios from "axios";
 import { removeFromWishList } from "../redux/reducers/userReducer";
 import { useDispatch } from "react-redux";
 
-// Interface for WishListItem
 interface WishListItem {
   _id: string;
   brand: string;
@@ -22,18 +21,17 @@ interface WishListItem {
   isFav: boolean;
 }
 
-// Custom Hook to Fetch Data
 const useWishList = () => {
   const [wishlist, setWishlist] = useState<WishListItem[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-  // Fetch wishlist data from the API
+
   const fetchWishList = useCallback(async () => {
     try {
       const response = await axios.get(`${import.meta.env.VITE_SERVER}/api/v1/user/wishlist`, {
         withCredentials: true,
       });
-      
+
       if (response.data?.wishlist) {
         setWishlist(response.data.wishlist);
       } else {
@@ -47,7 +45,6 @@ const useWishList = () => {
     }
   }, []);
 
-  // Fetch wishlist on component mount
   useEffect(() => {
     fetchWishList();
   }, [fetchWishList]);
@@ -59,25 +56,23 @@ const WishList = () => {
   const { wishlist, loading, error, fetchWishList } = useWishList();
   const dispatch = useDispatch();
 
-  // Handle Remove from Wishlist
+ 
   const handleRemoveFromWishlist = async (itemId: string) => {
     try {
-    await axios.put(`${import.meta.env.VITE_SERVER}/api/v1/user/wishlist`, {
-        productId: itemId,
-      }, {
-        withCredentials: true,
-      });
-  
-      fetchWishList(); 
-       dispatch(removeFromWishList(itemId));
+      await axios.delete(
+        `${import.meta.env.VITE_SERVER}/api/v1/user/wishlist/${itemId}`,
+        { withCredentials: true }
+      );
+
+      fetchWishList();
+      dispatch(removeFromWishList(itemId));
     } catch (error) {
       console.error("Error removing item from wishlist:", error);
     }
   };
 
-  // Handle retry for fetching wishlist in case of error
+
   const handleRetry = () => {
- 
     fetchWishList();
   };
 
@@ -110,15 +105,12 @@ const WishList = () => {
     <div className="max-w-6xl mx-auto px-4 py-6">
       <h1 className="text-3xl font-semibold text-center mb-8">Your Wishlist</h1>
 
-      {wishlist?.length === 0 ? (
+      {wishlist.length === 0 ? (
         <p className="text-center text-xl">Your wishlist is empty.</p>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {wishlist?.map((item) => (
-            <div
-              key={item._id}
-              className="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow"
-            >
+          {wishlist.map((item) => (
+            <div key={item._id} className="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow">
               <div className="h-64 overflow-hidden rounded-lg mb-4">
                 {/* Image with fallback */}
                 <img
@@ -140,10 +132,11 @@ const WishList = () => {
                 <span>Stock: {item.stock} available</span>
               </div>
               <div className="mt-4 flex justify-between items-center">
-                {/* Remove from Wishlist button */}
+               
                 <button
                   className="py-2 px-6 text-sm font-semibold rounded-lg bg-red-500 text-white hover:bg-red-600"
                   onClick={() => handleRemoveFromWishlist(item._id)}
+                  aria-label={`Remove ${item.name} from wishlist`}
                 >
                   Remove
                 </button>

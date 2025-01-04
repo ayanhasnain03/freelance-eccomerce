@@ -41,7 +41,6 @@ const ProductLayout: React.FC<ProductLayoutProps> = ({ data }) => {
   const [loading, setLoading] = useState(true);
 
   const handleFav = async (id: string) => {
-
     dispatch(addtoWishList(id));
 
     try {
@@ -60,13 +59,9 @@ const ProductLayout: React.FC<ProductLayoutProps> = ({ data }) => {
 
   const removeFromFav = async (id: string) => {
     try {
-      const res = await axios.put(
-        `${API_BASE_URL}/api/v1/user/wishlist`,
-        { productId: id },
-        {
-          withCredentials: true,
-          headers: { "Content-Type": "application/json" },
-        }
+      const res = await axios.delete(
+        `${API_BASE_URL}/api/v1/user/wishlist/${id}`,
+        { withCredentials: true }
       );
 
       dispatch(removeFromWishList(id));
