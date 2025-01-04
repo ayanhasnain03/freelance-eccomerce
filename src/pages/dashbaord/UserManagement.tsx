@@ -16,7 +16,7 @@ const UserManagement = () => {
 
   const [deleteUser, { isLoading: isDeleting }] = useDeleteUserMutation();
   const { data, error, isLoading } = useGetAllUsersQuery({ page, keyword: searchTerm });
-const [updateRole, { isLoading: isUpdating }] = useUpdateUserROleMutation();
+const [updateRole] = useUpdateUserROleMutation();
   const handlePageChange = (newPage: number) => setPage(newPage);
 
   const handleSearchChange = debounce((e) => setSearchTerm(e.target.value), 500);
