@@ -16,7 +16,7 @@ const Profile = () => {
     limit: 5,
   });
   const dispatch = useDispatch();
-  if (!user._id) {
+  if (!user?._id) {
     dispatch(userNotExist());
     naviagte("/login");
    }
