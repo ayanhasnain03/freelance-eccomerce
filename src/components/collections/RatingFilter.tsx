@@ -21,10 +21,14 @@ const RatingFilter = () => {
   }, []);
 
   const dispatch = useDispatch();
+
   const handleApplyFilter = () => {
-    if (selectedRating) {
-      dispatch(setRating(selectedRating));
-    }
+    dispatch(setRating(selectedRating));
+  };
+
+  const handleResetFilter = () => {
+    setSelectedRating(null); 
+    dispatch(setRating(null)); 
   };
 
   const toggleDropdown = () => setIsDropdownOpen((prev) => !prev);
@@ -94,12 +98,20 @@ const RatingFilter = () => {
         )}
       </div>
 
-      <button
-        onClick={handleApplyFilter}
-        className="mt-6 w-full bg-teal-700 text-white text-sm font-medium py-2 px-4 rounded-lg hover:bg-teal-800 transition duration-200"
-      >
-        Apply Filter
-      </button>
+      <div className="flex space-x-4 mt-6">
+        <button
+          onClick={handleApplyFilter}
+          className="w-full bg-teal-700 text-white text-sm font-medium py-2 px-4 rounded-lg hover:bg-teal-800 transition duration-200"
+        >
+          Apply Filter
+        </button>
+        <button
+          onClick={handleResetFilter}
+          className="w-full bg-gray-300 text-gray-800 text-sm font-medium py-2 px-4 rounded-lg hover:bg-gray-400 transition duration-200"
+        >
+          Reset Filter
+        </button>
+      </div>
     </div>
   );
 };

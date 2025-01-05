@@ -3,6 +3,7 @@ import { useCreateProductMutation, useGetForWhatQuery } from "../../redux/api/pr
 import toast from "react-hot-toast";
 import { FaCloudUploadAlt, FaTimes } from "react-icons/fa";
 import { useDropzone } from "react-dropzone";
+import { useNavigate } from "react-router-dom";
 
 interface ProductFormData {
   name: string;
@@ -19,7 +20,7 @@ interface ProductFormData {
 
 const ProductCreate: React.FC = () => {
   const [createProduct, { isLoading }] = useCreateProductMutation();
-  
+  const navigate = useNavigate();
   const [formData, setFormData] = useState<ProductFormData>({
     name: "",
     description: "",
@@ -110,9 +111,9 @@ const ProductCreate: React.FC = () => {
     });
 
     try {
-      const response = await createProduct(data).unwrap();
+    await createProduct(data).unwrap();
       toast.success("Product created successfully!");
-      console.log(response);
+     navigate("/dashboard/products");
     } catch (error: any) {
       toast.error(error.data?.message || "Failed to create product");
     }

@@ -1,15 +1,32 @@
 import { useState } from "react";
 import { useCreateCategoriesMutation } from "../../redux/api/productApi";
 import toast from "react-hot-toast";
-import Loader from "../../components/shared/Loader/Loader";
+
+import { useNavigate } from "react-router-dom";
 
 const CreateCategoryPage = () => {
   const [create, { isLoading }] = useCreateCategoriesMutation();
-
+const navigate = useNavigate();
   const [category, setCategory] = useState({
     name: "",
     forWhat: "",
   });
+
+  const [errors, setErrors] = useState({
+    name: "",
+    forWhat: "",
+  });
+
+  const validateForm = () => {
+    const newErrors = {
+      name: category.name ? "" : "Category name is required.",
+      forWhat: category.forWhat ? "" : "Target audience is required.",
+    };
+
+    setErrors(newErrors);
+
+    return !newErrors.name && !newErrors.forWhat;
+  };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>, field: string) => {
     setCategory((prevState) => ({
@@ -21,11 +38,16 @@ const CreateCategoryPage = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    if (!validateForm()) return; 
+
     try {
       const res = await create(category).unwrap();
       toast.success(res?.data?.message || "Category created successfully!");
+      setCategory({ name: "", forWhat: "" }); 
+navigate("/dashboard/categories");
     } catch (error) {
-      toast.error("Failed to create category.");
+      //@ts-ignore
+      toast.error(error?.data?.message || "Failed to create category.");
       console.log(error);
     }
   };
@@ -33,10 +55,10 @@ const CreateCategoryPage = () => {
   return (
     <div className="min-h-screen bg-gray-100 py-10 px-6 flex justify-center items-center">
       <div className="w-full max-w-lg bg-white p-8 rounded-lg shadow-lg">
-        <h2 className="text-2xl font-semibold text-center text-gray-700 mb-6">Category Management</h2>
+        <h2 className="text-2xl font-semibold text-center text-gray-700 mb-6">Create Category</h2>
 
         <form onSubmit={handleSubmit} className="space-y-6">
-        
+     
           <div>
             <label htmlFor="name" className="block text-lg font-medium text-gray-600">
               Category Name
@@ -46,13 +68,19 @@ const CreateCategoryPage = () => {
               id="name"
               value={category.name}
               onChange={(e) => handleInputChange(e, "name")}
-              className="w-full p-3 mt-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className={`w-full p-3 mt-2 border ${errors.name ? "border-red-500" : "border-gray-300"} rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500`}
               placeholder="Enter category name"
               disabled={isLoading}
+              aria-describedby="name-error"
             />
+            {errors.name && (
+              <p className="text-sm text-red-500 mt-1" id="name-error">
+                {errors.name}
+              </p>
+            )}
           </div>
 
-          {/* For What */}
+    
           <div>
             <label htmlFor="forWhat" className="block text-lg font-medium text-gray-600">
               For What
@@ -62,13 +90,19 @@ const CreateCategoryPage = () => {
               id="forWhat"
               value={category.forWhat}
               onChange={(e) => handleInputChange(e, "forWhat")}
-              className="w-full p-3 mt-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className={`w-full p-3 mt-2 border ${errors.forWhat ? "border-red-500" : "border-gray-300"} rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500`}
               placeholder="Enter target audience (e.g., Womens)"
               disabled={isLoading}
+              aria-describedby="forWhat-error"
             />
+            {errors.forWhat && (
+              <p className="text-sm text-red-500 mt-1" id="forWhat-error">
+                {errors.forWhat}
+              </p>
+            )}
           </div>
 
-          {/* Submit Button */}
+         
           <div className="flex justify-center">
             <button
               type="submit"
@@ -77,14 +111,7 @@ const CreateCategoryPage = () => {
               }`}
               disabled={isLoading}
             >
-              {isLoading ? (
-                <div className="flex justify-center items-center">
-                  <Loader />
-                  <span className="ml-3">Creating...</span>
-                </div>
-              ) : (
-                "Save Category"
-              )}
+              {isLoading ? "Loading..." : "Create Category"}
             </button>
           </div>
         </form>
@@ -102,4 +129,4 @@ const CreateCategoryPage = () => {
   );
 };
 
-export default CreateCategoryPage
+export default CreateCategoryPage;

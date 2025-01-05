@@ -36,7 +36,7 @@ const ProductCard: React.FC<ProductCardProps> = memo(
     const discountedPrice = discount > 0 ? (price / (1 - discount / 100)).toFixed(2) : null;
 
     return (
-      <article className="max-w-sm w-full bg-white overflow-hidden relative rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300">
+      <article className="max-w-sm w-full bg-white overflow-hidden relative rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300" onClick={() => window.scrollTo(0, 0)}>
         <button
           className="absolute top-3 right-3 z-20"
           aria-label={`Toggle favorite for ${name}`}

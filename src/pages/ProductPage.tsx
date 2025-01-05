@@ -1,11 +1,4 @@
-import  {
-  useState,
-  useEffect,
-  lazy,
-  memo,
-  Suspense,
-  useCallback,
-} from "react";
+import { useState, useEffect, lazy, memo, Suspense, useCallback } from "react";
 import { useParams } from "react-router-dom";
 import {
   useDeleteReviewMutation,
@@ -24,44 +17,48 @@ import ScrollToTopOnReload from "../components/ResetPage";
 const Star = lazy(() => import("../components/cards/Star"));
 const AddToCart = lazy(() => import("../components/shared/Buttons/AddToCart"));
 const ReviewModal = lazy(() => import("../components/shared/ReviewModal"));
-const ProductLayout = lazy(() => import("../components/cards/product/ProductLayout"));
+const ProductLayout = lazy(
+  () => import("../components/cards/product/ProductLayout")
+);
 const AnimText = lazy(() => import("../components/shared/AnimText"));
 
-const ReviewActions = memo(({ onDelete, isAuthor }: { onDelete: () => void; isAuthor: boolean }) => {
-  const [isOpen, setIsOpen] = useState(false);
-  const toggleMenu = () => setIsOpen(!isOpen);
+const ReviewActions = memo(
+  ({ onDelete, isAuthor }: { onDelete: () => void; isAuthor: boolean }) => {
+    const [isOpen, setIsOpen] = useState(false);
+    const toggleMenu = () => setIsOpen(!isOpen);
 
-  return (
-    <div className="relative">
-      {isAuthor && (
-        <button
-          onClick={toggleMenu}
-          className="text-gray-600 hover:text-gray-800 focus:outline-none"
-          aria-label="More actions"
-        >
-          <FaEllipsisV />
-        </button>
-      )}
-
-      {isOpen && (
-        <div
-          className="absolute right-0 mt-2 w-32 bg-white shadow-lg rounded-lg border border-gray-200 z-10"
-          role="menu"
-        >
+    return (
+      <div className="relative">
+        {isAuthor && (
           <button
-            onClick={() => {
-              onDelete();
-              setIsOpen(false);
-            }}
-            className="block px-4 py-2 text-gray-700 hover:bg-gray-100 w-full text-left"
+            onClick={toggleMenu}
+            className="text-gray-600 hover:text-gray-800 focus:outline-none"
+            aria-label="More actions"
           >
-            Delete
+            <FaEllipsisV />
           </button>
-        </div>
-      )}
-    </div>
-  );
-});
+        )}
+
+        {isOpen && (
+          <div
+            className="absolute right-0 mt-2 w-32 bg-white shadow-lg rounded-lg border border-gray-200 z-10"
+            role="menu"
+          >
+            <button
+              onClick={() => {
+                onDelete();
+                setIsOpen(false);
+              }}
+              className="block px-4 py-2 text-gray-700 hover:bg-gray-100 w-full text-left"
+            >
+              Delete
+            </button>
+          </div>
+        )}
+      </div>
+    );
+  }
+);
 
 const ProductPage = () => {
   const existUserId = useSelector((state: any) => state.user.user._id);
@@ -74,7 +71,9 @@ const ProductPage = () => {
   const [deleteReview] = useDeleteReviewMutation();
   const { data: productData, isLoading, isError } = useGetProductByIdQuery(id);
   const { data: reviews, isLoading: reviewLoading } = useGetReviewsQuery(id);
-  const { data: relatedProductsData } = useGetRelatedProductsQuery(productData?.product?.category?._id || "");
+  const { data: relatedProductsData } = useGetRelatedProductsQuery(
+    productData?.product?.category?._id || ""
+  );
 
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
@@ -88,7 +87,9 @@ const ProductPage = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       if (productData?.product?.images?.length) {
-        setSelectedImageIndex((prevIndex) => (prevIndex + 1) % productData.product.images.length);
+        setSelectedImageIndex(
+          (prevIndex) => (prevIndex + 1) % productData.product.images.length
+        );
       }
     }, 3000);
     return () => clearInterval(interval);
@@ -105,7 +106,9 @@ const ProductPage = () => {
 
   const product = productData?.product;
   const relatedProducts =
-    relatedProductsData?.products?.filter((item: any) => item._id !== product?._id) || [];
+    relatedProductsData?.products?.filter(
+      (item: any) => item._id !== product?._id
+    ) || [];
   const discountedPrice = Math.floor(
     product?.price - (product?.price * product?.discount) / 100
   );
@@ -174,7 +177,9 @@ const ProductPage = () => {
                     ₹{discountedPrice}
                   </p>
                   <del className="text-gray-500">₹{product?.price}</del>
-                  <span className="text-rose-500">{product?.discount}% off</span>
+                  <span className="text-rose-500">
+                    {product?.discount}% off
+                  </span>
                 </div>
 
                 <div className="flex items-center mb-6">
@@ -186,14 +191,19 @@ const ProductPage = () => {
 
                 <p className="text-gray-700 mb-4">
                   <strong>Stock:</strong>{" "}
-                  {product?.stock > 0 ? `${product?.stock} items available` : "Out of Stock"}
+                  {product?.stock > 0
+                    ? `${product?.stock} items available`
+                    : "Out of Stock"}
                 </p>
                 <p className="text-gray-700 mb-6">
                   <strong>Brand:</strong> {product?.brand}
                 </p>
 
                 <div className="mb-6">
-                  <label htmlFor="sizes" className="block text-lg font-medium text-gray-700 mb-2">
+                  <label
+                    htmlFor="sizes"
+                    className="block text-lg font-medium text-gray-700 mb-2"
+                  >
                     Choose Size
                   </label>
                   <div className="flex gap-4">
@@ -227,20 +237,24 @@ const ProductPage = () => {
               </div>
             </div>
 
-         
             <div className="mt-16">
-              <AnimText text="Related Products" fontSize="2xl" fontWeight="bold" />
-             
-<div className="mt-10">
+              <AnimText
+                text="Related Products"
+                fontSize="2xl"
+                fontWeight="bold"
+              />
 
-<ProductLayout data={{ products: relatedProducts }} />
-
-  </div>         
+              <div className="mt-10" >
+                <ProductLayout data={{ products: relatedProducts }} />
+              </div>
             </div>
 
-          
             <div className="mt-16">
-              <AnimText text="Customer Reviews" fontSize="2xl" fontWeight="bold" />
+              <AnimText
+                text="Customer Reviews"
+                fontSize="2xl"
+                fontWeight="bold"
+              />
               <div className="mt-6 grid grid-cols-1 gap-6">
                 {reviewLoading ? (
                   <Skeleton quantity={3} />
@@ -248,20 +262,24 @@ const ProductPage = () => {
                   reviews?.reviews?.map((review: any) => (
                     <motion.div
                       key={review._id}
-                      className="bg-white shadow-lg rounded-md p-6"
+                      className="bg-white w-[400px] shadow-lg rounded-lg p-6 transition-all duration-300 transform hover:scale-105"
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                       transition={{ duration: 0.3 }}
                     >
                       <div className="flex items-center justify-between mb-4">
-                        <div className="flex items-center gap-4">
-                          <img
-                            src={review?.user?.avatar[0]?.url}
-                            alt="avatar"
-                            className="w-12 h-12 rounded-full border-2 border-teal-500"
-                          />
+                        <div className="flex items-center gap-4" >
+                          <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-teal-500" >
+                            <img
+                              src={review?.user?.avatar[0]?.url}
+                              alt="avatar"
+                              className="w-full h-full object-cover"
+                            />
+                          </div>
                           <div>
-                            <h4 className="font-semibold text-gray-800">{review.user.name}</h4>
+                            <h4 className="font-semibold text-gray-800">
+                              {review.user.name}
+                            </h4>
                             <Star rating={review.rating} size="sm" />
                           </div>
                         </div>
@@ -275,11 +293,13 @@ const ProductPage = () => {
                       </div>
                       <p className="text-gray-700 mb-4">{review.comment}</p>
                       {review?.image[0]?.url && (
-                        <img
-                          src={review?.image[0]?.url}
-                          alt="Review Image"
-                          className="w-full h-48 object-cover rounded-md"
-                        />
+                        <div className="w-full h-48 rounded-md overflow-hidden mb-4">
+                          <img
+                            src={review?.image[0]?.url}
+                            alt="Review Image"
+                            className="w-full h-full object-cover"
+                          />
+                        </div>
                       )}
                     </motion.div>
                   ))
@@ -288,7 +308,7 @@ const ProductPage = () => {
 
               <button
                 onClick={openReviewModal}
-                className="mt-8 px-6 py-2 bg-teal-600 text-white rounded-md shadow-md hover:bg-teal-700"
+                className="mt-8 px-6 py-2 bg-teal-600 text-white rounded-md shadow-md hover:bg-teal-700 transition-all"
               >
                 Write a Review
               </button>

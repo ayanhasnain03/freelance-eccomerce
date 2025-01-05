@@ -6,12 +6,12 @@ import Loader from "../components/shared/Loader/Loader";
 import toast from "react-hot-toast";
 import { resetFilters } from "../redux/reducers/productReducer";
 
-const CollectionLayout = lazy(
-  () => import("../components/layouts/CollectionLayout")
+const CollectionLayout = lazy(() =>
+  import("../components/layouts/CollectionLayout")
 );
 const SideBar = lazy(() => import("../components/collections/SideBar"));
-const ProductLayout = lazy(
-  () => import("../components/cards/product/ProductLayout")
+const ProductLayout = lazy(() =>
+  import("../components/cards/product/ProductLayout")
 );
 
 const Collection = memo(({ forWhat }: any) => {
@@ -19,7 +19,7 @@ const Collection = memo(({ forWhat }: any) => {
   const params = useLocation();
   const fromCategory = new URLSearchParams(params.search).get("category");
 
-  const { categories, price, sizes, brands,rating } = useSelector(
+  const { categories, price, sizes, brands, rating } = useSelector(
     (state: {
       product: {
         categories: string[];
@@ -64,7 +64,7 @@ const Collection = memo(({ forWhat }: any) => {
     brand: selectedBrand.join(","),
     forwhat: forWhat,
     page: currentPage,
-    rating: rating
+    rating,
   });
 
   const totalPages = data?.totalPage || 1;
@@ -113,7 +113,7 @@ const Collection = memo(({ forWhat }: any) => {
     <div className="flex flex-col md:flex-row relative h-full bg-white">
       <Suspense fallback={<Loader />}>
         <CollectionLayout>
-          <div >
+          <div>
             <SideBar />
           </div>
           {data?.products?.length === 0 ? (
@@ -134,33 +134,87 @@ const Collection = memo(({ forWhat }: any) => {
           ) : (
             <div className="max-w-full mx-auto h-full p-8 mt-20 md:p-0 md:mt-0">
               <ProductLayout data={data} />
-              <div className="flex justify-center right-0 items-center space-x-4 mt-6">
-                <button
-                  onClick={() => setCurrentPage(currentPage - 1)}
-                  disabled={currentPage === 1}
-                  className={`px-4 py-2 text-white bg-rose-600 rounded ${
-                    currentPage === 1
-                      ? "opacity-50 cursor-not-allowed"
-                      : "hover:bg-rose-700"
-                  }`}
-                >
-                  Previous
-                </button>
-                <span className="text-gray-700">
-                  Page {currentPage} of {totalPages}
-                </span>
-                <button
-                  onClick={() => setCurrentPage(currentPage + 1)}
-                  disabled={currentPage === totalPages}
-                  className={`px-4 py-2 text-white bg-rose-600 rounded ${
-                    currentPage === totalPages
-                      ? "opacity-50 cursor-not-allowed"
-                      : "hover:bg-rose-700"
-                  }`}
-                >
-                  Next
-                </button>
-              </div>
+
+     
+              <div className="flex justify-center items-center mt-6 space-x-2">
+ 
+  <button
+    onClick={() => setCurrentPage(currentPage - 1)}
+    disabled={currentPage === 1}
+    className={`px-4 py-2 mx-1 text-gray-500 capitalize bg-white rounded-md ${
+      currentPage > 1 ? "hover:bg-blue-500 hover:text-white" : "opacity-50 cursor-not-allowed"
+    }`}
+  >
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      className="w-5 h-5"
+      viewBox="0 0 20 20"
+      fill="currentColor"
+    >
+      <path
+        fillRule="evenodd"
+        d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
+        clipRule="evenodd"
+      />
+    </svg>
+  </button>
+
+  {/* Page Numbers */}
+  {[...Array(totalPages)].map((_, index) => {
+    const page = index + 1;
+
+    if (
+      totalPages > 5 &&
+      (page !== 1 && page !== totalPages) &&
+      (page < currentPage - 1 || page > currentPage + 1)
+    ) {
+      return (
+        index === currentPage - 3 || index === currentPage + 1 ? (
+          <span key={page} className="px-2 text-gray-500">
+            ...
+          </span>
+        ) : null
+      );
+    }
+
+    return (
+      <button
+        key={page}
+        onClick={() => setCurrentPage(page)}
+        className={`px-4 py-2 mx-1 rounded-md ${
+          page === currentPage
+            ? "bg-blue-500 text-white"
+            : "bg-white text-gray-700 hover:bg-blue-500 hover:text-white"
+        }`}
+      >
+        {page}
+      </button>
+    );
+  })}
+
+  {/* Next Button */}
+  <button
+    onClick={() => setCurrentPage(currentPage + 1)}
+    disabled={currentPage === totalPages}
+    className={`px-4 py-2 mx-1 text-gray-500 capitalize bg-white rounded-md ${
+      currentPage < totalPages ? "hover:bg-blue-500 hover:text-white" : "opacity-50 cursor-not-allowed"
+    }`}
+  >
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      className="w-5 h-5"
+      viewBox="0 0 20 20"
+      fill="currentColor"
+    >
+      <path
+        fillRule="evenodd"
+        d="M7.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L10.586 10l-3.293-3.293a1 1 0 010-1.414z"
+        clipRule="evenodd"
+      />
+    </svg>
+  </button>
+</div>
+
             </div>
           )}
         </CollectionLayout>

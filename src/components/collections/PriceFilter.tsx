@@ -6,8 +6,8 @@ import { setPrice } from "../../redux/reducers/productReducer";
 
 
 const priceRanges = [
-  { id: 1, label: "₹299 - ₹499", min: 299, max: 499 },
-  { id: 2, label: "₹500 - ₹999", min: 500, max: 999 },
+  { id: 1, label: "₹299 - ₹399", min: 299, max: 399 },
+  { id: 2, label: "₹399 - ₹499", min: 399, max: 499 },
   { id: 3, label: "₹1000 - ₹1999", min: 1000, max: 1999 },
   { id: 4, label: "₹2000 - ₹2999", min: 2000, max: 2999 },
   { id: 5, label: "₹3000 - ₹3999", min: 3000, max: 3999 },
