@@ -50,7 +50,7 @@ const ProductCard: React.FC<ProductCardProps> = memo(
 
         {/* Product Image */}
         <Link
-          onClick={() => window.scrollTo(0, 0)}
+        
           to={`/collections/item/${productId}`}
           className="block relative group"
           aria-label={`View details of ${name}`}
