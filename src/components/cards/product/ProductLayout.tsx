@@ -119,7 +119,7 @@ const ProductLayout: React.FC<ProductLayoutProps> = ({ data }) => {
       ) : (
         <Suspense
           fallback={
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-col-5 gap-6 mt-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-col-5 gap-6 ">
               {Array.from({ length: data?.products?.length || 8 }).map((_, index) => (
                 <div
                   key={index}

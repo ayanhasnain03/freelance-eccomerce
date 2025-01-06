@@ -59,7 +59,7 @@ const SideBarMobile = () => {
         type="button"
         aria-label="Filters"
         onClick={handleFilter}
-        className="md:hidden absolute p-4 text-white top-4 left-4 z-50 rounded-full bg-teal-600 shadow-lg"
+        className="md:hidden absolute p-4 text-white top-4 left-4 z-50 rounded-full bg-primary-red shadow-lg"
       >
         {handleFilterMob ? (
           <IoMdClose size={24} />

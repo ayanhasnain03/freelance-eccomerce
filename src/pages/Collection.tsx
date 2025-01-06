@@ -141,7 +141,7 @@ const Collection = memo(({ forWhat }: any) => {
               </button>
             </div>
           ) : (
-            <div className="max-w-full mx-auto h-full p-8 mt-20 md:p-0 md:mt-0">
+            <div className="max-w-full mx-auto h-full md:p-8 mt-10 md:mt-0">
               
               <ProductLayout data={data} />
 
