@@ -3,8 +3,9 @@ import { motion } from "framer-motion";
 
 import { useGetTopSellingProductQuery } from "../../redux/api/productApi";
 import Skeleton from "../shared/Skeleton";
-import AnimText from "../shared/AnimText";
+
 import Highlighter from "../shared/Highlight";
+import Stbtn from "../shared/Buttons/Stbtn";
 
 const ProductLayout = lazy(() => import("../cards/product/ProductLayout"));
 
@@ -21,16 +22,16 @@ const TopSelling: React.FC = () => {
 
   return (
     <motion.div
-      className="flex flex-col gap-6 mt-6 w-full items-center justify-center relative px-8"
+      className="flex flex-col gap-6 mt-6 w-full items-center justify-center relative "
       initial={{ opacity: 0, y: 50 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.8 }}
     >
       <div className="flex flex-col items-center justify-center">
-        <AnimText text="Top Selling" fontSize="3xl" fontFamily="dancing" />
-        <p className="text-gray-600 text-sm md:text-base mt-4">
-          Explore the Top <Highlighter animationDuration={1} text="Selling" /> products from our store.
+        <Stbtn text="Top Selling" />
+        <p className="">
+          Explore the  <Highlighter animationDuration={1} text="Top Selling"  strokeWidth={8} lineStyle="strikethrough" lineColor="#F39EA2"/> products from our store.
         </p>
       </div>
 
@@ -40,7 +41,7 @@ const TopSelling: React.FC = () => {
       ) : (
        
         <Suspense fallback={<Skeleton quantity={3} />}>
-          <div className="w-full flex flex-wrap justify-center gap-4">
+          <div className="w-full flex flex-wrap justify-center gap-4 md:mr-8">
             {data && <ProductLayout data={data} />}
           </div>
         </Suspense>

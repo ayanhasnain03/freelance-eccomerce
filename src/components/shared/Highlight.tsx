@@ -17,7 +17,7 @@ const Highlighter: React.FC<HighlighterProps> = ({
   strokeWidth = 4,
   fontSize = "text-lg",
   lineStyle = "underline",
-  opacity = 0.6,
+  opacity = 0.8,
   animationDuration = 2,
   className,
 }) => {
@@ -66,7 +66,7 @@ const Highlighter: React.FC<HighlighterProps> = ({
   return (
     <span ref={ref} className="relative inline-block">
 
-      <span className={`relative z-10 ${fontSize} ${className}`}>{text}</span>
+      <span className={`relative z-10 ${fontSize} font-semibold ${className}`}>{text}</span>
 
 
       <svg

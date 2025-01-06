@@ -19,7 +19,7 @@ const AnimText = ({
   underlinePosition = { bottom: "-4px", left: "0%" },
   svgStrokeWidth = 3, 
   svgCurveHeight = 6, 
-  fontFamily="dancing"
+
 }: AnimTextProps) => {
   const [isVisible, setIsVisible] = useState(false);
   const [textWidth, setTextWidth] = useState(0);
@@ -72,7 +72,7 @@ const AnimText = ({
       ref={textRef}
     >
       <span
-        className={`font-${fontWeight} ${color} text-${fontSize} font-${fontFamily} ${isVisible ? 'animate-fade-in' : ''}`}
+        className={`font-${fontWeight} ${color} text-${fontSize} font-bebas ${isVisible ? 'animate-fade-in' : ''}`}
       >
         {text}
       </span>

@@ -106,12 +106,12 @@ const ProductLayout: React.FC<ProductLayoutProps> = ({ data }) => {
   }
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-col-5 gap-6 mt-4 md:mr-4">
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-col-5 gap-6 mt-4 ml-8 md:ml-0">
       {loading ? (
         Array.from({ length: data?.products?.length || 8 }).map((_, index) => (
           <div
             key={index}
-            className="animate-pulse bg-gray-200 h-[250px] w-[200px]  shadow-md flex justify-center items-center"
+            className="animate-pulse bg-gray-200 h-[250px] w-[200px] md:ml-0 ml-12 shadow-md flex justify-center items-center"
           >
             <Loader />
           </div>
@@ -119,7 +119,7 @@ const ProductLayout: React.FC<ProductLayoutProps> = ({ data }) => {
       ) : (
         <Suspense
           fallback={
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-col-5 gap-6 ">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-col-5 gap-6 md:ml-0 ml-12">
               {Array.from({ length: data?.products?.length || 8 }).map((_, index) => (
                 <div
                   key={index}

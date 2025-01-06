@@ -6,7 +6,7 @@ interface CollectionLayoutProps {
 
 const CollectionLayout: React.FC<CollectionLayoutProps> = ({ children }) => {
   return (
-    <section className="flex h-full justify-between overflow-x-hidden w-full">
+    <section className="flex flex-col md:flex-row h-full overflow-x-hidden w-full">
       {children}
     </section>
   );

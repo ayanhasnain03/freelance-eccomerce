@@ -34,7 +34,7 @@ const ProductCard: React.FC<ProductCardProps> = memo(
       discount > 0 ? (price / (1 - discount / 100)).toFixed(2) : null;
 
     return (
-      <article className="w-[280px] h-full md:w-[20vw] md:h-[350px] bg-white relative overflow-hidden">
+      <article className="w-[280px] h-full md:w-[20vw] md:h-[320px] bg-white relative overflow-hidden border border-gray-200 rounded-md">
       
         <button
           className="absolute top-3 right-3 z-20"
@@ -48,9 +48,9 @@ const ProductCard: React.FC<ProductCardProps> = memo(
           />
         </button>
 
-        {/* Product Image */}
+   
         <Link
-        
+          onClick={() => window.scrollTo(0, 0)}
           to={`/collections/item/${productId}`}
           className="block relative group"
           aria-label={`View details of ${name}`}
@@ -65,13 +65,13 @@ const ProductCard: React.FC<ProductCardProps> = memo(
           </div>
 
   
-          <div className="mt-4 px-4 pb-4 ">
+          <div className="mt-4 px-4 pb-4 text-start">
             <h2 className="text-lg sm:text-[14px] font-semibold text-gray-800 truncate">
               {name}
             </h2>
             <p className="text-[12px] text-gray-600 font-medium mb-1 text-start">
               {description?.length > 60
-                ? `${description.slice(0, 78)}...`
+                ? `${description.slice(0, 57)}...`
                 : description}
             </p>
 

@@ -2,7 +2,7 @@ import { useState, Suspense, lazy } from "react";
 import { LiaFilterSolid } from "react-icons/lia";
 import { IoMdClose } from "react-icons/io";
 import { useLocation } from "react-router-dom";
-import Highlighter from "../shared/Highlight";
+
 
 
 const Category = lazy(() => import("./Category"));
@@ -15,10 +15,7 @@ const SideBar = () => {
   return (
     <>
       <div className="hidden md:flex flex-col max-w-[210px] bg-white h-screen p-2 sticky top-0">
-        <div className="flex items-center justify-between px-4">
-          <Highlighter text="Filters" />
-          <LiaFilterSolid className="text-2xl" />
-        </div>
+   
         <Suspense
           fallback={
             <div className="text-center text-gray-500">Loading filters...</div>

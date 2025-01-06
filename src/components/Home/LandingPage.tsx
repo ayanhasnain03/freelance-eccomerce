@@ -13,7 +13,7 @@ const LandingPage = () => {
         title="Fash Alt - Fashion for Everyone"
         description="Discover the latest fashion trends at Fash Alt. Shop for clothing, shoes, and accessories at unbeatable prices."
         keywords="fashion, online shopping, clothing, shoes, accessories, fashion trends, women's fashion, men's fashion, latest fashion, stylish clothing, trendy accessories"
-        image="https://freelance-eccomerce.vercel.app/hero.webp"
+        image="https://freelance-eccomerce.vercel.app/logo.jpg"
         url="https://freelance-eccomerce.vercel.app"
       />
       <div className="flex flex-row justify-around gap-8 mt-5">
@@ -49,9 +49,9 @@ const LandingPage = () => {
             />
           </motion.div>
 
-          <div className="text-center text-black px-8 flex flex-col gap-2">
+          <div className="text-center text-black px-8 flex flex-col gap-1">
             <motion.h1
-              className="main-title font-agu text-4xl"
+              className="main-title text-6xl font-bebas"
               initial={{ opacity: 0, y: 50 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
@@ -60,7 +60,7 @@ const LandingPage = () => {
             </motion.h1>
 
             <motion.div
-              className="text-xl mt-1 font-inter"
+              className="text-xl mt-1 font-inter "
               initial={{ opacity: 0, y: 50 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
@@ -84,6 +84,8 @@ const LandingPage = () => {
               />{" "}
               on orders over $50!
             </motion.div>
+
+                
 
           </div>
 

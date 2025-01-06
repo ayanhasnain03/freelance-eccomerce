@@ -20,6 +20,7 @@ fontFamily: {
         agu: ["Agu Display", "sans-serif"],
         dancing: ["Dancing Script", "cursive"],
         inter: ['Inter', 'sans-serif'],
+        bebas: ['Bebas Neue', 'serif'],
       },
     },
   },

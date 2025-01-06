@@ -13,23 +13,30 @@ const SaleProducts = () => {
 
   return (
     <motion.div
-      className="h-auto w-full mt-10 p-8 text-center"
+      className="h-auto w-full mt-10 p-6 text-center relative"
       initial={{ opacity: 0 }}
       whileInView={{ opacity: 1 }}
       transition={{ duration: 0.8 }}
     >
-      <Stbtn text="Christmas Sale" />
-      <CountdownTimer saleDate="30-1-2025" />
+<div className="absolute top-16 left-10 ">
+<CountdownTimer  saleDate="30-1-2025" />
+</div>
+<div className="mt-10">
 
-      <div className="text-center mb-8">
-        <p className="mt-2 text-lg text-gray-600">
-          Exclusive offers and{" "}
-          <span>
-            <Highlighter animationDuration={1} text="Discounts" />
-          </span> just for you!
-        </p>
-      </div>
+<div className="">
+  <Stbtn text="New Year Mega Sale" />
+  <p className="mb-4">
+    <Highlighter text="Start the year with a bang!" strokeWidth={8} lineStyle="strikethrough" lineColor="#F39EA2" />
+    {" "}Enjoy a huge{" "}
+    <Highlighter text="30% off"  lineStyle="strikethrough" strokeWidth={8} lineColor="#F39EA2" />
+    {" "}on all products! Don't miss out on exclusive deals and discounts.
+  </p>
+</div>
 
+
+
+</div>
+    
       {isLoading ? (
         <div className="flex justify-center items-center">
           <Loader /> 

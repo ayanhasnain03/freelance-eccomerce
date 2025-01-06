@@ -122,7 +122,7 @@ const Collection = memo(({ forWhat }: any) => {
     <div className="flex flex-col md:flex-row relative h-full bg-white">
       <Suspense fallback={<Loader />}>
         <CollectionLayout>
-          <div>
+          <div className="h-full">
             <SideBar />
           </div>
           {data?.products?.length === 0 ? (
