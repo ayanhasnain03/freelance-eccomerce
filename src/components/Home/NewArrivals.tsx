@@ -35,7 +35,7 @@ const NewArrivals = () => {
         <Skeleton quantity={3} />
       ) : (
         <Suspense fallback={<div>Loading Products...</div>}>
-        <div className='ml-8'>
+        <div className='md:ml-8'>
         <ProductLayout data={data} />
 
         </div>
