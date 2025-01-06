@@ -24,7 +24,7 @@ const SideBar = () => {
             <div className="text-center text-gray-500">Loading filters...</div>
           }
         >
-          <div className="filter-price mb-4">
+          <div className="filter-price mb-4 mt-10">
             <PriceFilter />
           </div>
           <div className="filter-size mb-4">

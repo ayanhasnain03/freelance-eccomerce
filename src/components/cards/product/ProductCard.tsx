@@ -34,8 +34,8 @@ const ProductCard: React.FC<ProductCardProps> = memo(
       discount > 0 ? (price / (1 - discount / 100)).toFixed(2) : null;
 
     return (
-      <article className="w-[280px] h-[400px] md:w-[20vw] md:h-[320px] bg-white relative shadow-lg rounded-lg overflow-hidden group">
-        {/* Favorite Button */}
+      <article className="w-[280px] h-[400px] md:w-[20vw] md:h-[320px] bg-white relative shadow-lg rounded-lg overflow-hidden ">
+     
         <button
           className="absolute top-3 right-3 z-20"
           aria-label={`Toggle favorite for ${name}`}
@@ -55,7 +55,7 @@ const ProductCard: React.FC<ProductCardProps> = memo(
           className="block relative group"
           aria-label={`View details of ${name}`}
         >
-          <div className="flex items-center justify-center transition-transform transform group-hover:scale-105">
+          <div className="flex items-center justify-center ">
             <img
               src={image}
               alt={name}
@@ -64,7 +64,7 @@ const ProductCard: React.FC<ProductCardProps> = memo(
             />
           </div>
 
-          <div className="mt-4 px-4 pb-4 group-hover:translate-y-2 transition-all">
+          <div className="mt-4 px-4 pb-4 ">
             <h2 className="text-lg sm:text-[14px] font-semibold text-gray-800 truncate">
               {name}
             </h2>
