@@ -1,7 +1,7 @@
 import { lazy } from "react";
 import { motion } from "framer-motion";
 import Highlighter from "../shared/Highlight";
-import { Link } from "react-router-dom";
+
 import Helm from "../Helm";
 
 const MobileLandingPage = lazy(() => import("./MobileLandingPage"));
