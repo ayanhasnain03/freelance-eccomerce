@@ -5,6 +5,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { useCreateFavMutation } from "../../../redux/api/productApi";
 import { addtoWishList, removeFromWishList } from "../../../redux/reducers/userReducer";
 import { useNavigate } from "react-router-dom";
+import Loader from "../../shared/Loader/Loader";
 
 const ProductCard = React.lazy(() => import("./ProductCard"));
 
@@ -36,7 +37,7 @@ const ProductLayout: React.FC<ProductLayoutProps> = ({ data }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   //@ts-ignore
-  const {wishlist} = useSelector((state: UserState) => state.user);
+  const { wishlist } = useSelector((state: UserState) => state.user);
   const [createFav] = useCreateFavMutation();
   const [loading, setLoading] = useState(true);
 
@@ -47,15 +48,13 @@ const ProductLayout: React.FC<ProductLayoutProps> = ({ data }) => {
       const res = await createFav({ productId: id }).unwrap();
       toast.success(res?.data?.message || "Added to favorites!");
     } catch (error: any) {
-      if(error?.data?.message === "Unauthorized"){
+      if (error?.data?.message === "Unauthorized") {
         navigate("/auth");
-        
       }
       dispatch(removeFromWishList(id));
       toast.error(error?.data?.message || "Failed to add to favorites.");
     }
   };
-
 
   const removeFromFav = async (id: string) => {
     try {
@@ -71,11 +70,8 @@ const ProductLayout: React.FC<ProductLayoutProps> = ({ data }) => {
     }
   };
 
-  
-
   const productCards = useMemo(() => {
     return data?.products?.map((product) => (
-      
       <ProductCard
         key={product._id}
         description={product.description}
@@ -94,12 +90,10 @@ const ProductLayout: React.FC<ProductLayoutProps> = ({ data }) => {
     ));
   }, [data?.products, wishlist, handleFav, removeFromFav]);
 
-
   useEffect(() => {
-    const timer = setTimeout(() => setLoading(false), 1000);
+    const timer = setTimeout(() => setLoading(false), 500);
     return () => clearTimeout(timer);
   }, []);
-
 
   if (data?.products?.length === 0 && !loading) {
     return (
@@ -112,22 +106,24 @@ const ProductLayout: React.FC<ProductLayoutProps> = ({ data }) => {
   }
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 w-full h-full">
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-col-5 gap-6 mt-4 md:mr-4">
       {loading ? (
         Array.from({ length: data?.products?.length || 8 }).map((_, index) => (
           <div
             key={index}
-            className="animate-pulse bg-gray-200 h-64 w-[300px] rounded-md"
-          />
+            className="animate-pulse bg-gray-200 h-[250px] w-[200px]  shadow-md flex justify-center items-center"
+          >
+            <Loader />
+          </div>
         ))
       ) : (
         <Suspense
           fallback={
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 w-full h-full">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-col-5 gap-6 mt-4">
               {Array.from({ length: data?.products?.length || 8 }).map((_, index) => (
                 <div
                   key={index}
-                  className="animate-pulse bg-gray-200 h-64 w-[300px] rounded-md"
+                  className="animate-pulse bg-gray-200 h-[250px] w-[200px] rounded-lg shadow-md"
                 />
               ))}
             </div>

@@ -27,16 +27,14 @@ const ProductCard: React.FC<ProductCardProps> = memo(
     image,
     productId,
     isFav,
-
     handleFav,
     removeFromFav,
   }) => {
-   
-
     const discountedPrice = discount > 0 ? (price / (1 - discount / 100)).toFixed(2) : null;
 
     return (
-      <article className="max-w-sm w-full bg-white overflow-hidden relative rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300" onClick={() => window.scrollTo(0, 0)}>
+      <article className="w-[280px] h-[400px] md:w-[20vw] md:h-[320px] bg-white relative shadow-lg ">
+      
         <button
           className="absolute top-3 right-3 z-20"
           aria-label={`Toggle favorite for ${name}`}
@@ -49,52 +47,58 @@ const ProductCard: React.FC<ProductCardProps> = memo(
           />
         </button>
 
+      
         <Link
+          onClick={() => window.scrollTo(0, 0)}
           to={`/collections/item/${productId}`}
           className="block relative group"
           aria-label={`View details of ${name}`}
         >
-          <div className="w-full h-[250px] sm:h-[300px] overflow-hidden rounded-lg">
+          <div className="flex items-center justify-center">
             <img
               src={image}
               alt={name}
-              className="w-full h-full object-cover"
+              className="md:w-[180px] md:h-[180px]  h-[280px] w-full object-cover "
               loading="lazy"
             />
           </div>
-        </Link>
+      
 
-        <div className="p-4">
-          <h2 className="text-lg sm:text-xl font-semibold text-gray-800 truncate">{name}</h2>
 
-          <p className="text-sm sm:text-base text-gray-600 font-medium mb-3">
+        <div className="mt-2 px-4">
+          <h2 className="text-lg sm:text-[12px] font-semibold text-gray-800 truncate">{name}</h2>
+
+          <p className="text-[10px] text-gray-600 font-medium mb-1 text-start">
             {description?.length > 60
-              ? `${description.slice(0, 60)}...`
+              ? `${description.slice(0, 78)}...`
               : description}
           </p>
 
-          <div className="flex items-center space-x-2 text-xs sm:text-sm text-yellow-500">
+          <div className="flex items-center space-x-2 text-[10px] text-yellow-500 justify-between w-full">
             <Star rating={rating} />
-            <span>{rating.toFixed(1)} / 5</span>
+
+            <div className="">
+            <span className="text-green-500 text-[10px] font-semibold ">
+save {discount}%
+            </span>
           </div>
 
-          <div className="flex items-center mt-3 justify-between">
-            <p className="text-xl font-semibold text-gray-900">
+          </div>
+
+     
+          <div className="flex items-center  justify-between ">
+            <p className="text-[14px] font-semibold text-gray-900">
               ₹{price.toFixed(0)}
             </p>
-           
-              <div className="flex items-center space-x-2">
-                <p className="text-sm line-through text-gray-500">
-                  ₹{discountedPrice}
-                </p>
-                <span className="bg-red-500 text-white text-xs sm:text-sm font-semibold h-[24px] sm:h-[28px] w-[60px] sm:w-[80px] text-center rounded-full flex items-center justify-center transform transition-all duration-300 hover:scale-105 hover:bg-red-600">
-                  {discount}% OFF
-                </span>
-              </div>
-         
+            {discount > 0 && (
+              <p className="text-[10px] font-semibold text-gray-600 line-through">
+                ₹{discountedPrice}
+              </p>
+            )}
           </div>
-        </div>
 
+        </div>
+        </Link>
       </article>
     );
   }

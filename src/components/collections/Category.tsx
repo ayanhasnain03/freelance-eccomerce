@@ -8,6 +8,7 @@ import { useLocation } from "react-router-dom";
 
 const CategoryFilter = () => {
 const params = useLocation();
+
 const forWhat = useMemo(() => params.pathname.split("/")[2], [params.pathname]);
 
   const { data } = useGetCategoriesQuery({
@@ -52,7 +53,7 @@ const forWhat = useMemo(() => params.pathname.split("/")[2], [params.pathname]);
         tabIndex={0}
         onKeyDown={(e) => e.key === "Enter" && toggleDropdown()}
       >
-        <h3 className="text-lg font-semibold text-gray-800">Select By Category</h3>
+        <h3 className="text-lg font-semibold text-gray-800">Categories</h3>
         <MdKeyboardArrowDown
           className={`transition-transform duration-300 ${isOpen ? "rotate-180" : "rotate-0"}`}
           size={24}
@@ -84,7 +85,7 @@ const forWhat = useMemo(() => params.pathname.split("/")[2], [params.pathname]);
 
         <button
           onClick={handleApplyFilter}
-          className="mt-6 w-full bg-[#0F766E] text-white text-sm font-medium py-2 px-4 rounded-lg hover:bg-[#0F766E]/90 transition duration-200"
+          className="mt-6 w-full bg-primary-red text-white text-sm font-medium py-2 px-4 rounded-lg  hover:bg-primary-red/80"
         >
           Apply Filter
         </button>

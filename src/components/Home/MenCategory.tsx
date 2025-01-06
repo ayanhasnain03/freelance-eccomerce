@@ -5,8 +5,8 @@ import { Link } from "react-router-dom";
 
 const MenCategory = () => {
   const menCategory = [
-    { name: "Shirts", img: "menCat1.png" },
-    { name: "T-Shirts", img: "menCat2.png" },
+    { name: "Jogger", img: "menCat1.png" },
+    { name: "Tshirt", img: "menCat2.png" },
     { name: "Jackets", img: "menCat3.jpg" },
     { name: "Pants", img: "menCat1.png" },
   ];

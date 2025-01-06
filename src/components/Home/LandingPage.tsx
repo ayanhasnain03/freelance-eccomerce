@@ -85,15 +85,6 @@ const LandingPage = () => {
               on orders over $50!
             </motion.div>
 
-            <Link to="/collections/womens">
-              <motion.button
-                className="font-inter underline text-semibold text-rose-600 transition duration-300"
-                whileHover={{ scale: 1.05 }}
-                transition={{ duration: 0.3 }}
-              >
-                Shop Now
-              </motion.button>
-            </Link>
           </div>
 
           <motion.div

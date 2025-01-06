@@ -67,11 +67,11 @@ const dispatch = useDispatch();
                 id={`size-${size}`}
                 checked={selectedSizes.includes(size)}
                 onChange={() => handleCheckboxChange(size)}
-                className="w-5 h-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                className="w-5 h-5  border-gray-300 rounded cursor-pointer "
               />
               <label
                 htmlFor={`size-${size}`}
-                className="text-sm font-medium text-gray-700 hover:text-blue-600 cursor-pointer"
+                className="text-sm font-medium text-gray-700  cursor-pointer"
               >
                 {size}
               </label>
@@ -81,7 +81,7 @@ const dispatch = useDispatch();
 
         <button
           onClick={handleApplyFilter}
-          className="mt-6 w-full bg-teal-500 text-white text-sm font-medium py-2 px-4 rounded-lg hover:bg-teal-600 transition duration-200"
+          className="mt-6 w-full bg-primary-red text-white text-sm font-medium py-2 px-4 rounded-lg transition duration-200"
         >
           Apply Filter
         </button>

@@ -1,50 +1,46 @@
 import { useState, Suspense, lazy } from "react";
 import { LiaFilterSolid } from "react-icons/lia";
 import { IoMdClose } from "react-icons/io";
+import { useLocation } from "react-router-dom";
+import Highlighter from "../shared/Highlight";
 
 
 const Category = lazy(() => import("./Category"));
-// const DiscountSideBar = lazy(() => import("./DiscountSideBar"));
 const PriceFilter = lazy(() => import("./PriceFilter"));
 const SizeFilter = lazy(() => import("./SizeFilter"));
-// const BrandFilter = lazy(() => import("./BrandFilter"));
 const RatingFilter = lazy(() => import("./RatingFilter"));
 
-
-
-
 const SideBar = () => {
-
+  const location = useLocation();
   return (
     <>
-   
-      <div className="hidden md:flex flex-col bg-white w-[200px] h-screen relative ">
-        <h1 className="text-2xl font-bold mb-4 ml-3">Filters</h1>
+      <div className="hidden md:flex flex-col max-w-[210px] bg-white h-screen p-2 sticky top-0">
+        <div className="flex items-center justify-between px-4">
+          <Highlighter text="Filters" />
+          <LiaFilterSolid className="text-2xl" />
+        </div>
         <Suspense
           fallback={
             <div className="text-center text-gray-500">Loading filters...</div>
           }
         >
-          <div className="filter-section">
-   
-          </div>
-          <div className="filter-price">
+          <div className="filter-price mb-4">
             <PriceFilter />
           </div>
-          <div className="filter-size">
+          <div className="filter-size mb-4">
             <SizeFilter />
           </div>
-          <div className="filter-category">
-            <Category />
-          </div>
-          <div className="filter-brand">
-        
-          </div>
-          <div className="filter-rating">
+          {location.search.includes("category") ? null : (
+            <div className="filter-category mb-4">
+              <Category />
+            </div>
+          )}
+          <div className="filter-rating mb-4">
             <RatingFilter />
           </div>
         </Suspense>
       </div>
+
       <div className="md:hidden">
         <SideBarMobile />
       </div>
@@ -63,27 +59,30 @@ const SideBarMobile = () => {
         type="button"
         aria-label="Filters"
         onClick={handleFilter}
-        className="md:hidden absolute p-4 text-black px-6 py-3 rounded-md flex items-center"
+        className="md:hidden absolute p-4 text-white top-4 left-4 z-50 rounded-full bg-teal-600 shadow-lg"
       >
         {handleFilterMob ? (
-          <IoMdClose size={24}  />
+          <IoMdClose size={24} />
         ) : (
           <LiaFilterSolid size={24} />
         )}
       </button>
 
-
       {handleFilterMob && (
         <div
-          className={`fixed top-0 left-0 w-4/5 h-full bg-white  p-6 z-50 transition-all duration-500 ease-in-out transform overflow-y-auto ${
+          className={`fixed top-0 left-0 w-4/5 md:w-2/3 h-full bg-white p-6 z-50 transition-all duration-500 ease-in-out transform overflow-y-auto shadow-xl rounded-r-lg ${
             handleFilterMob
               ? "translate-x-0 opacity-100"
               : "-translate-x-full opacity-0"
           }`}
         >
-          <div className="w-full h-full justify-center flex flex-col gap-3">
-            <div className="absolute top-4 right-4 mb-4">
-              <button onClick={handleFilter} className="text-black" type="button" aria-label="Close">
+          <div className="w-full h-full flex flex-col gap-6">
+            <div className="absolute top-4 right-4">
+              <button
+                onClick={handleFilter}
+                className="text-teal-600"
+                aria-label="Close"
+              >
                 <IoMdClose size={30} />
               </button>
             </div>
@@ -95,22 +94,18 @@ const SideBarMobile = () => {
                 </div>
               }
             >
-              <div className="filter-section">
-                {/* <DiscountSideBar /> */}
-              </div>
-              <div className="filter-price mt-10">
+              <div className="filter-price mb-6">
                 <PriceFilter />
               </div>
-              <div className="filter-size">
+              <div className="filter-size mb-6">
                 <SizeFilter />
               </div>
-              <div className="filter-category">
-                <Category />
-              </div>
-              <div className="filter-brand">
-                {/* <BrandFilter /> */}
-              </div>
-              <div className="filter-rating">
+              {location.search.includes("category") ? null : (
+                <div className="filter-category mb-6">
+                  <Category />
+                </div>
+              )}
+              <div className="filter-rating mb-6">
                 <RatingFilter />
               </div>
             </Suspense>

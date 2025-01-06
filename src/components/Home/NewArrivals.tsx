@@ -26,10 +26,8 @@ const NewArrivals = () => {
       transition={{ duration: 0.8 }}
     >
 
-      <div className="my-10">
-        <Suspense fallback={<div>Loading Button...</div>}>
-          <Stbtn text="New Arrivals" />
-        </Suspense>
+      <div className="my-10 text-center">
+        <Stbtn text="New Arrivals" />
       </div>
 
 
@@ -37,8 +35,10 @@ const NewArrivals = () => {
         <Skeleton quantity={3} />
       ) : (
         <Suspense fallback={<div>Loading Products...</div>}>
-        
-          <ProductLayout data={data} />
+        <div className='ml-8'>
+        <ProductLayout data={data} />
+
+        </div>
         </Suspense>
       )}
     </motion.div>

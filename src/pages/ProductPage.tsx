@@ -12,6 +12,7 @@ import { toast } from "react-hot-toast";
 import Skeleton from "../components/shared/Skeleton";
 import { useSelector } from "react-redux";
 import ScrollToTopOnReload from "../components/ResetPage";
+import Loader from "../components/shared/Loader/Loader";
 // import SEO from "../components/shared/SEO";
 
 const Star = lazy(() => import("../components/cards/Star"));
@@ -71,8 +72,11 @@ const ProductPage = () => {
   const [deleteReview] = useDeleteReviewMutation();
   const { data: productData, isLoading, isError } = useGetProductByIdQuery(id);
   const { data: reviews, isLoading: reviewLoading } = useGetReviewsQuery(id);
+  const categoryId = productData?.product?.category?._id || null;
   const { data: relatedProductsData } = useGetRelatedProductsQuery(
-    productData?.product?.category?._id || ""
+    categoryId,{
+      skip: !categoryId
+    }
   );
 
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
@@ -123,7 +127,7 @@ const ProductPage = () => {
   };
 
   return (
-    <Suspense fallback={<Skeleton quantity={5} />}>
+    <Suspense fallback={<Loader/>}>
       {/* <SEO 
         title={product?.name}
         description={product?.description}
@@ -132,7 +136,7 @@ const ProductPage = () => {
       <div className="bg-gray-50 md:min-h-screen px-4 md:px-8">
         <ScrollToTopOnReload />
         {isLoading ? (
-          <Skeleton quantity={5} />
+          <Loader />
         ) : (
           <div className="max-w-7xl mx-auto py-10">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
@@ -156,7 +160,7 @@ const ProductPage = () => {
                       alt={product?.name}
                       className={`w-20 h-20 object-cover rounded-lg cursor-pointer transition-transform duration-300 transform hover:scale-110 ${
                         index === selectedImageIndex
-                          ? "border-4 border-teal-500"
+                          ? "border-4 border-gray-400"
                           : "border-2 border-transparent"
                       }`}
                       onClick={() => setSelectedImageIndex(index)}

@@ -43,13 +43,9 @@ const handleApplyFilter = useCallback(() => {
   dispatch(setPrice(selectedFilters));
 
 
-  console.log("Selected price ranges:");
-  selectedFilters.forEach((range) => {
-    console.log(`ID: ${range.id}, Label: ${range.label}, Min: ₹${range.min}, Max: ₹${range.max}`);
-  });
 
 
-  console.log("Redux state after dispatch:");
+
 
 }, [memoizedPriceRanges, selectedRanges, dispatch]);
 
@@ -98,7 +94,7 @@ const handleApplyFilter = useCallback(() => {
                 id={`price-range-${range.id}`}
                 checked={selectedRanges.includes(range.id)}
                 onChange={() => handleCheckboxChange(range.id)}
-                className="text-teal-600 focus:ring-2 focus:ring-teal-500"
+                className="w-4 h-4 cursor-pointer"
                 aria-label={`Price range ${range.label}`}
               />
               <label htmlFor={`price-range-${range.id}`} className="text-sm text-gray-700">
@@ -112,13 +108,13 @@ const handleApplyFilter = useCallback(() => {
           <button
             onClick={handleApplyFilter}
             disabled={selectedRanges.length === 0}
-            className={`w-full ${selectedRanges.length === 0 ? "bg-gray-400" : "bg-teal-500"} text-white text-sm font-medium py-2 px-4 rounded-lg hover:bg-teal-600 transition duration-200`}
+            className={`w-full ${selectedRanges.length === 0 ? "bg-gray-400" : "bg-primary-red hover:bg-primary-red/80"} text-white text-sm font-medium py-2 px-4 rounded-lg  transition duration-200`}
           >
             Apply Filter
           </button>
           <button
             onClick={handleClearAll}
-            className="w-full text-teal-500 text-sm font-medium py-2 px-4 rounded-lg hover:bg-teal-100 transition duration-200"
+            className="w-full text-white text-sm font-medium py-2 px-4 rounded-lg bg-gray-400 hover:bg-gray-500/80 transition duration-200"
           >
             Clear All
           </button>

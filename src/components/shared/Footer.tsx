@@ -27,7 +27,7 @@ const Footer = () => {
     <footer className="bg-white text-black border-t border-gray-200 py-8">
       <div className="container mx-auto px-6 py-10 grid grid-cols-1 md:grid-cols-4 gap-8">
         <div>
-          <h3 className="text-xl font-semibold mb-4">About Us</h3>
+          <h1 className="text-xl font-semibold mb-4">About Us</h1>
           <p className="text-sm leading-relaxed text-gray-600">
             Discover the best shopping experience with our premium collection of
             products. Crafted for quality and satisfaction, our store is your

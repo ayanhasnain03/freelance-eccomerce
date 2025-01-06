@@ -101,7 +101,7 @@ const RatingFilter = () => {
       <div className="flex space-x-4 mt-6">
         <button
           onClick={handleApplyFilter}
-          className="w-full bg-teal-700 text-white text-sm font-medium py-2 px-4 rounded-lg hover:bg-teal-800 transition duration-200"
+          className="w-full bg-primary-red text-white text-sm font-medium py-2 px-4 rounded-lg hover:bg-primary-red/80 transition duration-200"
         >
           Apply Filter
         </button>

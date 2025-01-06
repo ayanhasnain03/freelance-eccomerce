@@ -1,7 +1,7 @@
 import { lazy, memo, Suspense, useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useGetProductsQuery } from "../redux/api/productApi";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import Loader from "../components/shared/Loader/Loader";
 import toast from "react-hot-toast";
 import { resetFilters } from "../redux/reducers/productReducer";
@@ -16,8 +16,12 @@ const ProductLayout = lazy(() =>
 
 const Collection = memo(({ forWhat }: any) => {
   const dispatch = useDispatch();
-  const params = useLocation();
-  const fromCategory = new URLSearchParams(params.search).get("category");
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const query = new URLSearchParams(location.search);
+  const initialPage = Number(query.get("page")) || 1;
+  const fromCategory = query.get("category");
 
   const { categories, price, sizes, brands, rating } = useSelector(
     (state: {
@@ -32,12 +36,13 @@ const Collection = memo(({ forWhat }: any) => {
     }) => state.product
   );
 
-  const [currentPage, setCurrentPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState(initialPage);
 
-  const selectedBrand = useMemo(
-    () => brands.map((brand) => brand.name),
-    [brands]
-  );
+  useEffect(() => {
+    setCurrentPage(initialPage);
+  }, [initialPage]);
+
+  const selectedBrand = useMemo(() => brands.map((brand) => brand.name), [brands]);
 
   const category = useMemo(
     () =>
@@ -69,20 +74,24 @@ const Collection = memo(({ forWhat }: any) => {
 
   const totalPages = data?.totalPage || 1;
 
+  const handlePageChange = (page: number) => {
+    if (page === currentPage) return;
+    setCurrentPage(page);
+    navigate(`?page=${page}${fromCategory ? `&category=${fromCategory}` : ""}`);
+  };
+
   const handleResetFilters = () => {
     setCurrentPage(1);
     dispatch(resetFilters());
-    window.location.reload();
+    navigate("?page=1");
+    refetch();
   };
 
   useEffect(() => {
     refetch();
-  }, [category, priceRanges, sizes, selectedBrand, forWhat, currentPage]);
+  }, [category, priceRanges, sizes, selectedBrand, forWhat, currentPage, refetch]);
 
-  useEffect(() => {
-    setCurrentPage(1);
-    dispatch(resetFilters());
-  }, [forWhat, dispatch]);
+
 
   if (isLoading) {
     return <Loader />;
@@ -133,88 +142,60 @@ const Collection = memo(({ forWhat }: any) => {
             </div>
           ) : (
             <div className="max-w-full mx-auto h-full p-8 mt-20 md:p-0 md:mt-0">
+              
               <ProductLayout data={data} />
 
-     
               <div className="flex justify-center items-center mt-6 space-x-2">
- 
-  <button
-    onClick={() => setCurrentPage(currentPage - 1)}
-    disabled={currentPage === 1}
-    className={`px-4 py-2 mx-1 text-gray-500 capitalize bg-white rounded-md ${
-      currentPage > 1 ? "hover:bg-blue-500 hover:text-white" : "opacity-50 cursor-not-allowed"
-    }`}
-  >
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      className="w-5 h-5"
-      viewBox="0 0 20 20"
-      fill="currentColor"
-    >
-      <path
-        fillRule="evenodd"
-        d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
-        clipRule="evenodd"
-      />
-    </svg>
-  </button>
-
-  {/* Page Numbers */}
-  {[...Array(totalPages)].map((_, index) => {
-    const page = index + 1;
-
-    if (
-      totalPages > 5 &&
-      (page !== 1 && page !== totalPages) &&
-      (page < currentPage - 1 || page > currentPage + 1)
-    ) {
-      return (
-        index === currentPage - 3 || index === currentPage + 1 ? (
-          <span key={page} className="px-2 text-gray-500">
-            ...
-          </span>
-        ) : null
-      );
-    }
-
-    return (
-      <button
-        key={page}
-        onClick={() => setCurrentPage(page)}
-        className={`px-4 py-2 mx-1 rounded-md ${
-          page === currentPage
-            ? "bg-blue-500 text-white"
-            : "bg-white text-gray-700 hover:bg-blue-500 hover:text-white"
-        }`}
-      >
-        {page}
-      </button>
-    );
-  })}
-
-  {/* Next Button */}
-  <button
-    onClick={() => setCurrentPage(currentPage + 1)}
-    disabled={currentPage === totalPages}
-    className={`px-4 py-2 mx-1 text-gray-500 capitalize bg-white rounded-md ${
-      currentPage < totalPages ? "hover:bg-blue-500 hover:text-white" : "opacity-50 cursor-not-allowed"
-    }`}
-  >
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      className="w-5 h-5"
-      viewBox="0 0 20 20"
-      fill="currentColor"
-    >
-      <path
-        fillRule="evenodd"
-        d="M7.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L10.586 10l-3.293-3.293a1 1 0 010-1.414z"
-        clipRule="evenodd"
-      />
-    </svg>
-  </button>
-</div>
-
+                <button
+                  onClick={() =>{
+                    handlePageChange(Math.max(currentPage - 1, 1))
+                    window.scrollTo(0, 0);
+                  }}
+                  disabled={currentPage === 1}
+                  className={`px-4 py-2 mx-1 text-gray-500 capitalize bg-white rounded-md ${
+                    currentPage > 1
+                      ? "hover:bg-primary-red/80 hover:text-white"
+                      : "opacity-50 cursor-not-allowed"
+                  }`}
+                >
+                  &lt; Prev
+                </button>
+                {[...Array(totalPages)].map((_, index) => {
+                  const page = index + 1;
+                  return (
+                    <button
+                      key={page}
+                      onClick={() => {
+                        handlePageChange(page)
+                        window.scrollTo(0, 0);
+                      }}
+                      className={`px-4 py-2 mx-1 rounded-md ${
+                        page === currentPage
+                          ? "bg-primary-red text-white"
+                          : "bg-white text-gray-700 hover:bg-primary-red/80 hover:text-white"
+                      }`}
+                    >
+                      {page}
+                    </button>
+                  );
+                })}
+                <button
+                  onClick={() =>
+                   {
+                    handlePageChange(Math.min(currentPage + 1, totalPages))
+                    window.scrollTo(0, 0);
+                   }
+                  }
+                  disabled={currentPage === totalPages}
+                  className={`px-4 py-2 mx-1 text-gray-500 capitalize bg-white rounded-md ${
+                    currentPage < totalPages
+                      ? "hover:bg-primary-red hover:text-white"
+                      : "opacity-50 cursor-not-allowed"
+                  }`}
+                >
+                  Next &gt;
+                </button>
+              </div>
             </div>
           )}
         </CollectionLayout>
