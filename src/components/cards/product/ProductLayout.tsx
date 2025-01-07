@@ -76,7 +76,7 @@ const ProductLayout: React.FC<ProductLayoutProps> = ({ data }) => {
         key={product._id}
         description={product.description}
         name={product.name}
-        price={product.price - (product.price * product.discount) / 100}
+        price={Math.floor(product.price - (product.discount / 100) * product.price)}
         image={product.images[0]?.url || ""}
         rating={product.rating}
         discount={product.discount}

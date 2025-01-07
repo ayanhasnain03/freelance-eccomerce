@@ -56,7 +56,6 @@ const WishList = () => {
   const { wishlist, loading, error, fetchWishList } = useWishList();
   const dispatch = useDispatch();
 
- 
   const handleRemoveFromWishlist = async (itemId: string) => {
     try {
       await axios.delete(
@@ -70,7 +69,6 @@ const WishList = () => {
       console.error("Error removing item from wishlist:", error);
     }
   };
-
 
   const handleRetry = () => {
     fetchWishList();
@@ -102,45 +100,28 @@ const WishList = () => {
   }
 
   return (
-    <div className="max-w-6xl mx-auto px-4 py-6">
-      <h1 className="text-3xl font-semibold text-center mb-8">Your Wishlist</h1>
+    <div className="max-w-7xl mx-auto px-4 py-6">
+      <h1 className="text-4xl font-semibold text-center mb-8 text-gray-800">Your Wishlist</h1>
 
       {wishlist.length === 0 ? (
-        <p className="text-center text-xl">Your wishlist is empty.</p>
+        <p className="text-center text-xl text-gray-600">Your wishlist is empty.</p>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {wishlist.map((item) => (
-            <div key={item._id} className="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow">
-              <div className="h-64 overflow-hidden rounded-lg mb-4">
-                {/* Image with fallback */}
-                <img
-                  src={item.images[0]?.url || "/default-image.png"}
-                  alt={item.name}
-                  className="w-full h-full object-cover"
-                />
-              </div>
-              <h2 className="text-lg font-semibold mb-2">{item.name}</h2>
-              <p className="text-gray-600 text-sm mb-4">{item.description}</p>
-              <div className="flex justify-between items-center mb-4">
-                <span className="text-xl font-bold">{item.price} USD</span>
-                {item.discount > 0 && (
-                  <span className="text-red-500 font-semibold">{item.discount}% OFF</span>
-                )}
-              </div>
-              <div className="flex justify-between items-center text-sm text-gray-500">
-                <span>Rating: {item.rating} stars</span>
-                <span>Stock: {item.stock} available</span>
-              </div>
-              <div className="mt-4 flex justify-between items-center">
-               
-                <button
-                  className="py-2 px-6 text-sm font-semibold rounded-lg bg-red-500 text-white hover:bg-red-600"
-                  onClick={() => handleRemoveFromWishlist(item._id)}
-                  aria-label={`Remove ${item.name} from wishlist`}
-                >
-                  Remove
-                </button>
-              </div>
+            <div key={item._id} className="bg-white rounded-lg shadow-md p-4">
+              <img
+                src={item.images[0].url}
+                alt={item.name}
+                className="w-full h-48 object-cover rounded-lg"
+              />
+              <h2 className="text-lg font-semibold mt-2">{item.name}</h2>
+              <p className="text-gray-600">₹{Math.floor(item.price - (item.price * item.discount) / 100)}</p>
+              <button
+                onClick={() => handleRemoveFromWishlist(item._id)}
+                className="mt-4 py-2 px-4 bg-red-500 text-white rounded hover:bg-red-600"
+              >
+                Remove
+              </button>
             </div>
           ))}
         </div>

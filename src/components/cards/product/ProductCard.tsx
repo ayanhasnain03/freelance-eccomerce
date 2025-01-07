@@ -88,7 +88,7 @@ const ProductCard: React.FC<ProductCardProps> = memo(
          
             <div className="flex items-center justify-between mt-2">
               <p className="text-[16px] font-semibold text-gray-900">
-                ₹{price.toFixed(0)}
+                ₹{price}
               </p>
               {discount > 0 && (
                 <p className="text-[12px] font-semibold text-gray-600 line-through">

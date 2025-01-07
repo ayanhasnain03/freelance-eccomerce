@@ -18,7 +18,6 @@ interface FormData {
 
 const ShippingPage: React.FC = () => {
   const navigate = useNavigate();
-  
   const dispatch = useDispatch();
   const { user } = useSelector((state: any) => state.user);
   const { subtotal, shippingCharges, tax, discount, total, cartItems } = useSelector((state: any) => state.cart);
@@ -46,6 +45,7 @@ const ShippingPage: React.FC = () => {
   });
 
   const [loading, setLoading] = useState<boolean>(false);
+  //@ts-ignore
   const [paymentStatus, setPaymentStatus] = useState<string | null>(null);
 
   const [createOrder, { isLoading: isCreatingOrder }] = useCreateOrdersMutation();
@@ -70,16 +70,19 @@ const ShippingPage: React.FC = () => {
         const totalAmountInPaise = Math.round(total);
         const { data: order } = await axios.post(
           `${import.meta.env.VITE_SERVER}/api/v1/payment/create-payment`,
-          { amount: totalAmountInPaise }
+          { 
+            amount: totalAmountInPaise,
+          }
         );
+       
+        toast.success("Order placed successfully!");
 
         if (order.id) {
           initializeRazorpayPayment(order);
-        } else {
-          toast.error("Invalid order response from server.");
-        }
+        } 
       } catch (error: any) {
-        setPaymentStatus("Payment creation failed. Please try again.");
+        setPaymentStatus(error?.response?.data?.message || "Failed to place order.");
+        toast.error(error?.data?.message || "Failed to place order.");
         console.error("Error creating order:", error.response || error.message);
       } finally {
         setLoading(false);
@@ -106,26 +109,25 @@ const ShippingPage: React.FC = () => {
       tax,
       subtotal,
       total,
-      shippingCharge:shippingCharges,
+      shippingCharge: shippingCharges,
       customerPhoneNumber: formData.phoneNo,
       customerName: formData.name,
     };
 
     try {
       const response = await createOrder(orderData).unwrap();
-      console.log("Order created:", response);
-      toast.success("Order placed successfully!");
+      toast.success(response?.data?.message || "Order placed successfully!");
       dispatch(resetCart());
       navigate("/myOrders");
-    } catch (error) {
-      toast.error("Order creation failed. Please try again.");
+    } catch (error: any) {
+      toast.error(error?.data?.message || "Failed to place order.");
       console.error("Error creating order:", error);
     }
   };
 
   const initializeRazorpayPayment = (order: { id: string; amount: number }) => {
     const options = {
-      key: "rzp_test_H3dRMlyt954d2B",
+      key: "rzp_test_H3dRMlyt954d2B", 
       amount: order.amount,
       currency: "INR",
       order_id: order.id,
@@ -235,47 +237,22 @@ const ShippingPage: React.FC = () => {
                 <span>Discount</span>
                 <span>-₹{discount.toFixed(2)}</span>
               </div>
-              <div className="flex justify-between font-semibold text-lg">
+              <div className="flex justify-between font-semibold">
                 <span>Total</span>
                 <span>₹{total.toFixed(2)}</span>
               </div>
             </div>
           </section>
 
-          <div className="flex justify-center mt-8">
+          <section>
             <button
               onClick={handlePlaceOrder}
-              className="bg-blue-600 text-white py-2 px-6 rounded-md"
+              className="w-full py-3 text-white bg-blue-500 rounded-md"
               disabled={loading || isCreatingOrder}
             >
-              {loading || isCreatingOrder
-                ? "Processing..."
-                : paymentMethod === "razorpay"
-                ? "Pay Now"
-                : "Place Order (COD)"}
+              {loading || isCreatingOrder ? "Placing Order..." : "Place Order"}
             </button>
-          </div>
-
-          {paymentStatus && (
-            <div className="mt-4 text-center text-red-500">{paymentStatus}</div>
-          )}
-        </div>
-
-      
-        <div className="w-96 bg-white shadow-lg rounded-lg p-6 space-y-8">
-          <h2 className="text-2xl font-semibold mb-4">Your Cart</h2>
-          <div className="space-y-4">
-            {modifiedCartItems.map((item: any) => (
-              <div key={item.productId} className="flex justify-between items-center">
-                <img src={item.image} alt={item.name} className="w-16 h-16 object-cover rounded-md" />
-                <div className="flex-1 ml-4">
-                  <p className="text-sm font-semibold">{item.name}</p>
-                  <p className="text-xs text-gray-500">Size: {item.size}</p>
-                </div>
-                <p className="text-sm font-semibold">₹{item.price * item.quantity}</p>
-              </div>
-            ))}
-          </div>
+          </section>
         </div>
       </div>
     </div>

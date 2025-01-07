@@ -3,13 +3,12 @@ import { motion } from "framer-motion";
 import Loader from "../components/shared/Loader/Loader";
 import { useNavigate } from "react-router-dom";
 import moment from "moment";
-import {  useState } from "react";
+import { useState } from "react";
 
 const MyOrders = () => {
-  const [step, setStep] = useState(1);
-  
+  const [step, setStep] = useState(1); // Start with page 1
   const { data, isLoading, isError } = useGetMyOrdersQuery({ page: step });
-
+  console.log(data);
   const navigate = useNavigate();
 
   if (isLoading) {
@@ -26,9 +25,10 @@ const MyOrders = () => {
 
   const orders = data?.orders;
   const totalPages = data?.totalPage || 1; 
+  const totalOrders = data?.orderCount || 0; 
 
   const handleNext = () => {
-    if (step < totalPages ) {
+    if (step < totalPages) {
       setStep(step + 1);
     }
   };
@@ -39,11 +39,30 @@ const MyOrders = () => {
     }
   };
 
+  const handlePage = (page: number) => {
+    setStep(page);
+  };
+
+  const generatePageNumbers = () => {
+    const pages = [];
+    if (totalPages <= 5) {
+      for (let i = 1; i <= totalPages; i++) {
+        pages.push(i);
+      }
+    } else {
+      if (step > 2) pages.push(1);
+      if (step > 3) pages.push("...");
+      pages.push(step);
+      if (step < totalPages - 1) pages.push("...");
+      if (step < totalPages) pages.push(totalPages);
+    }
+    return pages;
+  };
 
   return (
     <div className="bg-gray-50 min-h-screen py-10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h1 className="text-3xl font-extrabold text-gray-900 mb-8">My Orders ({data?.orderCount})</h1>
+        <h1 className="text-3xl font-extrabold text-gray-900 mb-8">My Orders ({totalOrders})</h1>
         {orders?.length === 0 ? (
           <div className="text-center text-lg text-gray-600">
             You have no orders yet.
@@ -74,7 +93,7 @@ const MyOrders = () => {
                 </tr>
               </thead>
               <tbody>
-                {orders.map((order:any) => (
+                {orders.map((order: any) => (
                   <motion.tr
                     key={order._id}
                     initial={{ opacity: 0 }}
@@ -89,7 +108,7 @@ const MyOrders = () => {
                       {new Date(order.createdAt).toLocaleDateString()}
                     </td>
                     <td className="px-6 py-4 border-b border-gray-300 text-sm text-gray-700">
-                      {order.items.map((item:any) => (
+                      {order.items.map((item: any) => (
                         <div key={item._id} className="flex items-center mb-2">
                           <img
                             src={item.image}
@@ -123,31 +142,52 @@ const MyOrders = () => {
             </table>
           </div>
         )}
-        
-    {
-      orders?.length > 10 && (
-          
+
         <div className="mt-8 flex justify-between items-center">
-          <button
-            onClick={handlePrev}
-            disabled={step === 1}
-            className="px-4 py-2 bg-blue-500 text-white font-semibold rounded-lg disabled:opacity-50"
-          >
-            Previous
-          </button>
+          <div className="flex items-center">
+            <button
+              onClick={handlePrev}
+              disabled={step === 1}
+              className="px-4 py-2 bg-blue-500 text-white font-semibold rounded-lg disabled:opacity-50"
+            >
+              Previous
+            </button>
+
+            <div className="mx-4 flex items-center space-x-2">
+              {generatePageNumbers().map((page: any, index) =>
+                page === "..." ? (
+                  <span key={index} className="text-sm text-gray-500">
+                    ...
+                  </span>
+                ) : (
+                  <button
+                    key={page}
+                    onClick={() => handlePage(page)}
+                    className={`${
+                      page === step
+                        ? "bg-blue-500 text-white"
+                        : "bg-gray-200 text-gray-700"
+                    } px-3 py-1 rounded-lg`}
+                  >
+                    {page}
+                  </button>
+                )
+              )}
+            </div>
+
+            <button
+              onClick={handleNext}
+              disabled={step === totalPages}
+              className="px-4 py-2 bg-blue-500 text-white font-semibold rounded-lg disabled:opacity-50"
+            >
+              Next
+            </button>
+          </div>
+
           <span className="text-lg font-medium text-gray-800">
             Page {step} of {totalPages}
           </span>
-          <button
-            onClick={handleNext}
-            disabled={step === totalPages}
-            className="px-4 py-2 bg-blue-500 text-white font-semibold rounded-lg disabled:opacity-50"
-          >
-            Next
-          </button>
         </div>
-      )
-    }
       </div>
     </div>
   );
