@@ -12,7 +12,7 @@ interface HelmProps {
 const Helm: React.FC<HelmProps> = ({
   title,
   description,
-  keywords = "fashion, online shopping, clothing, shoes, accessories, fashion trends, women's fashion, men's fashion, latest fashion, stylish clothing, trendy accessories",
+  keywords = "fashion, online shopping, shoes, accessories, fashion trends, women's fashion, men's fashion, latest fashion, stylish clothing, trendy accessories",
   image = "",
   url = "https://freelance-eccomerce.vercel.app",
 }) => {
