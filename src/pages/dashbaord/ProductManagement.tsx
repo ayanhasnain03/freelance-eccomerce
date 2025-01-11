@@ -155,19 +155,19 @@ navigate(`/dashboard/product/update/${id}`);
                   className="w-16 h-16 object-cover mx-auto"
                 />
               </td>
-              <td className="border p-2">{product.name}</td>
-              <td className="border p-2">{product.category.name}</td>
+              <td className="border p-2">{product?.name}</td>
+              <td className="border p-2">{product?.category?.name}</td>
               <td className="border p-2">
                 {Math.floor(
-                  product.price - (product.price * product.discount) / 100
+                  product?.price - (product?.price * product?.discount) / 100
                 )}{" "}
                 ₹
               </td>
-              <td className="border p-2">{product.sizes.join(", ")}</td>
-              <td className="border p-2">{product.stock}</td>
-              <td className="border p-2">{product.sold}</td>
+              <td className="border p-2">{product?.sizes.join(", ")}</td>
+              <td className="border p-2">{product?.stock}</td>
+              <td className="border p-2">{product?.sold}</td>
               <td className="border p-2">
-                {product.discount ? `${product.discount}%` : "No Discount"}
+                {product?.discount ? `${product?.discount}%` : "No Discount"}
               </td>
               <td className="border p-2 flex justify-center gap-2">
                 <button
