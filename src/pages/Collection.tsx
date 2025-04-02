@@ -1,17 +1,17 @@
 import { lazy, memo, Suspense, useEffect, useMemo, useState } from "react";
+import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
-import { useGetProductsQuery } from "../redux/api/productApi";
 import { useLocation, useNavigate } from "react-router-dom";
 import Loader from "../components/shared/Loader/Loader";
-import toast from "react-hot-toast";
+import { useGetProductsQuery } from "../redux/api/productApi";
 import { resetFilters } from "../redux/reducers/productReducer";
 
-const CollectionLayout = lazy(() =>
-  import("../components/layouts/CollectionLayout")
+const CollectionLayout = lazy(
+  () => import("../components/layouts/CollectionLayout")
 );
 const SideBar = lazy(() => import("../components/collections/SideBar"));
-const ProductLayout = lazy(() =>
-  import("../components/cards/product/ProductLayout")
+const ProductLayout = lazy(
+  () => import("../components/cards/product/ProductLayout")
 );
 
 const Collection = memo(({ forWhat }: any) => {
@@ -42,7 +42,10 @@ const Collection = memo(({ forWhat }: any) => {
     setCurrentPage(initialPage);
   }, [initialPage]);
 
-  const selectedBrand = useMemo(() => brands.map((brand) => brand.name), [brands]);
+  const selectedBrand = useMemo(
+    () => brands.map((brand) => brand.name),
+    [brands]
+  );
 
   const category = useMemo(
     () =>
@@ -89,9 +92,15 @@ const Collection = memo(({ forWhat }: any) => {
 
   useEffect(() => {
     refetch();
-  }, [category, priceRanges, sizes, selectedBrand, forWhat, currentPage, refetch]);
-
-
+  }, [
+    category,
+    priceRanges,
+    sizes,
+    selectedBrand,
+    forWhat,
+    currentPage,
+    refetch,
+  ]);
 
   if (isLoading) {
     return <Loader />;
@@ -142,13 +151,12 @@ const Collection = memo(({ forWhat }: any) => {
             </div>
           ) : (
             <div className="max-w-full mx-auto h-full md:p-8 mt-10 md:mt-0">
-              
               <ProductLayout data={data} />
 
               <div className="flex justify-center items-center mt-6 space-x-2">
                 <button
-                  onClick={() =>{
-                    handlePageChange(Math.max(currentPage - 1, 1))
+                  onClick={() => {
+                    handlePageChange(Math.max(currentPage - 1, 1));
                     window.scrollTo(0, 0);
                   }}
                   disabled={currentPage === 1}
@@ -166,7 +174,7 @@ const Collection = memo(({ forWhat }: any) => {
                     <button
                       key={page}
                       onClick={() => {
-                        handlePageChange(page)
+                        handlePageChange(page);
                         window.scrollTo(0, 0);
                       }}
                       className={`px-4 py-2 mx-1 rounded-md ${
@@ -180,12 +188,10 @@ const Collection = memo(({ forWhat }: any) => {
                   );
                 })}
                 <button
-                  onClick={() =>
-                   {
-                    handlePageChange(Math.min(currentPage + 1, totalPages))
+                  onClick={() => {
+                    handlePageChange(Math.min(currentPage + 1, totalPages));
                     window.scrollTo(0, 0);
-                   }
-                  }
+                  }}
                   disabled={currentPage === totalPages}
                   className={`px-4 py-2 mx-1 text-gray-500 capitalize bg-white rounded-md ${
                     currentPage < totalPages

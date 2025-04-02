@@ -9,7 +9,7 @@ const MobileLandingPage = lazy(() => import("./MobileLandingPage"));
 const LandingPage = () => {
   return (
     <div className="bg-white text-black max-w-7xl mx-auto">
-          <Helm
+      <Helm
         title="Fash Alt - Fashion for Everyone"
         description="Discover the latest fashion trends at Fash Alt. Shop for clothing, shoes, and accessories at unbeatable prices."
         keywords="fashion, online shopping, clothing, shoes, accessories, fashion trends, women's fashion, men's fashion, latest fashion, stylish clothing, trendy accessories"
@@ -84,8 +84,6 @@ const LandingPage = () => {
               />{" "}
               on orders over $50!
             </motion.div>
-
-                
 
           </div>
 

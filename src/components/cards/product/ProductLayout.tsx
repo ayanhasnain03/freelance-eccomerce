@@ -1,10 +1,13 @@
-import React, { useEffect, useMemo, useState, Suspense } from "react";
 import axios from "axios";
+import React, { Suspense, useEffect, useMemo, useState } from "react";
 import toast from "react-hot-toast";
-import { useSelector, useDispatch } from "react-redux";
-import { useCreateFavMutation } from "../../../redux/api/productApi";
-import { addtoWishList, removeFromWishList } from "../../../redux/reducers/userReducer";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { useCreateFavMutation } from "../../../redux/api/productApi";
+import {
+  addtoWishList,
+  removeFromWishList,
+} from "../../../redux/reducers/userReducer";
 import Loader from "../../shared/Loader/Loader";
 
 const ProductCard = React.lazy(() => import("./ProductCard"));
@@ -14,9 +17,10 @@ interface Product {
   name: string;
   description: string;
   price: number;
-  images: { url: string }[];
+  images: [];
   rating: number;
   discount: number;
+  brand: string;
 }
 
 interface ProductLayoutProps {
@@ -74,10 +78,13 @@ const ProductLayout: React.FC<ProductLayoutProps> = ({ data }) => {
     return data?.products?.map((product) => (
       <ProductCard
         key={product._id}
+        brand={product.brand}
         description={product.description}
         name={product.name}
-        price={Math.floor(product.price - (product.discount / 100) * product.price)}
-        image={product.images[0]?.url || ""}
+        price={Math.floor(
+          product.price - (product.discount / 100) * product.price
+        )}
+        image={product.images}
         rating={product.rating}
         discount={product.discount}
         productId={product._id}
@@ -106,7 +113,7 @@ const ProductLayout: React.FC<ProductLayoutProps> = ({ data }) => {
   }
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-col-5 gap-6 mt-4 ml-8 md:ml-0">
+    <div className="flex flex-col md:flex-row  flex-wrap items-center justify-items-start gap-8 mt-4  ">
       {loading ? (
         Array.from({ length: data?.products?.length || 8 }).map((_, index) => (
           <div
@@ -119,13 +126,15 @@ const ProductLayout: React.FC<ProductLayoutProps> = ({ data }) => {
       ) : (
         <Suspense
           fallback={
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-col-5 gap-6 md:ml-0 ml-12">
-              {Array.from({ length: data?.products?.length || 8 }).map((_, index) => (
-                <div
-                  key={index}
-                  className="animate-pulse bg-gray-200 h-[250px] w-[200px] rounded-lg shadow-md"
-                />
-              ))}
+            <div className="flex flex-col md:flex-row  flex-wrap items-center justify-items-start gap-8 mt-4  ">
+              {Array.from({ length: data?.products?.length || 8 }).map(
+                (_, index) => (
+                  <div
+                    key={index}
+                    className="animate-pulse bg-gray-200 h-[250px] w-[200px] rounded-lg shadow-md"
+                  />
+                )
+              )}
             </div>
           }
         >

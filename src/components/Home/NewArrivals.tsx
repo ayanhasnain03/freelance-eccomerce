@@ -1,5 +1,5 @@
-import React, { Suspense } from "react";
 import { motion } from "framer-motion";
+import React, { Suspense } from "react";
 import { useNewArrivalsQuery } from "../../redux/api/productApi";
 import Skeleton from "../shared/Skeleton";
 
@@ -28,14 +28,14 @@ const NewArrivals = () => {
       transition={{ duration: 0.8 }}
     >
       <div className="my-10 text-center">
-        <Stbtn text="New Arrivals"  />
+        <Stbtn text="New Arrivals" />
       </div>
 
       {isLoading ? (
         <Skeleton quantity={3} />
       ) : (
         <Suspense fallback={<div>Loading Products...</div>}>
-          <div className="md:ml-8">
+          <div className="md:ml-8 lg:ml-[8rem]">
             <ProductLayout data={data} />
           </div>
         </Suspense>

@@ -6,6 +6,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { setIsMobile } from "../../../redux/reducers/misc";
 import { memo, useCallback, useState, ChangeEvent } from "react";
 import { Link } from "react-router-dom";
+import { motion, AnimatePresence } from "framer-motion";
 import axios from "axios";
 import Logo from "../../../assets/fashalt.svg";
 
@@ -72,168 +73,182 @@ const Nav: React.FC<NavProps> = ({ user }) => {
   };
 
   return (
-    <header className="mx-auto">
-      <nav className="flex items-center justify-between px-6 py-4 md:px-12 md:py-4 bg-white shadow-md relative z-20">
-        <button
-          className="md:hidden"
-          aria-label={isMobile ? "Close menu" : "Open menu"}
-          onClick={handleToggle}
-        >
-          <Hamburger
-            toggled={isMobile}
-            toggle={handleToggle}
-            size={24}
-            color="black"
-            duration={0.5}
-            easing="ease-in-out"
-            label={isMobile ? "Close menu" : "Open menu"}
-          />
-        </button>
+    <motion.header 
+      initial={{ y: -100 }}
+      animate={{ y: 0 }}
+      transition={{ type: "spring", stiffness: 100 }}
+      className="sticky top-0 z-50 bg-white"
+    >
+      <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between h-16">
+          <div className="flex items-center">
+            <button
+              className="md:hidden -ml-2 p-2"
+              aria-label={isMobile ? "Close menu" : "Open menu"}
+              onClick={handleToggle}
+            >
+              <Hamburger
+                toggled={isMobile}
+                toggle={handleToggle}
+                size={20}
+                color="black"
+                duration={0.3}
+              />
+            </button>
 
-        <Link to="/" aria-label="Go to homepage" className="flex-shrink-0 ml-4 md:ml-0">
-          <img
-            src={Logo}
-            alt="Logo"
-            className="h-8 w-16 md:h-10 md:w-24 cursor-pointer"
-          />
-        </Link>
-
-        <div className="hidden md:flex flex-1 justify-center space-x-8">
-          <NavItem />
-        </div>
-
-        <div className="hidden md:flex flex-1 max-w-xs mx-6 relative">
-          <div className="relative w-full">
-            <input
-              type="text"
-              value={keyword}
-              onChange={handleSearchChange}
-              className="w-full pl-10 pr-4 py-2 border rounded-2xl text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-primary-red"
-              placeholder="Search..."
-              aria-label="Search products"
-            />
-            <FiSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500" />
-            {showResults && searchResults.length > 0 && (
-              <div className="absolute left-0 right-0 top-12 bg-white border shadow-lg rounded-lg max-h-80 overflow-auto z-10">
-                <div className="relative">
-                  <button
-                    onClick={closeSearchResults}
-                    className="absolute top-2 right-2 text-gray-500"
-                  >
-                    <FiX size={20} />
-                  </button>
-                  {searchResults.map((product) => (
-                    <Link
-                      to={`/collections/item/${product._id}`}
-                      onClick={() => setShowResults(false)}
-                      key={product._id}
-                      className="flex items-center space-x-4 p-4 hover:bg-gray-100"
-                    >
-                      <img
-                        src={product.images[0]?.url || "https://via.placeholder.com/50"}
-                        alt={product.name}
-                        className="w-12 h-12 object-cover rounded"
-                      />
-                      <span className="text-sm font-medium text-gray-800">
-                        {product.name}
-                      </span>
-                    </Link>
-                  ))}
-                </div>
-              </div>
-            )}
-          </div>
-        </div>
-
-        <div className="flex items-center space-x-4 mt-0 md:mt-0">
-          {user && user._id ? (
-            <Link to="/profile" aria-label="Go to profile">
-              <img
-                src="/user.png"
-                alt="User"
-                className="w-6 h-6 cursor-pointer"
-                aria-label="User profile"
+            <Link to="/" className="flex-shrink-0">
+              <motion.img
+                whileHover={{ scale: 1.05 }}
+                src={Logo}
+                alt="Logo"
+                className="h-8 w-auto"
               />
             </Link>
-          ) : (
-            <Link to="/auth" aria-label="Login">
-              <img
-                src="/user.png"
-                alt="User"
-                className="w-6 h-6 cursor-pointer"
-                aria-label="User profile"
-              />
-            </Link>
-          )}
 
-          <div className="relative">
-            <Link to="/cart" aria-label="Go to cart">
-              <label className="absolute -top-2 -right-2 w-4 h-4 bg-rose-500 text-xs font-semibold rounded-full text-white flex items-center justify-center">
-                {cartItems.length}
-              </label>
-              <FiShoppingBag className="w-6 h-6 cursor-pointer text-[#3f3f3f]" aria-label="Cart" />
-            </Link>
-          </div>
-
-          <Link to="/profile/wishlist" aria-label="Go to wishlist">
-            <FaRegHeart className="w-6 h-6 cursor-pointer text-[#3f3f3f]" aria-label="Wishlist" />
-          </Link>
-        </div>
-
-        {isMobile && (
-          <div
-            id="mobile-menu"
-            className="absolute top-16 left-0 right-0 bg-white shadow-md p-4 flex flex-col gap-6 z-10"
-            role="region"
-            aria-label="Mobile menu"
-          >
-            <NavItem />
-            <div>
-              <div className="relative w-full">
-                <input
-                  type="text"
-                  value={keyword}
-                  onChange={handleSearchChange}
-                  className="w-full pl-10 pr-4 py-2 border rounded-2xl text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-rose-600"
-                  placeholder="Search..."
-                  aria-label="Search products in mobile menu"
-                />
-                <FiSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500" />
-                {showResults && searchResults.length > 0 && (
-                  <div className="absolute left-0 right-0 top-12 bg-white border shadow-lg rounded-lg max-h-80 overflow-auto z-10">
-                    <div className="relative">
-                      <button
-                        onClick={closeSearchResults}
-                        className="absolute top-2 right-2 text-gray-500"
-                      >
-                        <FiX size={20} />
-                      </button>
-                      {searchResults.map((product) => (
-                        <Link
-                          to={`/collections/item/${product._id}`}
-                          onClick={() => setShowResults(false)}
-                          key={product._id}
-                          className="flex items-center space-x-4 p-4 hover:bg-gray-100"
-                        >
-                          <img
-                            src={product.images[0]?.url || "https://via.placeholder.com/50"}
-                            alt={product.name}
-                            className="w-12 h-12 object-cover rounded"
-                          />
-                          <span className="text-sm font-medium text-gray-800">
-                            {product.name}
-                          </span>
-                        </Link>
-                      ))}
-                    </div>
-                  </div>
-                )}
-              </div>
+            <div className="hidden md:flex ml-10 space-x-8">
+              <NavItem />
             </div>
           </div>
-        )}
+
+          <div className="flex-1 max-w-xl mx-6 hidden md:block">
+            <div className="relative">
+              <motion.input
+                initial={false}
+                animate={{ 
+                  width: showResults ? "100%" : "90%",
+                  boxShadow: showResults ? "0 4px 6px -1px rgba(0, 0, 0, 0.1)" : "none"
+                }}
+                type="text"
+                value={keyword}
+                onChange={handleSearchChange}
+                className="w-full pl-10 pr-4 py-2 border-2 border-gray-200 rounded-full text-sm focus:outline-none focus:border-rose-500 transition-all"
+                placeholder="Search for products..."
+              />
+              <FiSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+              
+              <AnimatePresence>
+                {showResults && searchResults.length > 0 && (
+                  <motion.div
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    className="absolute left-0 right-0 top-12 bg-white rounded-lg shadow-xl border border-gray-100 overflow-hidden"
+                  >
+                    <div className="p-2">
+                      <button
+                        onClick={closeSearchResults}
+                        className="absolute top-3 right-3 p-1 hover:bg-gray-100 rounded-full"
+                      >
+                        <FiX className="w-5 h-5 text-gray-500" />
+                      </button>
+                      {searchResults.map((product) => (
+                        <motion.div
+                          whileHover={{ backgroundColor: "rgba(0,0,0,0.02)" }}
+                          key={product._id}
+                        >
+                          <Link
+                            to={`/collections/item/${product._id}`}
+                            onClick={closeSearchResults}
+                            className="flex items-center p-3 rounded-lg"
+                          >
+                            <img
+                              src={product.images[0]?.url}
+                              alt={product.name}
+                              className="w-12 h-12 object-cover rounded-md"
+                            />
+                            <span className="ml-4 text-sm font-medium text-gray-900">
+                              {product.name}
+                            </span>
+                          </Link>
+                        </motion.div>
+                      ))}
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+          </div>
+
+          <div className="flex items-center space-x-6">
+            <motion.div whileHover={{ scale: 1.1 }}>
+              {user && user._id ? (
+                <Link to="/profile">
+                  <img src="/user.png" alt="Profile" className="w-6 h-6" />
+                </Link>
+              ) : (
+                <Link to="/auth">
+                  <img src="/user.png" alt="Login" className="w-6 h-6" />
+                </Link>
+              )}
+            </motion.div>
+
+            <motion.div whileHover={{ scale: 1.1 }} className="relative">
+              <Link to="/cart">
+                <span className="absolute -top-2 -right-2 w-5 h-5 bg-rose-500 rounded-full flex items-center justify-center text-xs text-white font-medium">
+                  {cartItems.length}
+                </span>
+                <FiShoppingBag className="w-6 h-6 text-gray-700" />
+              </Link>
+            </motion.div>
+
+            <motion.div whileHover={{ scale: 1.1 }}>
+              <Link to="/profile/wishlist">
+                <FaRegHeart className="w-6 h-6 text-gray-700" />
+              </Link>
+            </motion.div>
+          </div>
+        </div>
+
+        <AnimatePresence>
+          {isMobile && (
+            <motion.div
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: "auto", opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              className="md:hidden overflow-hidden"
+            >
+              <div className="px-2 pt-2 pb-3 space-y-1">
+                <NavItem />
+                <div className="mt-4">
+                  <div className="relative">
+                    <input
+                      type="text"
+                      value={keyword}
+                      onChange={handleSearchChange}
+                      className="w-full pl-10 pr-4 py-2 border-2 border-gray-200 rounded-full text-sm focus:outline-none focus:border-rose-500"
+                      placeholder="Search..."
+                    />
+                    <FiSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+                    
+                    {showResults && searchResults.length > 0 && (
+                      <div className="absolute left-0 right-0 top-12 bg-white border shadow-lg rounded-lg max-h-80 overflow-auto z-50">
+                        {searchResults.map((product) => (
+                          <Link
+                            to={`/collections/item/${product._id}`}
+                            onClick={closeSearchResults}
+                            key={product._id}
+                            className="flex items-center p-3 hover:bg-gray-50"
+                          >
+                            <img
+                              src={product.images[0]?.url}
+                              alt={product.name}
+                              className="w-12 h-12 object-cover rounded-md"
+                            />
+                            <span className="ml-4 text-sm font-medium text-gray-900">
+                              {product.name}
+                            </span>
+                          </Link>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </nav>
-    </header>
+    </motion.header>
   );
 };
 
