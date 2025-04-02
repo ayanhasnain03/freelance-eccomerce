@@ -8,7 +8,12 @@ interface FavProps {
   productId: string;
 }
 
-const Fav: React.FC<FavProps> = ({ isFav, addToFav, removeFromFav, productId }) => {
+const Fav: React.FC<FavProps> = ({
+  isFav,
+  addToFav,
+  removeFromFav,
+  productId,
+}) => {
   return (
     <>
       {isFav ? (
