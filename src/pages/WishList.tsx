@@ -1,11 +1,11 @@
-import { useEffect, useState, useCallback, lazy, Suspense } from "react";
 import axios from "axios";
-import { removeFromWishList } from "../redux/reducers/userReducer";
-import { useDispatch } from "react-redux";
-import { motion, AnimatePresence } from "framer-motion";
-import { FaHeart, FaShoppingCart, FaTrash } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { AnimatePresence, motion } from "framer-motion";
+import { lazy, useCallback, useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
+import { FaHeart, FaShoppingCart, FaTrash } from "react-icons/fa";
+import { useDispatch } from "react-redux";
+import { Link } from "react-router-dom";
+import { removeFromWishList } from "../redux/reducers/userReducer";
 
 const Loader = lazy(() => import("../components/shared/Loader/Loader"));
 
@@ -34,9 +34,12 @@ const useWishList = () => {
 
   const fetchWishList = useCallback(async () => {
     try {
-      const response = await axios.get(`${import.meta.env.VITE_SERVER}/api/v1/user/wishlist`, {
-        withCredentials: true,
-      });
+      const response = await axios.get(
+        `${import.meta.env.VITE_SERVER}/api/v1/user/wishlist`,
+        {
+          withCredentials: true,
+        }
+      );
 
       if (response.data?.wishlist) {
         setWishlist(response.data.wishlist);
@@ -88,7 +91,7 @@ const WishList = () => {
 
   if (error) {
     return (
-      <motion.div 
+      <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         className="min-h-screen flex items-center justify-center bg-gray-50"
@@ -112,14 +115,14 @@ const WishList = () => {
   }
 
   return (
-    <motion.div 
+    <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8"
     >
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-12">
-          <motion.h1 
+          <motion.h1
             initial={{ y: -20 }}
             animate={{ y: 0 }}
             className="text-4xl font-bold text-gray-900 mb-4"
@@ -127,12 +130,12 @@ const WishList = () => {
             My Wishlist
           </motion.h1>
           <p className="text-gray-600">
-            {wishlist.length} {wishlist.length === 1 ? 'item' : 'items'} saved
+            {wishlist.length} {wishlist.length === 1 ? "item" : "items"} saved
           </p>
         </div>
 
         {wishlist.length === 0 ? (
-          <motion.div 
+          <motion.div
             initial={{ scale: 0.9 }}
             animate={{ scale: 1 }}
             className="text-center py-16 bg-white rounded-2xl shadow-sm"
@@ -195,7 +198,10 @@ const WishList = () => {
                     <div className="flex items-center justify-between">
                       <div>
                         <p className="text-2xl font-bold text-rose-500">
-                          ₹{Math.floor(item.price - (item.price * item.discount) / 100)}
+                          ₹
+                          {Math.floor(
+                            item.price - (item.price * item.discount) / 100
+                          )}
                         </p>
                         {item.discount > 0 && (
                           <p className="text-sm text-gray-500 line-through">

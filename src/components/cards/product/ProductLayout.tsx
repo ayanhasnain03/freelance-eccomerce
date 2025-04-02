@@ -92,6 +92,7 @@ const ProductLayout: React.FC<ProductLayoutProps> = ({ data }) => {
         isFav={wishlist.includes(product._id)}
         handleFav={handleFav}
         removeFromFav={removeFromFav}
+        //@ts-ignore
         isCart={false}
       />
     ));
