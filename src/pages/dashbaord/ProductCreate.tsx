@@ -1,9 +1,12 @@
-import React, { useState, ChangeEvent, FormEvent } from "react";
-import { useCreateProductMutation, useGetForWhatQuery } from "../../redux/api/productApi";
+import React, { ChangeEvent, FormEvent, useState } from "react";
+import { useDropzone } from "react-dropzone";
 import toast from "react-hot-toast";
 import { FaCloudUploadAlt, FaTimes } from "react-icons/fa";
-import { useDropzone } from "react-dropzone";
 import { useNavigate } from "react-router-dom";
+import {
+  useCreateProductMutation,
+  useGetForWhatQuery,
+} from "../../redux/api/productApi";
 
 interface ProductFormData {
   name: string;
@@ -34,9 +37,7 @@ const ProductCreate: React.FC = () => {
     sale: false,
   });
 
-
   const [images, setImages] = useState<File[]>([]);
-
 
   const { data: categories, error } = useGetForWhatQuery(formData.for[0] || "");
 
@@ -48,7 +49,9 @@ const ProductCreate: React.FC = () => {
     onDrop: (acceptedFiles) => handleImageChange(acceptedFiles),
   });
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChange = (
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     //@ts-ignore
     const { name, value, type, checked } = e.target;
 
@@ -111,9 +114,9 @@ const ProductCreate: React.FC = () => {
     });
 
     try {
-    await createProduct(data).unwrap();
+      await createProduct(data).unwrap();
       toast.success("Product created successfully!");
-     navigate("/dashboard/products");
+      navigate("/dashboard/products");
     } catch (error: any) {
       toast.error(error.data?.message || "Failed to create product");
     }
@@ -141,7 +144,9 @@ const ProductCreate: React.FC = () => {
   return (
     <div className="min-h-screen bg-gray-100 flex items-center justify-center py-10 px-4">
       <div className="max-w-4xl w-full bg-white shadow-xl rounded-lg p-8 space-y-8">
-        <h1 className="text-3xl font-semibold text-gray-800 text-center">Create New Product</h1>
+        <h1 className="text-3xl font-semibold text-gray-800 text-center">
+          Create New Product
+        </h1>
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* Audience selection */}
           <div className="flex gap-6 items-center">
@@ -185,12 +190,8 @@ const ProductCreate: React.FC = () => {
             </div>
           )}
 
-        
-          {error && <p className="text-red-500 text-sm">
-        for What ?
-            </p>}
+          {error && <p className="text-red-500 text-sm">for What ?</p>}
 
-     
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
             <input
               type="text"
@@ -264,7 +265,16 @@ const ProductCreate: React.FC = () => {
 
           {/* Sizes Selection */}
           <div className="flex gap-6 items-center">
-            {["S", "M", "L", "XL", "XXL"].map((size) => (
+            {[
+              "S",
+              "M",
+              "L",
+              "XL",
+              "XXL",
+              "Semi stitched",
+              "Unstitched",
+              "Free size",
+            ].map((size) => (
               <label key={size} className="flex items-center gap-2 text-lg">
                 <input
                   type="checkbox"
@@ -279,7 +289,9 @@ const ProductCreate: React.FC = () => {
 
           {/* Image Upload Section */}
           <div className="border-dashed border-2 border-gray-300 rounded-lg p-6">
-            <label className="block text-gray-600 text-lg mb-4">Upload Images</label>
+            <label className="block text-gray-600 text-lg mb-4">
+              Upload Images
+            </label>
             <div
               {...getRootProps()}
               className="cursor-pointer border-2 border-dashed border-gray-400 p-4 rounded-md text-center"
@@ -295,7 +307,11 @@ const ProductCreate: React.FC = () => {
                   key={image.name}
                   className="relative w-24 h-24 rounded-md border overflow-hidden"
                 >
-                  <img src={URL.createObjectURL(image)} alt={image.name} className="object-cover w-full h-full" />
+                  <img
+                    src={URL.createObjectURL(image)}
+                    alt={image.name}
+                    className="object-cover w-full h-full"
+                  />
                   <button
                     type="button"
                     onClick={() => removeImage(index)}
@@ -312,7 +328,9 @@ const ProductCreate: React.FC = () => {
           <button
             type="submit"
             disabled={isLoading}
-            className={`w-full py-3 text-white bg-blue-600 rounded-lg font-semibold ${isLoading ? "opacity-50 cursor-not-allowed" : ""}`}
+            className={`w-full py-3 text-white bg-blue-600 rounded-lg font-semibold ${
+              isLoading ? "opacity-50 cursor-not-allowed" : ""
+            }`}
           >
             {isLoading ? "Creating Product..." : "Create Product"}
           </button>

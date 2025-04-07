@@ -1,20 +1,28 @@
-import { useState, useCallback, useMemo } from "react";
 import { motion } from "framer-motion";
+import { useCallback, useMemo, useState } from "react";
 import { MdKeyboardArrowDown } from "react-icons/md";
 import { useDispatch } from "react-redux";
 import { setSizes } from "../../redux/reducers/productReducer";
 
-const sizeOptions = ["S", "M", "L", "XL", "XXL"];
+const sizeOptions = [
+  // "S",
+  // "M",
+  // "L",
+  // "XL",
+  // "XXL",
+  "Semi stitched",
+  "Unstitched",
+  "Free size",
+];
 
 const SizeFilter = () => {
   const [isSizeOpen, setIsSizeOpen] = useState(false);
   const [selectedSizes, setSelectedSizes] = useState<string[]>([]);
-const dispatch = useDispatch();
+  const dispatch = useDispatch();
   const toggleSizeDropdown = useCallback(
     () => setIsSizeOpen((prev) => !prev),
     []
   );
-
 
   const handleCheckboxChange = useCallback((size: string) => {
     setSelectedSizes((prev) =>
@@ -25,7 +33,6 @@ const dispatch = useDispatch();
   }, []);
 
   const handleApplyFilter = useCallback(() => {
-    
     dispatch(setSizes(selectedSizes));
   }, [selectedSizes]);
 

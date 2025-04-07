@@ -114,7 +114,7 @@ const ProductLayout: React.FC<ProductLayoutProps> = ({ data }) => {
   }
 
   return (
-    <div className="flex flex-col md:flex-row  flex-wrap items-center justify-items-start gap-8 mt-4  ">
+    <div className="flex flex-col md:flex-row  flex-wrap items-center justify-items-start gap-2 mt-4  ">
       {loading ? (
         Array.from({ length: data?.products?.length || 8 }).map((_, index) => (
           <div

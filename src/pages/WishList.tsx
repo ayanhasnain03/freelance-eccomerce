@@ -150,7 +150,7 @@ const WishList = () => {
               Start adding items you love to your wishlist
             </p>
             <Link
-              to="/collections"
+              to="/collections/womens"
               className="inline-block px-8 py-4 bg-rose-500 text-white rounded-xl font-medium hover:bg-rose-600 transition-colors"
             >
               Explore Products

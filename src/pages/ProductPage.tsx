@@ -13,13 +13,11 @@ import {
   FaArrowLeft,
   FaArrowRight,
   FaEllipsisV,
-  FaEnvelope,
   FaFacebook,
   FaInstagram,
   FaShare,
   FaShieldAlt,
   FaTruck,
-  FaTwitter,
   FaUndo,
   FaWhatsapp,
 } from "react-icons/fa";
@@ -103,21 +101,9 @@ const ShareOptions = memo(
         )}`,
       },
       {
-        name: "Email",
-        icon: <FaEnvelope className="text-red-500" size={24} />,
-        url: `mailto:?body=${encodeURIComponent(productUrl)}`,
-      },
-      {
         name: "Facebook",
         icon: <FaFacebook className="text-blue-600" size={24} />,
         url: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
-          productUrl
-        )}`,
-      },
-      {
-        name: "Twitter",
-        icon: <FaTwitter className="text-blue-400" size={24} />,
-        url: `https://twitter.com/intent/tweet?url=${encodeURIComponent(
           productUrl
         )}`,
       },
